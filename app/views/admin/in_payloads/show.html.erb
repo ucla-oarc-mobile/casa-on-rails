@@ -1,0 +1,23 @@
+<h2><%= @in_payload.related_app ? 'Update' : 'Create' %> App</h2>
+
+<p><strong>CASA Identity</strong></p>
+
+<pre style="border: 1px solid #bbb; padding: 10px;"><%= @in_payload.content_data['identity'].to_yaml.sub('---', '') %></pre>
+
+<p><strong><%= @in_payload.related_app ? 'Update' : 'Creation' %> Content</strong></p>
+
+<pre style="border: 1px solid #bbb; padding: 10px;"><%= @in_payload.content_data['attributes'].to_yaml.sub('---', '') %></pre>
+
+<%= link_to "Approve (#{@in_payload.related_app ? 'Update Existing App' : 'Create New App'})", admin_in_payload_to_app_url(@in_payload), class: 'button' %>
+
+<%= link_to 'Ignore This Payload', admin_in_payload_url(@in_payload), method: :delete, class: 'button warning' %>
+
+<%= link_to 'Ignore This App', admin_in_payload_url(@in_payload, ignore: true), method: :delete, class: 'button danger ignore' %>
+
+<%= link_to 'Back without Saving', admin_in_payloads_path, class: 'button tertiary' %>
+
+<script type="text/javascript">
+  $('.button.ignore').click(function(e){
+    return confirm('Are you sure you wish to ignore this app? No future updates received for this app will be stored in your queue.');
+  })
+</script>

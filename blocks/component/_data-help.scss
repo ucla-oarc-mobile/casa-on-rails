@@ -1,0 +1,24 @@
+[data-help] .mark {
+  position: relative;
+  padding-left: 3px;
+  font-weight: bold;
+  color: #1e4b87;
+  text-decoration: none;
+}
+
+[data-help] .mark {
+  &:hover:after, &.clicked:after {
+    text-align: left;
+    background: #333;
+    background: rgba(0,0,0,.8);
+    border-radius: 5px;
+    bottom: 100%;
+    left: 100%;
+    color: #fff;
+    content: attr(data-help);
+    padding: 10px 15px;
+    position: absolute;
+    z-index: 98;
+    width: 300px;
+  }
+}

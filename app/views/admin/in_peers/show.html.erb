@@ -1,0 +1,22 @@
+<p>
+  <strong>Name:</strong>
+  <%= @in_peer.name %>
+</p>
+
+<p>
+  <strong>URI:</strong>
+  <%= @in_peer.uri %>
+</p>
+
+<p>
+  <strong>Secret:</strong>
+  <%= raw @in_peer.secret && @in_peer.secret.length > 0 ? @in_peer.secret : '<em class="text-muted">None</em>' %>
+</p>
+
+<p>
+  <strong>CASA ID:</strong>
+  <%= raw @in_peer.casa_id && @in_peer.casa_id.length > 0 ? @in_peer.casa_id : '<em class="text-muted">None</em>' %>
+</p>
+
+<%= link_to 'Back', admin_in_peers_path %>
+| <%= link_to 'Edit', edit_admin_in_peer_path(@in_peer) %>

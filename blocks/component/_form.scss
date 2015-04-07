@@ -1,0 +1,84 @@
+.form-field {
+
+  @extend .clearfix;
+
+  label, input, select, textarea {
+    display: block;
+  }
+
+  label {
+    margin-bottom: 2px;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    margin-bottom: 12px;
+    padding: 7px 9px;
+    border: 1px solid #bbb;
+  }
+
+  input[type="checkbox"], input[type="radio"] {
+    width: auto;
+  }
+}
+
+.form-fields {
+  margin-bottom: 12px;
+}
+
+fieldset > legend {
+  color: #777;
+}
+
+label, legend {
+  font-weight: bold;
+}
+
+label, .form-fields > legend {
+  color: $color-primary;
+}
+
+textarea {
+  height: 80px;
+  &.long {
+    height: 200px;
+  }
+}
+
+input[type="checkbox"] ~ label {
+  color: #333;
+  font-weight: normal;
+}
+
+fieldset[role="tab"] {
+  border: none;
+  margin: 0;
+  > legend {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+}
+
+fieldset, .fields-table {
+  margin-bottom: 16px;
+}
+
+.fields-table {
+  table {
+    width: 100%;
+    text-align: center;
+  }
+  .row-heading {
+    text-align: left;
+  }
+  th {
+    font-weight: bold;
+  }
+  th, .row-heading {
+    color: $color-primary;
+  }
+  td, th {
+    padding: 8px 4px;
+  }
+}

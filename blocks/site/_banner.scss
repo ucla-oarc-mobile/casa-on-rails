@@ -1,0 +1,210 @@
+@import "compass";
+
+[role="banner"] {
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .stripe {
+    background-color: #00b3ee;
+    background: linear-gradient(to right, #30BDF4 0%,#60daff 100%);
+    height: 10px;
+  }
+
+  nav.site, nav[role="search"] {
+    border-bottom: 1px solid #ccc;
+  }
+
+  nav.site {
+
+    @extend .clearfix;
+
+    padding: 20px 20px 0;
+
+    .title {
+      h1, h2 {
+        display: inline-block;
+        line-height: 40px;
+        vertical-align: baseline;
+        margin: 0;
+      }
+      h1 {
+        color: #000;
+        font-size: 40px;
+      }
+      h1 small {
+        display: inline-block;
+        line-height: 30px;
+        font-size: 25px;
+        padding-left: 3px;
+      }
+      h2 {
+        color: $color-primary;
+        font-weight: normal;
+        text-transform: uppercase;
+        font-size: 18px;
+        padding-left: 5px;
+      }
+    }
+
+  }
+
+  #submenu {
+    font-size: 12px;
+    a {
+      color: #777;
+      text-decoration: none;
+      text-transform: uppercase;
+      &:hover {
+        color: #999;
+      }
+    }
+  }
+
+  #main-menu {
+    li {
+      line-height: 14px;
+      vertical-align: baseline;
+    }
+    a {
+      color: #444;
+      text-decoration: none;
+      text-transform: uppercase;
+      &:hover {
+        color: #666;
+      }
+    }
+  }
+
+  nav[role="search"] {
+    position: relative;
+    padding: 10px;
+    input[type="text"] {
+      width: 100%;
+      padding: 10px 30px 8px 10px;
+      border: 10px;
+      font-size: 16px;
+      color: #555;
+      border: 1px solid #eee;
+    }
+    button[type="submit"] {
+      position: absolute;
+      top: 19px;
+      right: 20px;
+      font-size: 18px;
+      color: #999;
+    }
+  }
+
+}
+
+@media (min-width: 1000px){
+  [role="banner"] {
+    nav.site {
+      padding-bottom: 15px;
+      .title {
+        float: left;
+      }
+    }
+  }
+  #main-menu, #submenu {
+    float: right;
+    ul {
+      text-align: right;
+    }
+    li {
+      padding-left: 20px;
+    }
+  }
+  #main-menu {
+    padding: 24px 0 0;
+  }
+  #submenu {
+    padding: 5px 0 5px;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 999px) {
+  #main-menu, #submenu {
+    li {
+      padding-right: 20px;
+    }
+  }
+  #main-menu {
+    padding: 5px 0 0;
+  }
+  #submenu {
+    padding: 12px 0 8px;
+    li {
+      padding-bottom: 10px;
+    }
+  }
+}
+
+@media (min-width: 600px) {
+  #main-menu, #submenu {
+    li {
+      display: inline-block;
+    }
+  }
+  .menu-toggle {
+    display: none;
+  }
+}
+
+@media (max-width: 599px) {
+  [role="banner"] nav.site.site {
+    padding-bottom: 10px;
+  }
+  #main-menu, #submenu {
+    li a {
+      display: block;
+      padding: 10px 0;
+    }
+  }
+  #main-menu {
+    display: none;
+    &.active {
+      display: block;
+    }
+  }
+  .menu-toggle {
+    float: right;
+    border: none;
+    background: transparent;
+    height: 16px;
+    margin-top: 12px;
+  }
+  .hamburger-icon {
+    position: relative;
+    padding-left: 20px;
+    &:before {
+      content: "";
+      position: absolute;
+      left: -4px;
+      top: -4px;
+      width: 20px;
+      height: 3px;
+      background: #aaa;
+      box-shadow:
+      0 6px 0 0 #aaa,
+      0 12px 0 0 #aaa;
+    }
+  }
+  [data-toggle-active="true"] {
+    font-weight: bold;
+  }
+  [data-toggle-active="false"] {
+    display: none;
+  }
+}
+
+@media (max-width: 359px) {
+  nav.site h2 {
+    display: none;
+  }
+}
+

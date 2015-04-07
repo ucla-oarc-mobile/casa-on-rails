@@ -1,0 +1,36 @@
+<%= form_for [:admin, @category], :html => { :role => 'form' } do |f| %>
+
+  <% if @category.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@category.errors.count, "error") %> prohibited
+      this category from being saved:</h2>
+    <ul>
+    <% @category.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+  <div class="form-field">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <% if @apps %>
+      <div class="form-field">
+        <%= f.label :apps %>
+        <%= f.select :apps, @apps.map(){ |a|
+          [a.title, a.id, {:selected => @category.apps.include?(a)}]
+        }, {}, {:multiple => true} %>
+      </div>
+  <% end %>
+
+  <p class="text-center">
+    <%= f.submit 'Save Category' %>
+    <%= link_to 'Back without Saving',
+                admin_categories_path,
+                :class => 'button tertiary text-center',
+                :role => 'button' %>
+  </p>
+<% end %>

@@ -1,0 +1,24 @@
+<html>
+<head><title>LTI Content Item</title></head>
+<body>
+
+<form action="<%= @content_item_return_url %>" method="post" encType="application/x-www-form-urlencoded" id="returnToConsumer" style="text-align:center;">
+  <% @parameters.each do |name, value| %>
+    <textarea name="<%= name %>" style="display:none;"><%= value %></textarea>
+  <% end %>
+  <input type="submit" value="Click to continue..." class="btn btn-primary">
+</form>
+
+<script type="text/javascript">
+  (function(){
+    var form = document.getElementById("returnToConsumer");
+    form.style.display = 'none';
+    setTimeout(function(){
+      form.style.display = 'block';
+    }, 1500)
+    form.submit();
+  })();
+</script>
+
+</body>
+</html>

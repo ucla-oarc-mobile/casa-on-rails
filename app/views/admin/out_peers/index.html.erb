@@ -1,0 +1,55 @@
+<h1>Outbound Peers</h1>
+
+<p class="info">By default, apps with the &quot;Share&quot; will be shared to anyone who queries <%= link_to casa_out_payloads_url, casa_out_payloads_url %>; however, you can restrict an app to only be shared with some nodes by adding these nodes here and then marking the app to be shared as such by editing the &quot;Access Control&quot; section of the app's properties.</p>
+
+<p><%= link_to 'Create New Outbound Peer',
+            new_admin_out_peer_path,
+            :class => 'button',
+            :role => 'button' %></p>
+
+<div style="overflow-x:scroll;">
+
+  <table class="table" id="peers-list">
+
+    <thead>
+      <tr style="text-align:left;">
+        <th>Name</th>
+        <th>Address</th>
+        <th>Netmask</th>
+        <th>Secret</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @out_peers.each do |out_peer| %>
+        <tr>
+          <td><strong><%= out_peer.name %></strong></td>
+          <td><strong><%= out_peer.address %></strong></td>
+          <td><strong><%= out_peer.netmask %></strong></td>
+          <td><%= out_peer.secret && out_peer.secret.length > 0 ? 'Yes' : 'No' %></td>
+          <td><%= link_to 'Show', admin_out_peer_path(out_peer) %></td>
+          <td><%= link_to 'Edit', edit_admin_out_peer_path(out_peer) %></td>
+          <td><%= link_to 'Destroy', admin_out_peer_path(out_peer),
+                      method: :delete,
+                      data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+
+  </table>
+
+</div>
+
+<script type="text/javascript">
+  $('#peers-list').dataTable({
+    "order": [[0, "asc"]]
+  });
+</script>
+
+<p><%= link_to 'Create New Outbound Peer',
+               new_admin_out_peer_path,
+               :class => 'button',
+               :role => 'button' %></p>

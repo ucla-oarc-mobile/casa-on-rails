@@ -1,0 +1,23 @@
+<% @collections.each do |collection| %>
+
+  <nav class="collection">
+    <header>
+      <h3><%= link_to collection.name, collection %></h3>
+      <%= link_to raw('See More &rarr;'), collection, role: 'button', class: 'see-more' %>
+    </header>
+    <ul class="clearfix list-unstyled">
+      <% collection.apps.where(enabled: true).available_to_launch_method(launch_provider.get).take(9).each do |app| %><li>
+          <a href="<%= url_for app %>">
+            <figure>
+              <%= app.icon_tag %>
+              <figcaption>
+                <h4><%= app.title %></h4>
+                <p><%= app.short_description %></p>
+              </figcaption>
+            </figure>
+          </a>
+        </li><% end %>
+    </ul>
+  </nav>
+
+<% end %>

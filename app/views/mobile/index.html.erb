@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>CASA Mobile</title>
+  <link rel="stylesheet" href="/mobile/assets/blocks.css">
+  <script type="text/javascript" src="/mobile/assets/blocks.js"></script>
+  <link rel="stylesheet" href="/mobile/assets/jquery-ui.css">
+  <script type="text/javascript" src="/mobile/assets/jquery-ui.js"></script>
+  <script type="text/javascript" src="/mobile/assets/jquery-ui-touch_punch.js"></script>
+  <script type="text/javascript" src="/mobile/assets/ios-html5-drag-drop-shim.js"></script>
+  <% if @site.mobile_appicon and @site.mobile_appicon.length > 0 %>
+  <link rel="apple-touch-icon" href="<%= @site.mobile_appicon %>">
+  <link rel="apple-touch-icon-precomposed" href="<%= @site.mobile_appicon %>">
+  <% end %>
+  <%= csrf_meta_tags %>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #f3f3f3;
+      }
+      body > header {
+        background-color: #fff;
+        margin: 0;
+        padding: 12px;
+        position: relative;
+      }
+      body > header > h1 {
+        font-size: 24px;
+      }
+      body > header h1 a {
+        color: #000;
+      }
+      body > header a img {
+        height: 24px;
+      }
+      body > header .add-button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-weight: bold;
+      }
+      body > header .add-button a {
+        padding: 3px 15px;
+        display: inline-block;
+      }
+      main ul {
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+      footer {
+        padding: 20px;
+      }
+      .button {
+        border: 1px solid #ccc;
+        padding: 6px 12px;
+        background-color: #fbfbfb;
+        font-weight: bold;
+        font-size: 13px;
+      }
+      [draggable] {
+        cursor: move;
+        -khtml-user-drag: element;
+        -webkit-user-drag: element;
+      }
+      [draggable] a {
+        cursor: move;
+      }
+      a {
+        color: #00b3ee;
+      }
+      main img {
+        pointer-events: none; /* don't let image be dragged independently */
+      }
+      ul, li {
+        border: #ddd solid;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        border-width: 1px 0 0 1px;
+      }
+      li {
+        display: inline-block;
+        background-color: #fff;
+        border-width: 0 1px 1px 0;
+        padding: 6px 12px;
+        text-align: center;
+        position: relative;
+      }
+      li.being-dragged {
+        opacity: 0.6;
+      }
+
+      .delete-button {
+        display: none;
+      }
+
+      [data-deletable="true"] .delete-button {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 10;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
+        padding: 0;
+        font-weight: bold;
+        color: #fff;
+        background-color: #55b3ee;
+        /*background-color: rgba(0,0,0,0.6);*/
+        border-color: #eee;
+        border-width: 0 0 1px 1px;
+        vertical-align: middle;
+        text-align: center;
+      }
+
+      .image-container {
+        max-width: 100%;
+        height: 60px;
+        overflow: hidden;
+        margin: auto;
+        vertical-align: middle;
+        margin-bottom: 6px;
+      }
+
+      /* forces to inline block */
+      .image-container:before {
+        content: "";
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+      }
+
+      img, .letter-icon {
+        margin: 10px auto;
+        max-width: 46px;
+        max-height: 46px;
+      }
+
+      .letter-icon span {
+        display: inline-block;
+        font-size: 24px;
+        margin-top: 3px;
+        height: 41px;
+        width: 41px;
+        line-height: 41px;
+        border-radius: 6px;
+        color: rgba(0,0,0,0.5);
+        background-color: #ccc;
+      }
+
+      figcaption {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 10px;
+      }
+
+      .when-editing {
+        display: none;
+      }
+
+      .editing-apps .when-editing {
+        display: block;
+      }
+
+      .editing-apps .when-not-editing {
+        display: none;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      @media (max-width: 160px){
+        li {
+          width: 50%;
+        }
+      }
+      @media (max-width: 280px) and (min-width: 161px){
+        li {
+          width: 50%;
+        }
+      }
+      @media (max-width: 460px) and (min-width: 281px) {
+        li {
+          width: 33.3333333%;
+        }
+      }
+      @media (max-width: 640px) and (min-width: 461px){
+        li {
+          width: 25%;
+        }
+      }
+      @media (max-width: 800px) and (min-width: 641px){
+        li {
+          width: 20%;
+        }
+      }
+      @media (max-width: 960px) and (min-width: 801px){
+        li {
+          width: 16.666666%;
+        }
+      }
+      @media (max-width: 1160px) and (min-width: 961px){
+        li {
+          width: 14.28571%;
+        }
+      }
+      @media (max-width: 1280px) and (min-width: 1161px){
+        li {
+          width: 12.5%;
+        }
+      }
+      @media (max-width: 1400px) and (min-width: 1281px){
+        li {
+          width: 12.5%;
+        }
+      }
+      @media (max-width: 1400px) and (min-width: 1281px){
+        li {
+          width: 11.1111111%;
+        }
+      }
+      @media (max-width: 1600px) and (min-width: 1401px){
+        li {
+          width: 10%;
+        }
+      }
+      @media (max-width: 2000px) and (min-width: 1601px){
+        li {
+          width: 9.090909%;
+        }
+      }
+      @media (min-width: 2001px){
+        li {
+          width: 8.3333333%;
+        }
+      }
+  </style>
+</head>
+
+<body class="mobile">
+
+<header>
+  <nav class="add-button">
+    <a href="<%= mobile_launch_url %>">
+      <img src="/mobile/assets/storefront-icon.png" alt="UCLA Mobile Storefront">
+    </a>
+  </nav>
+  <h1>
+    <a href="<%= mobile_url %>">UCLA Mobile</a>
+  </h1>
+</header>
+
+<main>
+
+</main>
+
+<footer>
+  <nav>
+    <div class="when-not-editing">
+      <a href="#" data-start-rearrange-apps class="button">Rearrange Apps</a>
+      <a href="#" data-start-delete-apps class="button">Delete Apps</a>
+    </div>
+    <div class="when-editing">
+      <a href="#" data-stop-edit-apps class="button">Stop Editing</a>
+    </div>
+  </nav>
+</footer>
+
+<script type="text/javascript">
+
+  /**
+   * Access and manage apps
+   */
+
+  (function(){
+
+    var localStorageKey = '<%= @local_storage_key %>',
+
+        appContainerSelector = 'main',
+
+        dragSrc = null,
+
+        dragSrcInnerHTML = null,
+
+        dragSrcAppData = null,
+
+        attachDragHandlersTo = function(element){
+
+          $(element).on('dragstart', function(){
+            if(!$(this).attr('draggable')){
+              return;
+            }
+            $(this).addClass('being-dragged')
+            if(dragSrc === null)
+              dragSrc = this;
+            if(dragSrcInnerHTML === null)
+              dragSrcInnerHTML = this.innerHTML;
+            if(dragSrcAppData === null)
+              dragSrcAppData = $(this).attr('data-app');
+          });
+
+          $(element).on('dragover', function(e){
+            e.preventDefault();
+            e.originalEvent.dataTransfer.dropEffect = 'move';
+          });
+
+          $(element).on('dragend', function(e){
+            $(dragSrc).removeClass('being-dragged')
+          });
+
+          $(element).on('drop', function(e){
+            e.stopPropagation();
+            if(dragSrc && dragSrcInnerHTML && dragSrc != this){
+              $(dragSrc).removeClass('being-dragged')
+              dragSrc.innerHTML = this.innerHTML;
+              $(dragSrc).attr('data-app', $(this).attr('data-app'));
+              this.innerHTML = dragSrcInnerHTML;
+              $(this).attr('data-app', dragSrcAppData);
+              $([this, dragSrc]).find('a').click(function(e){
+                if($(this).closest('li').attr('draggable')){
+                  e.preventDefault();
+                }
+              });
+              dragSrc = null;
+              dragSrcInnerHTML = null;
+              dragSrcAppData = null;
+              if(apps && dashboard)
+                apps.set(dashboard.getApps());
+            }
+          });
+
+        },
+
+        AppDashboard = function(element){
+
+          var $container = $(element);
+
+          this.clear = function(){
+            $container.html('')
+          }
+
+          this.render = function(appsToRender){
+
+            var $ul = $('<ul>');
+
+            $.each(appsToRender, function(_, app){
+
+              var $li = $('<li>').attr('data-app', JSON.stringify(app)).appendTo($ul),
+                  $a = $('<a>').attr('href', app.uri).appendTo($li),
+                  $figure = $('<figure>').appendTo($a),
+                  $imgContainer = $('<div class="image-container">').appendTo($figure);
+
+              if(app.icon && app.icon.length > 0){
+                $('<img>').attr('src', app.icon).appendTo($imgContainer);
+              }else{
+                $imgContainer.addClass('letter-icon')
+                $('<span>').html(app.title.charAt(0)).appendTo($imgContainer);
+              }
+
+              $('<figcaption>').text(app.title).appendTo($figure);
+
+              $('<button>').addClass('delete-button').text('X').appendTo($li).click(function(e){
+                e.stopPropagation();
+                $(this).closest('[data-app]').remove();
+                if(apps && dashboard)
+                  apps.set(dashboard.getApps());
+              });
+
+              attachDragHandlersTo($li);
+
+            });
+
+            $ul.appendTo($container);
+
+            $ul.find('a').click(function(e){
+              if($(this).closest('li').attr('draggable') || $(this).closest('li').attr('data-deletable')){
+                e.preventDefault();
+              }
+            })
+
+          }
+
+          this.getApps = function(){
+            return $container.find('[data-app]').map(function(){
+              return JSON.parse($(this).attr('data-app'))
+            }).get();
+          }
+
+          this.startDrag = function(){
+            $container.find('li').attr('draggable', 'true');
+            $('body').addClass('editing-apps');
+          }
+
+          this.startDelete = function(){
+            $container.find('li').attr('data-deletable', 'true');
+            $('body').addClass('editing-apps');
+          }
+
+          this.stopEdit = function(){
+            $container.find('li').attr('draggable', null).attr('data-deletable', null);
+            $('body').removeClass('editing-apps');
+          }
+
+        },
+
+        AppStorage = function(key){
+          this.get = function(){
+            var apps = localStorage.getItem(key)
+            return apps ? JSON.parse(apps) : [];
+          }
+          this.set = function(apps){
+            localStorage.setItem(key, JSON.stringify(apps))
+          }
+          this.defined = function(){
+            return localStorage.getItem(key) !== null;
+          }
+        },
+
+        apps = new AppStorage(localStorageKey),
+
+        dashboard = new AppDashboard(appContainerSelector);
+
+    if(!apps.defined()){
+      apps.set(<%= raw JSON.generate @default_apps %>)
+    }
+
+    dashboard.render(apps.get());
+
+    $('[data-stop-edit-apps]').click(function(){
+      dashboard.stopEdit();
+      apps.set(dashboard.getApps());
+    });
+
+    $('[data-start-rearrange-apps]').click(function(){
+      dashboard.startDrag();
+    });
+
+    $('[data-start-delete-apps]').click(function(){
+      dashboard.startDelete();
+    });
+
+  })();
+</script>
+</body>
+
+</html>

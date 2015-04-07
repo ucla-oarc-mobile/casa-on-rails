@@ -1,0 +1,32 @@
+.tabs {
+
+  ul {
+    list-style: none;
+    margin: 0 0 16px 0;
+    padding: 0;
+    border-bottom: 1px solid #aaa;
+  }
+
+  li {
+    display: inline-block;
+    margin-right: 6px;
+    padding-bottom: 6px;
+  }
+
+  a {
+    color: darken($color-primary, 10%);
+    background-color: #f9f9f9;
+    border: solid #aaa;
+    border-width: 1px 1px 0 1px;
+    border-radius: 4px 4px 0 0;
+    padding: 6px 12px;
+    text-decoration: none;
+    &.active {
+      background-color: #fff;
+      border-bottom: 1px solid #fff;
+    }
+    &:hover:not(.active) {
+      background-color: #fcfcfc;
+    }
+  }
+}

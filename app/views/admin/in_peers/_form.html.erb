@@ -1,0 +1,42 @@
+<%= form_for [:admin, @in_peer], :html => { :role => 'form' } do |f| %>
+
+  <% if @in_peer.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@in_peer.errors.count, "error") %> prohibited
+      this peer from being saved:</h2>
+    <ul>
+    <% @in_peer.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+  <div class="form-field">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="form-field">
+    <%= f.label :uri, 'URL', data: { help: "The URL where the set of all CASA payloads shared by the node can be found. For example, for another node to access this node, they would add #{casa_out_payloads_url} as the address." } %>
+    <%= f.text_field :uri %>
+  </div>
+
+  <div class="form-field">
+    <%= f.label :secret, data: { help: 'If specified, then this will be sent as the "secret" parameter for requests against this inbound peer.' } %>
+    <%= f.text_field :secret %>
+  </div>
+
+  <div class="form-field">
+    <%= f.label :casa_id, 'CASA ID', data: { help: 'This should be the UUID used as the originator_id by this peer, which helps for identification purposes when doing analytics.' } %>
+    <%= f.text_field :casa_id %>
+  </div>
+
+  <p class="text-center">
+    <%= f.submit 'Save Peer' %>
+    <%= link_to 'Back without Saving',
+                admin_in_peers_path,
+                :class => 'button tertiary text-center',
+                :role => 'button' %>
+  </p>
+<% end %>

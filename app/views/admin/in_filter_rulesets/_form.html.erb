@@ -1,0 +1,151 @@
+<%= form_for [:admin, @in_filter_ruleset], :html => { :role => 'form', id: 'in_filter_ruleset-form' } do |f| %>
+
+  <fieldset>
+
+    <legend>Ruleset</legend>
+
+    <div class="form-field">
+      <label for="global-peer">Apply to All Peers</label>
+      <input type="checkbox" id="global-peer" <% unless @in_filter_ruleset.new_record? or @in_filter_ruleset.in_peer_id %>checked<% end %>>
+    </div>
+
+    <div class="form-field">
+      <%= f.label :in_peer_id, 'Apply to Specific Peer' %>
+      <%= f.select :in_peer_id,
+                   options_for_select(InPeer.order(name: :asc).map(){ |peer| [peer.name, peer.id] }, @in_filter_ruleset.new_record? ? nil : @in_filter_ruleset.in_peer_id) %>
+    </div>
+
+    <%= f.text_area :rules, style: 'display:none' %>
+
+  </fieldset>
+
+  <fieldset>
+
+    <legend>Rules</legend>
+
+    <div class="form-field">
+      <label for="require-title">Require Title Attribute</label>
+      <input type="checkbox" id="require-title">
+    </div>
+
+    <div class="form-field">
+      <label for="require-accessibility_vpat">Require Accessibility Policy / VPAT</label>
+      <input type="checkbox" id="require-accessibility_vpat">
+    </div>
+
+    <div class="form-field">
+      <label for="require-lti">Require LTI Support</label>
+      <input type="checkbox" id="require-lti">
+    </div>
+
+    <div class="form-field">
+      <label for="require-lti-version">Require LTI Version</label>
+      <select multiple id="require-lti-version">
+        <option>1.0</option>
+        <option>1.1</option>
+        <option>1.2</option>
+        <option>2.0</option>
+      </select>
+    </div>
+
+    <div class="form-field">
+      <label for="require-category">Require In Category (one per line)</label>
+      <textarea id="require-category"></textarea>
+    </div>
+
+    <div class="form-field">
+      <label for="require-not-category">Require Not In Category (one per line)</label>
+      <textarea id="require-not-category"></textarea>
+    </div>
+
+  </fieldset>
+
+  <p class="text-center">
+    <%= f.submit 'Save Ruleset' %>
+    <%= link_to 'Back without Saving',
+                admin_in_filter_rulesets_path,
+                :class => 'button tertiary text-center',
+                :role => 'button' %>
+  </p>
+<% end %>
+
+<script type="text/javascript">
+
+  (function(){
+
+    <% unless @in_filter_ruleset.new_record? %>
+    var originalData = <%= raw @in_filter_ruleset.rules %>;
+    if('_global' in originalData){
+      if('require' in originalData['_global']){
+        $.each(originalData['_global']['require'], function(){
+          if(this.indexOf('title') >= 0)
+            $('#require-title').prop('checked', true);
+          if(this.indexOf('accessibility_url') >= 0 && this.indexOf('vpat_url') >= 0)
+            $('#require-accessibility_vpat').prop('checked', true);
+          if(this.indexOf('lti') >= 0)
+            $('#require-lti').prop('checked', true);
+        })
+      }
+    }
+    if('lti' in originalData){
+      if('versions' in originalData['lti']){
+        $('#require-lti-version').val(originalData['lti']['versions'])
+      }
+    }
+    if('categories' in originalData){
+      if('require' in originalData['categories']){
+        $('#require-category').val(originalData['categories']['require'].join('\n'))
+      }
+      if('require_not' in originalData['categories']){
+        $('#require-not-category').val(originalData['categories']['require_not'].join('\n'))
+      }
+    }
+    <% end %>
+
+    $('#global-peer').change(function(){
+
+      if($('#global-peer').is(':checked')){
+        $('#in_filter_ruleset_in_peer_id').prop('disabled', true).closest('div').hide();
+      }else{
+        $('#in_filter_ruleset_in_peer_id').prop('disabled', false).closest('div').show();
+      }
+
+    }).change();
+
+    $('#in_filter_ruleset-form').submit(function(e){
+
+      var rules = {
+        '_global': {
+          'require': []
+        },
+        'lti': {},
+        'categories': {}
+      };
+
+      if($('#require-title:checked').length > 0)
+        rules['_global']['require'].push(['title']);
+
+      if($('#require-accessibility_vpat:checked').length > 0)
+        rules['_global']['require'].push(['accessibility_url','vpat_url']);
+
+      if($('#require-lti:checked').length > 0)
+        rules['_global']['require'].push(['lti']);
+
+      if($('#require-lti-version').val() && $('#require-lti-version').val().length > 0){
+        rules['lti']['versions'] = $('#require-lti-version').val();
+      }
+
+      if($('#require-category').val() && $('#require-category').val().length > 0){
+        rules['categories']['require'] = $('#require-category').val().split('\n')
+      }
+
+      if($('#require-not-category').val() && $('#require-not-category').val().length > 0){
+        rules['categories']['require_not'] = $('#require-not-category').val().split('\n')
+      }
+
+      $('#in_filter_ruleset_rules').val(JSON.stringify(rules));
+    })
+
+  })();
+
+</script>

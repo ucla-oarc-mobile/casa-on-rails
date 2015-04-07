@@ -1,0 +1,37 @@
+<%= form_for [:admin, @lti_consumer], :html => { :role => 'form' } do |f| %>
+
+  <% if @lti_consumer.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@lti_consumer.errors.count, "error") %> prohibited
+      this LTI consumer from being saved:</h2>
+    <ul>
+    <% @lti_consumer.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+  <div class="form-field">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="form-field">
+    <%= f.label :key %>
+    <%= f.text_field :key %>
+  </div>
+
+  <div class="form-field">
+    <%= f.label :secret %>
+    <%= f.text_field :secret %>
+  </div>
+
+  <p class="text-center">
+    <%= f.submit 'Save Consumer' %>
+    <%= link_to 'Back without Saving',
+                admin_lti_consumers_path,
+                :class => 'button tertiary text-center',
+                :role => 'button' %>
+  </p>
+<% end %>

@@ -1,0 +1,21 @@
+<h1>Search Results</h1>
+
+<nav class="collection">
+  <ul class="clearfix list-unstyled">
+    <% @apps.where(enabled: true).each do |app| %>
+      <li>
+        <a href="<%= url_for app %>">
+          <figure>
+            <img src="<%= app.icon ? app.icon : image_url('blank-icon.png') %>" alt="<%= app.title %>">
+            <figcaption>
+              <h4><%= app.title %></h4>
+              <% if app.short_description %>
+                <p><%= app.short_description %></p>
+              <% end %>
+            </figcaption>
+          </figure>
+        </a>
+      </li>
+    <% end %>
+  </ul>
+</nav>

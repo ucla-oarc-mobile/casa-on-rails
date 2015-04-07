@@ -1,0 +1,14 @@
+<script type="text/javascript">
+  var apps = localStorage.getItem('<%= @local_storage_key %>');
+  if(apps)
+    apps = JSON.parse(apps)
+  else
+    apps = [];
+  apps.push(<%= raw({
+    'title' => @app.title,
+    'uri' => @app.uri,
+    'icon' => @app.icon
+  }.to_json) %>)
+  localStorage.setItem('<%= @local_storage_key %>', JSON.stringify(apps))
+  window.location = '<%= mobile_url %>'
+</script>

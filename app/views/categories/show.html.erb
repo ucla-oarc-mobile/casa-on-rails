@@ -1,0 +1,33 @@
+<%= render 'categories/menu' %>
+
+<nav class="collection">
+  <header>
+    <h3><%= @category.name %></h3>
+  </header>
+  <ul class="clearfix list-unstyled">
+    <% @apps.where(enabled: true).each do |app| %><li>
+        <a href="<%= url_for app %>">
+          <figure>
+            <img src="<%= app.icon ? app.icon : image_url('blank-icon.png') %>" alt="<%= app.title %>">
+            <figcaption>
+              <h4><%= app.title %></h4>
+              <% if app.short_description %>
+                <p><%= app.short_description %></p>
+              <% end %>
+            </figcaption>
+          </figure>
+        </a>
+      </li><% end %>
+  </ul>
+</nav>
+
+
+<% if session_user and session_user.admin %>
+<p>
+  <%= link_to 'Edit', edit_admin_category_url(@category), class: 'button success' %>
+  <%= link_to 'Destroy', admin_category_path(@category),
+            method: :delete,
+            data: { confirm: "Are you sure you want to delete this category?" },
+            class: 'button danger' %>
+</p>
+<% end %>

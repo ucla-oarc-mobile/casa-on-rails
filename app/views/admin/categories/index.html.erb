@@ -1,0 +1,51 @@
+<h1>Categories</h1>
+
+<p class="info">Categories are used to cluster groups of apps together. If you define the categories <%= raw AppsController::DEFAULT_CATEGORIES.map(){ |c| "&quot;#{c}&quot;" }.to_sentence %>, the apps in these categories will be shown on the home screen. These categories, and any other you define, will also show up in the menu under the CATEGORIES section.</p>
+
+<p><%= link_to 'Create New Category',
+               new_admin_category_path,
+               :class => 'button',
+               :role => 'button' %></p>
+
+<div>
+
+  <table class="table" id="categories-list">
+
+    <thead>
+      <tr>
+        <th style="text-align:left;">Name</th>
+        <th>Apps</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @categories.each do |category| %>
+        <tr>
+          <td><strong><%= category.name %></strong></td>
+          <td class="text-center"><%= category.apps.count %></td>
+          <td><%= link_to 'Show', category_path(category) %></td>
+          <td><%= link_to 'Edit', edit_admin_category_path(category) %></td>
+          <td><%= link_to 'Destroy', admin_category_path(category),
+                      method: :delete,
+                      data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+
+  </table>
+
+</div>
+
+<script type="text/javascript">
+  $('#categories-list').dataTable({
+    "order": [[0, "asc"]]
+  });
+</script>
+
+<p><%= link_to 'Create New Category',
+               new_admin_category_path,
+               :class => 'button',
+               :role => 'button' %></p>

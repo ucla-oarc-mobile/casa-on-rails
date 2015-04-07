@@ -1,0 +1,39 @@
+<h1>Pending Apps</h1>
+
+<p class="info">This is a queue of apps (both new apps, and updates to existing apps in the store) that have been discovered by querying peers. You can click &quot;Manage&quot; to approve or reject an app in this queue, and you can add or remove peers apps are discovered from by going to <%= link_to 'ADMIN > IN PEERS', admin_in_peers_url, target: '_blank' %>. You can also configure filter rules to avoid apps from being added to this queue by going to <%= link_to 'ADMIN > IN FILTER RULESETS', admin_in_filter_rulesets_url, target: '_blank' %>.</p>
+
+<div style="overflow-x:scroll;">
+
+  <table class="table" id="in_payload-list">
+
+    <thead>
+      <tr style="text-align:left">
+        <th style="white-space: nowrap;">Title</th>
+        <th style="white-space: nowrap;">Sender</th>
+        <th style="white-space: nowrap;">CASA Identifier</th>
+        <th style="white-space: nowrap;">Related App</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @in_payloads.each do |in_payload| %>
+        <tr>
+          <td><%= in_payload.title %></td>
+          <td><%= in_payload.in_peer ? in_payload.in_peer.name : raw('<em>Removed</em>') %></td>
+          <td><%= in_payload.casa_id %>@<%= in_payload.casa_originator_id %></td>
+          <td><%= in_payload.related_app ? in_payload.related_app.title : raw('<em>New</em>') %></td>
+          <td><%= link_to 'Manage', admin_in_payload_url(in_payload) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+
+  </table>
+
+</div>
+
+<script type="text/javascript">
+  $('#in_payload-list').dataTable({
+    "order": [[0, "asc"]]
+  });
+</script>

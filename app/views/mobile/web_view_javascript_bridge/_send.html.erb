@@ -1,0 +1,42 @@
+<script type="text/javascript">
+
+  /* see: https://github.com/marcuswestin/WebViewJavascriptBridge */
+
+  <%
+  app_data = {
+    'title' => @app.title,
+    'uri' => @app.uri,
+    'icon' => @app.icon
+  }
+  if @app.ios_app_id or @app.ios_app_scheme
+    app_data['ios'] = {}
+    app_data['ios']['id'] = @app.ios_app_id if @app.ios_app_id
+    app_data['ios']['scheme'] = @app.ios_app_scheme if @app.ios_app_scheme
+    app_data['ios']['path'] = @app.ios_app_path if @app.ios_app_path
+    app_data['ios']['affiliate_data'] = @app.ios_app_affiliate_data if @app.ios_app_affiliate_data
+  end
+  if @app.android_app_package
+    app_data['android'] = {}
+    app_data['android']['package'] = @app.android_app_package if @app.android_app_package
+    app_data['android']['scheme'] = @app.android_app_scheme if @app.android_app_scheme
+    app_data['android']['action'] = @app.android_app_action if @app.android_app_action
+    app_data['android']['category'] = @app.android_app_category if @app.android_app_category
+    app_data['android']['component'] = @app.android_app_component if @app.android_app_component
+  end
+  %>
+
+  var connectWebViewJavascriptBridge = function(callback) {
+    if (window.WebViewJavascriptBridge) {
+      callback(WebViewJavascriptBridge)
+    } else {
+      document.addEventListener('WebViewJavascriptBridgeReady', function() {
+        callback(WebViewJavascriptBridge)
+      }, false)
+    }
+  };
+
+  connectWebViewJavascriptBridge(function(bridge) {
+    bridge.send(<%= raw(app_data.to_json) %>);
+  });
+
+</script>

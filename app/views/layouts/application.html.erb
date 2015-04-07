@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CASA On Rails</title>
+  <link href='http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css' rel='stylesheet' type='text/css'>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style><%= raw @site.css %></style>
+</head>
+<body>
+
+<%= render 'layouts/masthead' %>
+
+<main class="container" role="main">
+  <%= yield %>
+</main>
+
+<script type="text/javascript">
+  $('[data-help]').each(function(){
+    $('<a>')
+        .attr('href', '#')
+        .addClass('mark')
+        .attr('data-help', $(this).attr('data-help'))
+        .html('(?)')
+        .click(function(e){
+          e.preventDefault();
+          if($(this).hasClass('clicked'))
+            $(this).removeClass('clicked')
+          else {
+            $('.mark.clicked').each(function(){
+              $(this).removeClass('clicked');
+            })
+            $(this).addClass('clicked')
+          }
+        })
+        .appendTo(this);
+  });
+</script>
+
+</body>
+</html>

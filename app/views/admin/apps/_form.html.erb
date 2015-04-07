@@ -1,0 +1,669 @@
+<%= form_for [:admin, @app], :html => { :id => 'app-form' } do |f| %>
+
+  <% if @app.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@app.errors.count, "error") %> prohibited
+      this app from being saved:</h2>
+    <ul>
+    <% @app.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+  <div class="tabs" role="tablist">
+    <ul>
+      <li><a href="#" data-target="#general">General</a></li>
+      <li><a href="#" data-target="#browser">Browser Features</a></li>
+      <li><a href="#" data-target="#native">Native Installs</a></li>
+      <li><a href="#" data-target="#interoperability">Interoperability</a></li>
+      <li><a href="#" data-target="#privacy">Privacy</a></li>
+      <li><a href="#" data-target="#accessibility">Accessibility</a></li>
+      <li><a href="#" data-target="#acl">Access Control</a></li>
+    </ul>
+  </div>
+
+  <fieldset role="tab" id="general">
+
+    <legend>General</legend>
+
+    <div class="form-field">
+      <%= f.label :title, raw('Title <span class="required">(required)</span>') %>
+      <%= f.text_field :title, required: true %>
+    </div>
+
+    <div class="form-field">
+      <%= f.label :uri, raw('URL <span class="required">(required)</span>') %>
+      <%= f.text_field :uri, required: true %>
+    </div>
+
+    <% if @app.created_by %>
+      <div class="form-field">
+        <label>Submitter</label>
+        <p style="margin-top:0"><%= user = User.find(@app.created_by); raw "#{user.first_name} #{user.last_name} &lt;#{link_to user.email, "mailto:#{user.email}"}&gt;" %></p>
+      </div>
+    <% end %>
+
+    <fieldset class="form-fields">
+      <legend>Sharing</legend>
+      <div class="form-checkbox">
+        <%= f.check_box :enabled %>
+        <%= f.label :enabled, data: { help: 'When not checked, this app will not be shown to users or be shared with peers. Sharing must be disabled before this can be disabled.' } %>
+      </div>
+      <div class="form-checkbox">
+        <%= f.check_box :share %>
+        <%= f.label :share, data: { help: 'When checked, this app will be shared with peers. Propagation must be disabled before this can be disabled.' } %>
+      </div>
+      <div class="form-checkbox">
+        <%= f.check_box :propagate %>
+        <%= f.label :propagate, data: { help: 'When checked, this app will not only be shared with peers, but those peers may share it with their peers. This leads to the application being shared across the entire CASA network.' } %>
+      </div>
+    </fieldset>
+
+    <fieldset class="form-fields">
+
+      <legend>Badges</legend>
+
+      <div class="form-checkbox">
+        <%= f.check_box :official %>
+        <%= f.label :official, 'Official App' %>
+      </div>
+
+      <div class="form-checkbox">
+        <%= f.check_box :mobile_support %>
+        <%= f.label :mobile_support, 'Supports Mobile' %>
+      </div>
+
+    </fieldset>
+
+    <% if @categories %>
+      <div class="form-field">
+        <%= f.label :categories %>
+        <%= f.select :categories, @categories.map(){ |c|
+                                  [c.name, c.id, {:selected => @app.categories.include?(c)}]
+                                }, {}, {:multiple => true} %>
+      </div>
+    <% end %>
+
+    <div class="form-field">
+      <%= f.label :app_tags, 'Tags (one per line)', data: { help: 'Flexible metadata values that may be assigned to apps to improve searchability.' } %>
+      <%= f.text_area :app_tags, value: @app.app_tags.map(){ |t| t.name }.join("\n") %>
+    </div>
+
+    <div class="form-field">
+      <%= f.label :short_description, 'Short Description', data: { help: 'This short text is used as a sub-title for the app in the storefront.' } %>
+      <%= f.text_area :short_description,
+                      :maxlength => 255 %>
+    </div>
+
+    <div class="form-field">
+      <%= f.label :description, raw('Description <span class="required">(required)</span>'), data: { help: 'The description of an app may be specified either as simple text or with basic HTML tags including p, ul, ol, li, strong, em and h1-6.' } %>
+      <%= f.text_area :description,
+                      :class => 'long',
+                      :required => true %>
+    </div>
+
+    <div class="form-field">
+      <%= f.label :icon, 'Icon', for: 'app_icon-selector' %>
+      <select id="app_icon-selector">
+        <option value="upload">Upload</option>
+        <option value="url">URL</option>
+      </select>
+      <img src="" id="app_icon-upload-preview" style="margin: 10px 0;">
+      <input type="file" id="app_icon-upload">
+      <input type="text" id="app_icon-url">
+      <%= f.text_area :icon, style: 'display:none' %>
+    </div>
+
+    <fieldset class="form-fields" id="app_authors">
+      <legend style="border:0;font-size:1em;font-weight:bold;">Author(s)</legend>
+      <ul style="list-style:none;padding: 0 10px;"></ul>
+      <button type="button" class="secondary">Add Author</button>
+    </fieldset>
+
+    <fieldset class="form-fields" id="app_organizations">
+      <legend style="border:0;font-size:1em;font-weight:bold;">Organization(s)</legend>
+      <ul style="list-style:none;padding: 0 10px;"></ul>
+      <button type="button" class="secondary">Add Organization</button>
+    </fieldset>
+
+    <fieldset class="form-fields">
+
+      <legend>Primary Contact</legend>
+
+      <div class="form-field">
+        <%= f.label :primary_contact_name, 'Name' %>
+        <%= f.text_field :primary_contact_name %>
+      </div>
+
+      <div class="form-field">
+        <%= f.label :primary_contact_email, 'Email' %>
+        <%= f.text_field :primary_contact_email %>
+      </div>
+
+    </fieldset>
+
+  </fieldset>
+
+  <fieldset role="tab" id="browser">
+
+    <legend>Browser Features</legend>
+
+    <p>This metadata can be used to determine if a user's browser is capable of supporting the app. A feature may use the settings &quot;Required&quot; if the application cannot be used without the feature, as well as &quot;Optional&quot; in the event that the app works best with it but will degrade gracefully if the browser does not support it.</p>
+
+    <%= fields_for :app_browser_features do |features| %>
+
+      <%
+
+         app_features = {}
+
+         if @app.app_browser_features
+           @app.app_browser_features.each do |r|
+             app_features[r.feature] = r.level
+           end
+         end
+
+         {
+             'Application Cache' => 'applicationcache',
+             'Canvas Element' => 'canvas',
+             'CSS Animations' => 'cssanimation',
+             'CSS Flexbox' => 'flexbox',
+             'CSS Multi-column Layout' => 'csscolumns',
+             'CSS Transformations' => 'csstransforms',
+             'CSS Transformations (3D)' => 'csstransforms3d',
+             'CSS @font-face' => 'fontface',
+             'CSS :before and :after' => 'generatedcontent',
+             'Drag-and-Drop' => 'draganddrop',
+             'History API' => 'history',
+             'HTML 5 Audio' => 'audio',
+             'HTML 5 Video' => 'video',
+             'Geolocation API' => 'geolocation',
+             'IndexedDB' => 'indexeddb',
+             'localStorage' => 'localstorage',
+             'onhashchange Event' => 'hashchange',
+             'postMessage Cross-origin' => 'postmessage',
+             'sessionStorage' => 'sessionstorage',
+             'Touch Events' => 'touch',
+             'WebGL' => 'webgl',
+             'Web Sockets' => 'websockets',
+             'Web Workers' => 'webworkers'
+         }.each do |title, key|
+      %>
+        <div class="form-field set-data-value-on-change">
+          <%= features.label key, title %>
+          <%= features.select key,
+                         options_for_select([
+                                                ['Not Used', 'none'],
+                                                ['Optional', 'optional'],
+                                                ['Required', 'required']
+                                            ], app_features.include?(key) ? app_features[key] : nil)  %>
+        </div>
+      <% end %>
+    <% end %>
+
+  </fieldset>
+
+  <fieldset role="tab" id="native">
+
+    <legend>Native Installs</legend>
+
+    <fieldset>
+
+      <legend>iOS Native App</legend>
+
+      <p>If an application has an associated iOS native app, these attributes can be used to advise the dashboard on how to install the app natively.</p>
+
+      <div class="form-field">
+        <%= f.label :ios_app_id, 'ID' %>
+        <%= f.text_field :ios_app_id %>
+      </div>
+
+      <div class="form-field">
+        <%= f.label :ios_app_scheme, 'Scheme' %>
+        <%= f.text_field :ios_app_scheme %>
+      </div>
+
+      <div class="form-field">
+        <%= f.label :ios_app_path, 'Path' %>
+        <%= f.text_field :ios_app_path %>
+      </div>
+
+      <div class="form-field">
+        <%= f.label :ios_app_affiliate_data, 'Affiliate Data' %>
+        <%= f.text_area :ios_app_affiliate_data %>
+      </div>
+
+    </fieldset>
+
+    <fieldset>
+
+      <legend>Android Native App</legend>
+
+      <p>If an application has an associated Android native app, these attributes can be used to advise the dashboard on how to install the app natively.</p>
+
+      <div class="form-field">
+        <%= f.label :android_app_package, 'Package' %>
+        <%= f.text_field :android_app_package %>
+      </div>
+
+      <div class="form-field">
+        <%= f.label :android_app_scheme, 'Scheme' %>
+        <%= f.text_field :android_app_scheme %>
+      </div>
+      </div>
+
+      <div class="form-field">
+        <%= f.label :android_app_action, 'Action' %>
+        <%= f.text_field :android_app_action %>
+      </div>
+      </div>
+
+      <div class="form-field">
+        <%= f.label :android_app_category, 'Category' %>
+        <%= f.text_field :android_app_category %>
+      </div>
+      </div>
+
+      <div class="form-field">
+        <%= f.label :android_app_component, 'Component' %>
+        <%= f.text_field :android_app_component %>
+      </div>
+
+    </fieldset>
+
+  </fieldset>
+
+  <fieldset role="tab" id="interoperability">
+
+    <legend>Interoperability</legend>
+
+    <fieldset>
+
+      <legend>LTI</legend>
+
+      <p>IMS Global's <a href="http://www.imsglobal.org/toolsinteroperability2.cfm" target="_blank">Learning Tools Interoperability (LTI)</a> standard allows for interoperability between applications and consumers such as learning management systems. These properties allow the app store to push an app back to a learning management system with all the information necessary to set up the app as an LTI tool.</p>
+
+      <div class="form-field">
+        <%= f.label :lti, 'Supports LTI' %>
+        <%= f.check_box :lti %>
+      </div>
+
+      <div class="form-field">
+        <%= f.label :lti_launch_url, 'Launch URL' %>
+        <%= f.text_field :lti_launch_url %>
+      </div>
+
+      <div class="form-field">
+        <%= f.label :lti_configuration_url, 'Configuration URL' %>
+        <%= f.text_field :lti_configuration_url %>
+      </div>
+
+      <div class="form-field">
+        <%= f.label :lti_registration_url, 'Registration URL' %>
+        <%= f.text_field :lti_registration_url %>
+      </div>
+
+      <div class="form-field">
+        <%= label_tag :app_lti_versions, 'Versions Supported' %>
+        <%= select_tag :app_lti_versions,
+                        options_for_select(['1.0','1.1','1.2','2.0'], @app.app_lti_versions.map(){ |v| v.version }),
+                        multiple: true %>
+      </div>
+
+      <div class="form-field">
+        <%= f.label :lti_outcomes, 'Outcomes' %>
+        <%= f.select :lti_outcomes,
+                     options_for_select([
+                                            ['No', nil],
+                                            ['Optional', 'optional'],
+                                            ['Required', 'required']
+                                        ]) %>
+      </div>
+
+    </fieldset>
+
+  </fieldset>
+
+  <fieldset role="tab" id="privacy">
+
+    <legend>Privacy</legend>
+
+    <div class="form-field">
+      <%= f.label :privacy_url, 'Privacy Policy URL' %>
+      <%= f.text_field :privacy_url %>
+    </div>
+
+    <div class="form-field">
+      <%= label_tag :privacy_enable, 'Privacy Matrix', data: { help: 'This privacy matrix is based on the Privacy Nutrition Label concept. Instead of the complex legalese of traditional privacy policies, it is intended to condense a privacy policy into a simple, understandable table.' } %>
+      <%= check_box :privacy, 'enable', checked: (!@app.new_record? and !@app.app_privacy_policy.nil?) %>
+    </div>
+
+    <fieldset id="privacy-fields">
+      <div class="fields-table">
+        <table>
+          <%
+             app_privacy_policy = @app.app_privacy_policy ? @app.app_privacy_policy : AppPrivacyPolicy.new
+
+          %>
+          <thead>
+          <tr>
+            <th class="row-heading">Type</th>
+            <% AppPrivacyPolicy.types.each do |type, description| %>
+              <th data-help="<%= description.gsub /"/, '&quot;' %>"><%= type.capitalize %></th>
+            <% end %>
+          </tr>
+          </thead>
+          <tbody>
+          <%= fields_for :app_privacy_policy do |privacy| %>
+            <% AppPrivacyPolicy.classifications.each do |context, context_description| %>
+              <tr>
+                <td class="row-heading" <% if context_description -%>data-help="<%= context_description.gsub /"/, '&quot;' %>"<% end -%>><%= context.capitalize %></td>
+                <% AppPrivacyPolicy.types.each do |type, type_description| symbol = "#{context}_#{type}".to_sym %>
+                  <td>
+                    <%= privacy.label symbol, "Privacy of #{context} for #{type}", class: 'hide-accessible' %>
+                    <%= privacy.select symbol,
+                                       options_for_select([
+                                                              ['No', 'false'],
+                                                              ['Opt-out', '"optOut"'],
+                                                              ['Opt-in', '"optIn"'],
+                                                              ['Yes', 'true']
+                                                          ], app_privacy_policy.send(symbol)) %>
+                  </td>
+                <% end %>
+            <% end %>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+
+    </fieldset>
+
+  </fieldset>
+
+  <fieldset role="tab" id="accessibility">
+
+    <legend>Accessibility</legend>
+
+    <div class="form-field">
+      <%= f.label :accessibility_url, 'Accessibility Policy URL', data: { help: 'This should be the URL to an accessibility policy for the app. Apps are more likely to be accepted if they have an accessibility policy because of legal requirements for universal access.' } %>
+      <%= f.text_field :accessibility_url %>
+    </div>
+
+    <div class="form-field">
+      <%= f.label :vpat_url, 'VPAT URL', data: { help: 'When one exists, this should be the URL to a filled out copy of the Voluntary Product Accessibility Template provided by the U.S. Department of State\'s Program for Accessible Computer/Communication Technology.' } %>
+      <%= f.text_field :vpat_url %>
+    </div>
+
+  </fieldset>
+
+  <fieldset role="tab" id="acl">
+
+    <legend>Access Control</legend>
+
+    <p>Access controls can be used to restrict the sharing of this app to specific peers. If you choose &quot;Restrict Access to Specific Peers&quot;, you can pick one or more outbound peers that will receive this app. Outbound peers can be managed under <%= link_to 'ADMIN > OUT PEERS', admin_out_peers_url, target: '_blank' %>.</p>
+
+    <div class="form-checkbox">
+      <%= f.check_box :restrict %>
+      <%= f.label :restrict, 'Restrict Access to Specific Peers' %>
+    </div>
+
+    <div class="form-field" style="margin-top:12px;">
+      <%= f.label :app_out_peer_permissions, 'Allowed Peers' %>
+      <%= f.select :app_out_peer_permissions,
+                   options_for_select(@out_peers.map(){ |p| [p.name, p.id] }, @app.app_out_peer_permissions.map(){ |p| p.out_peer.id }),
+                   {},
+                   multiple: true %>
+    </div>
+
+    <div class="form-checkbox" style="margin-top:12px;">
+      <%= f.check_box :restrict_launch %>
+      <%= f.label :restrict_launch, 'Restrict to Specific Launch Methods' %>
+    </div>
+
+    <div class="form-field" style="margin-top:12px;">
+      <%= f.label :app_launch_methods, 'Show To Launch Methods' %>
+      <%= f.select :app_launch_methods,
+                   options_for_select([
+                                           [ 'LTI', 'lti' ],
+                                           [ 'Mobile', 'mobile' ],
+                                           [ 'Cordova', 'cordova' ],
+                                           [ 'WebView Javascript Bridge', 'web_view_javascript_bridge' ]
+                                      ], @app.app_launch_methods.map(){ |m| m.method }),
+                   {},
+                   multiple: true %>
+    </div>
+
+  </fieldset>
+
+  <p class="text-center">
+    <%= f.submit 'Save App' %>
+    <%= link_to 'Back without Saving',
+                admin_apps_path,
+                :class => 'button tertiary text-center',
+                :role => 'button' %>
+  </p>
+<% end %>
+
+<script type="text/javascript">
+
+  (function(){
+    $('#app_restrict').change(function(){
+      if($(this).is(':checked')){
+        $('#app_app_out_peer_permissions').prop('disabled', false).closest('.form-field').show();
+      }else{
+        $('#app_app_out_peer_permissions').prop('disabled', true).closest('.form-field').hide();
+      }
+    }).change();
+  })();
+
+  (function(){
+    $('#app_restrict_launch').change(function(){
+      if($(this).is(':checked')){
+        $('#app_app_launch_methods').prop('disabled', false).closest('.form-field').show();
+      }else{
+        $('#app_app_launch_methods').prop('disabled', true).closest('.form-field').hide();
+      }
+    }).change();
+  })();
+
+  (function(){
+
+    $('#app_icon-selector').change(function(){
+
+      if($(this).val() == 'upload'){
+        $('#app_icon-url').hide();
+        $('#app_icon-upload').show();
+        $('#app_icon-upload-preview').show();
+      }else{
+        $('#app_icon-url').show();
+        $('#app_icon-upload').hide();
+        $('#app_icon-upload-preview').hide();
+      }
+
+    });
+
+    $('#app_icon-upload').change(function(){
+      var file = this.files[0],
+          reader = new FileReader;
+      reader.onloadend = function(){
+        $('#app_icon').val(reader.result)
+        $('#app_icon-upload-preview').attr('src', reader.result);
+      }
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    });
+
+    $('#app_icon-url').change(function(){
+      $('#app_icon').val($(this).val());
+    });
+
+    if($('#app_icon').val().indexOf('http') === 0){
+      $('#app_icon-selector').val('url').change();
+      $('#app_icon-url').val($('#app_icon').val());
+    }else{
+      $('#app_icon-selector').val('upload').change();
+      $('#app_icon-upload-preview').attr('src', $('#app_icon').val());
+    }
+
+  })();
+
+  (function(){
+
+    $('[role="tab"]').hide();
+    $('.tabs [data-target]').click(function(e){
+      e.preventDefault();
+      $(this).closest('.tabs').find('[data-target]').removeClass('active');
+      $(this).addClass('active');
+      var $target = $($(this).attr('data-target'));
+      $('[role="tab"]').hide();
+      $target.show();
+    }).first().click();
+
+  })();
+
+  (function(){
+    $('#app_propagate').change(function(){
+      if($(this).is(':checked')) {
+        $('#app_share').prop('checked', true).attr('disabled', true).change();
+      }else{
+        $('#app_share').attr('disabled', null);
+      }
+    }).change();
+    $('#app-form').submit(function(e){
+      $('#app_share').attr('disabled', null);
+    });
+  })();
+
+  (function(){
+    $('#app_share').change(function(){
+      if($(this).is(':checked')) {
+        $('#app_enabled').prop('checked', true).attr('disabled', true).change();
+      }else{
+        $('#app_enabled').attr('disabled', null);
+      }
+    }).change();
+    $('#app-form').submit(function(e){
+      $('#app_enabled').attr('disabled', null);
+    });
+  })();
+
+  (function(){
+    $('#app_lti').change(function(){
+      if($(this).is(':checked')) {
+        $(this).closest('.form-field').siblings('.form-field').show();
+      }else{
+        $(this).closest('.form-field').siblings('.form-field').hide();
+      }
+    }).change();
+  })();
+
+  (function(){
+    $('#privacy_enable').change(function(){
+      if($(this).is(':checked')) {
+        $('#privacy-fields').show();
+      }else{
+        $('#privacy-fields').hide();
+      }
+    }).change();
+  })();
+
+  (function(){
+    $('.set-data-value-on-change select').change(function(){
+      $(this).closest('.form-field').attr('data-value', $(this).val());
+    }).change();
+  })();
+
+    (function(){
+
+        var createAuthorField = function(data){
+
+            var $li = $(document.createElement('li'))
+                    .addClass('form-field')
+                    .attr('style', 'border-left:3px solid #eee;padding-left:10px;margin-bottom:10px;')
+                    .append('<label>Name</label><input type="text" class="input-name"'+(data&&data.name?(' value="'+data.name+'"'):'')+'><label>Email</label><input type="text" class="input-email"'+(data&&data.email?(' value="'+data.email+'"'):'')+'>'+(data&&data.id?('<input type="hidden" class="input-id" value="'+data.id+'">'):''));
+
+            $(document.createElement('button')).text('Remove').addClass('danger').click(function(){$(this).closest('li').remove()}).appendTo($li);
+
+            $('#app_authors > ul').append($li);
+        }
+
+        $.each(<%= raw @app.app_authors.to_json %>, function(idx, author){
+            createAuthorField(author)
+        })
+
+        $('#app_authors > button').click(function(e){
+            createAuthorField();
+        })
+
+        $('#app-form').submit(function(e){
+
+            var data = [];
+            $('#app_authors li').each(function(){
+                var id = $(this).find('.input-id').val(),
+                    name = $(this).find('.input-name').val(),
+                    email = $(this).find('.input-email').val(),
+                    dataElement = {}
+                if(id && id.length) dataElement['id'] = id
+                if(name && name.length) dataElement['name'] = name
+                if(email && email.length) dataElement['email'] = email
+                data.push(dataElement);
+            })
+
+            $(this).append($(document.createElement('textarea'))
+                                .attr('name', 'app_authors')
+                                .attr('style', 'display:none')
+                                .val(JSON.stringify(data)));
+        })
+
+    })();
+
+//////////////////////
+
+    (function(){
+
+        var createOrganizationField = function(data){
+
+            var $li = $(document.createElement('li'))
+                    .addClass('form-field')
+                    .attr('style', 'border-left:3px solid #eee;padding-left:10px;margin-bottom:10px;')
+                    .append('<label>Name</label><input type="text" class="input-name"'+(data&&data.name?(' value="'+data.name+'"'):'')+'><label>Website</label><input type="text" class="input-website"'+(data&&data.website?(' value="'+data.website+'"'):'')+'>'+(data&&data.id?('<input type="hidden" class="input-id" value="'+data.id+'">'):''));
+
+            $(document.createElement('button')).text('Remove').addClass('danger').click(function(){$(this).closest('li').remove()}).appendTo($li);
+
+            $('#app_organizations > ul').append($li);
+        }
+
+        $.each(<%= raw @app.app_organizations.to_json %>, function(idx, organization){
+            createOrganizationField(organization)
+        })
+
+        $('#app_organizations > button').click(function(e){
+            createOrganizationField();
+        })
+
+        $('#app-form').submit(function(e){
+
+            var data = [];
+            $('#app_organizations li').each(function(){
+                var id = $(this).find('.input-id').val(),
+                    name = $(this).find('.input-name').val(),
+                    website = $(this).find('.input-website').val(),
+                    dataElement = {}
+                if(id && id.length) dataElement['id'] = id
+                if(name && name.length) dataElement['name'] = name
+                if(website && website.length) dataElement['website'] = website
+                data.push(dataElement);
+            })
+
+            $(this).append($(document.createElement('textarea'))
+                    .attr('name', 'app_organizations')
+                    .attr('style', 'display:none')
+                    .val(JSON.stringify(data)));
+        })
+
+    })();
+
+</script>

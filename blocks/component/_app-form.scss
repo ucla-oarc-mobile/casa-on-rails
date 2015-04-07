@@ -1,0 +1,22 @@
+#app-form {
+  [role="tab"] > legend + p {
+    margin-top: 0;
+  }
+  p {
+    color: #777;
+    font-style: italic;
+  }
+  .form-field {
+    &[data-value="required"] select {
+      border-color: #FFB2B2;
+    }
+    &[data-value="optional"] select {
+      border-color: #FFCC80;
+    }
+  }
+  label {
+    .required {
+      color: #e55;
+    }
+  }
+}

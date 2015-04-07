@@ -1,0 +1,23 @@
+.privacy-nutrition-label {
+  font-size: 12px;
+  .yes {
+    background-color: #FFE6E6;
+  }
+  .optOut {
+    background-color: #FFE9BF;
+  }
+  .optIn {
+    background-color: #FFFFDB;
+  }
+  .no {
+    background-color: #EBFFFF;
+  }
+  td, th {
+    padding: 6px;
+    text-align: center;
+    border: 2px solid #fff;
+  }
+  td:first-child, th:first-child {
+    text-align: left;
+  }
+}

@@ -1,0 +1,38 @@
+<% if @user.username %>
+  <p>
+    <strong>Username:</strong>
+    <%= @user.username %>
+  </p>
+<% else %>
+  <p>
+    <strong>OAuth Identity:</strong>
+    <%= @user.oauth2_identity.provider_user_id %>
+  </p>
+  <p>
+    <strong>OAuth Provider:</strong>
+    <%= @user.oauth2_identity.provider %>
+  </p>
+<% end %>
+
+<p>
+  <strong>First Name:</strong>
+  <%= @user.first_name %>
+</p>
+
+<p>
+  <strong>Last Name:</strong>
+  <%= @user.last_name %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <a href="mailto:<%= @user.email %>"><%= @user.email %></a>
+</p>
+
+<p>
+  <strong>Admin:</strong>
+  <%= @user.admin ? 'Yes' : 'No' %>
+</p>
+
+<%= link_to 'Back', admin_users_path %>
+| <%= link_to 'Edit', edit_admin_user_path(@user) %>

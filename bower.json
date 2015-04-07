@@ -1,0 +1,12 @@
+{
+  "name": "casa-on-rails",
+  "version": "2.0.0",
+  "dependencies": {
+    "WebBlocks-grid": "WebBlocks/block-grid",
+    "WebBlocks-visibility": "WebBlocks/block-visibility",
+    "WebBlocks-wrapper-bootstrap": "WebBlocks/wrapper-bootstrap",
+    "WebBlocks-wrapper-DataTables": "WebBlocks/wrapper-DataTables",
+    "WebBlocks-wrapper-jquery": "WebBlocks/wrapper-jquery",
+    "WebBlocks-wrapper-normalize.csss": "WebBlocks/wrapper-normalize.css"
+  }
+}

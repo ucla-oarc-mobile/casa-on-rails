@@ -1,0 +1,63 @@
+<h1>Apps</h1>
+
+<p><%= link_to 'Create New App',
+               new_admin_app_path,
+               :class => 'button',
+               :role => 'button' %></p>
+
+<div>
+
+  <table class="table" id="app-list">
+
+    <thead>
+      <tr>
+        <th>Enabled</th>
+        <th>Type</th>
+        <th>Title</th>
+        <th>Categories</th>
+        <th>Sharing</th>
+        <th>Icon</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @apps.each do |app| %>
+        <tr>
+          <td style="text-align: center;"><%= app.enabled ? 'Enabled' : 'Disabled' %></td>
+          <td>
+            <% if app.casa_in_payload %>
+            <a href="#!" data-toggle="tooltip" data-placement="top" title="<%= app.casa_id %>@<%= app.casa_originator_id %>">CASA</a>
+            <% else %>
+            Local
+            <% end %>
+          </td>
+          <td><strong><%= app.title %></strong></td>
+          <td><%= app.categories.map(){|c| c.name }.join(', ') %></td>
+          <td><%= app.share ? (app.propagate ? 'Propagate' : 'Share') : 'Local' %></td>
+          <td><%= app.icon ? 'Yes' : 'No' %></td>
+          <td><%= link_to 'Show', app_path(app) %></td>
+          <td><%= link_to 'Edit', edit_admin_app_path(app) %></td>
+          <td><%= link_to 'Destroy', admin_app_path(app),
+                      method: :delete,
+                      data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+
+  </table>
+
+</div>
+
+<script type="text/javascript">
+  $('#app-list').dataTable({
+    "order": [[0, "asc"], [1, "desc"], [2, "asc"]]
+  });
+</script>
+
+<p><%= link_to 'Create New App',
+               new_admin_app_path,
+               :class => 'button',
+               :role => 'button' %></p>

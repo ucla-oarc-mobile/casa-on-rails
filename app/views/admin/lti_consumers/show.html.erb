@@ -1,0 +1,17 @@
+<p>
+  <strong>Name:</strong>
+  <%= @lti_consumer.name %>
+</p>
+
+<p>
+  <strong>Key:</strong>
+  <%= @lti_consumer.key %>
+</p>
+
+<p>
+  <strong>Secret:</strong>
+  <%= @lti_consumer.secret %>
+</p>
+
+<%= link_to 'Back', admin_lti_consumers_path %>
+| <%= link_to 'Edit', edit_admin_lti_consumer_path(@lti_consumer) %>

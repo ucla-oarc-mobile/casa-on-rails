@@ -1,0 +1,36 @@
+<h1>Edit Site Settings</h1>
+
+<%= form_for [:admin, @site], :html => { :role => 'form' } do |f| %>
+
+  <% if @site.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@site.errors.count, "error") %> prohibited
+        this category from being saved:</h2>
+      <ul>
+        <% @site.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-field">
+    <%= f.label :heading %>
+    <%= f.text_area :heading, style: 'height: 10em;' %>
+  </div>
+
+  <div class="form-field">
+    <%= f.label :css, 'CSS' %>
+    <%= f.text_area :css, style: 'height: 30em;' %>
+  </div>
+
+  <div class="form-field">
+    <%= f.label :mobile_appicon, 'Mobile Appicon' %>
+    <%= f.text_field :mobile_appicon %>
+  </div>
+
+  <p class="text-center">
+    <%= f.submit 'Save Settings' %>
+  </p>
+
+<% end %>

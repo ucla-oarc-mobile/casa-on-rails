@@ -1,0 +1,5 @@
+<h1>Submit App</h1>
+
+<p>To submit an app, you must <a href="<%= send(*Rails.application.config.login_route) %>">log in</a> first.</p>
+
+<p>If you do not have an account, please contact <a href="mailto:<%= @contact[:email] %>"><%= @contact[:name] %></a>.</p>

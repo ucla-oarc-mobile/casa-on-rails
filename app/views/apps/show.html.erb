@@ -1,0 +1,214 @@
+<article class="app panels">
+  
+  <header>
+    <h1><%= @app.title %></h1>
+  </header>
+
+  <footer>
+
+    <figure>
+      <%= @app.icon_tag %>
+    </figure>
+
+    <nav>
+      <a href="<%= @button[:url] %>" class="button"><%= @button[:text] %></a>
+    </nav>
+
+    <div class="attribute">
+      <h4>URL</h4>
+      <p class="one-line"><%= @app.uri %></p>
+    </div>
+
+    <% if @app.categories.count > 0 %>
+      <div class="attribute">
+        <h4>Categories</h4>
+        <p><%= raw @app.categories.map(){ |c| link_to c.name, c }.join(', ') %></p>
+      </div>
+    <% end %>
+
+    <% if @app.app_tags.count > 0 %>
+      <div class="attribute">
+        <h4>Tags</h4>
+        <p><%= raw @app.app_tags.map(){ |t| t.name }.join(', ') %></p>
+      </div>
+    <% end %>
+
+    <% if session_user and session_user.admin %>
+      <% if @app.created_by %>
+        <div class="attribute">
+          <h4>Submitter</h4>
+          <p><%= user = User.find(@app.created_by); raw "#{user.first_name} #{user.last_name}<br><small>#{link_to user.email, "mailto:#{user.email}"}</small>" %></p>
+        </div>
+      <% end %>
+      <% if @app.primary_contact_name %>
+        <div class="attribute">
+          <h4>Primary Contact</h4>
+          <p>
+            <%= @app.primary_contact_name %>
+            <% if @app.primary_contact_email %>
+            <br><small><%= link_to @app.primary_contact_email, "mailto:#{@app.primary_contact_email}" %></small>
+            <% end %>
+        </div>
+      <% end %>
+    <% end %>
+
+    <% if @app.app_authors.count > 0 %>
+    <div class="attribute">
+      <h4>Author<%= @app.app_authors.count > 1 ? 's' : '' %></h4>
+      <p><%= raw @app.app_authors.map(){ |c|
+                  name = c.name ? c.name : 'Anonymous'
+                  c.email ? "<a href='mailto:#{c.email}'>#{name}</a>" : "<span class='text-muted'>#{name}</span>"
+                }.join(', ') %></p>
+    </div>
+    <% end %>
+
+
+    <% if @app.app_organizations.count > 0 %>
+    <div class="attribute">
+      <h4>Organization<%= @app.app_organizations.count > 1 ? 's' : '' %></h4>
+      <p><%= raw @app.app_organizations.map(){ |c|
+                  name = c.name ? c.name : 'Anonymous'
+                  c.website ? "<a href='#{c.website}' target='_blank'>#{name}</a>" : "<span class='text-muted'>#{name}</span>"
+                }.join(', ') %></p>
+    </div>
+    <% end %>
+
+    <% if session_user and session_user.admin %>
+    <nav>
+      <%= link_to 'Edit', edit_admin_app_url(@app), class: 'button success' %>
+      <%= link_to 'Destroy', admin_app_path(@app),
+                      method: :delete,
+                      data: { confirm: "Are you sure you want to delete this app?" },
+                      class: 'button danger' %>
+    </nav>
+    <% end %>
+
+  </footer>
+
+  <main>
+
+    <header>
+      <h1><%= @app.title %></h1>
+    </header>
+
+    <% if @app.description %>
+      <%= @app.formatted_description %>
+    <% elsif @app.short_description %>
+      <%= simple_format @app.short_description %>
+    <% end %>
+
+    <div class="badges">
+      <% if @app.official %><span class="badge official"></span><% end %>
+      <% if @app.mobile_support %><span class="badge mobile-support"></span><% end %>
+    </div>
+
+    <div class="details">
+
+    <% if @app.app_privacy_policy or @app.privacy_url %>
+      <section>
+        <h3>Privacy Policy</h3>
+        <% if @app.app_privacy_policy %>
+          <div style="overflow:auto;width:100%">
+          <table class="privacy-nutrition-label">
+            <thead>
+            <tr>
+              <th>Type</th>
+              <% AppPrivacyPolicy.types.each do |type, description| %>
+                <th><%= type.capitalize %></th>
+              <% end %>
+            </tr>
+            </thead>
+            <tbody>
+              <% AppPrivacyPolicy.classifications.each do |context, context_description| %>
+                <tr>
+                  <td class="row-heading"><%= context.capitalize %></td>
+                  <% AppPrivacyPolicy.types.each do |type, type_description| symbol = "#{context}_#{type}".to_sym %>
+                  <%=
+                      value = @app.app_privacy_policy.send(symbol)
+                      if value == 'true'
+                        raw '<td class="yes">Yes</td>'
+                      elsif value == 'false'
+                        raw '<td class="no">No</td>'
+                      elsif value == '"optIn"'
+                        raw '<td class="optIn">Opt-in</td>'
+                      elsif value == '"optOut"'
+                        raw '<td class="optOut">Opt-out</td>'
+                      end
+                  %>
+                  <% end %>
+              <% end %>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+        <% end %>
+        <% if @app.privacy_url %>
+        <p><a href="<%= @app.privacy_url %>" target="_blank">View Privacy Policy</a></p>
+        <% end %>
+      </section>
+    <% end %>
+
+    <% if @app.accessibility_url or @app.vpat_url %>
+    <section>
+      <h3>Accessibility Policy</h3>
+      <% if @app.accessibility_url %>
+        <p><a href="<%= @app.accessibility_url %>">View Accessibility Policy</a></p>
+      <% end %>
+      <% if @app.vpat_url %>
+        <p><a href="<%= @app.vpat_url %>">View VPAT</a></p>
+      <% end %>
+    </section>
+    <% end %>
+
+    <% if @app.lti %>
+    <section>
+      <h3>LTI Support</h3>
+      <p><strong>Enabled:</strong> <%= @app.lti ? 'Yes' : 'No' %></p>
+      <% if @app.lti_launch_url %>
+        <p><strong>Launch URL:</strong> <a href="<%= @app.lti_launch_url %>"><%= @app.lti_launch_url %></a></p>
+      <% end %>
+      <% if @app.lti_configuration_url %>
+        <p><strong>Configuration URL:</strong> <a href="<%= @app.lti_configuration_url %>"><%= @app.lti_configuration_url %></a></p>
+      <% end %>
+      <% if @app.lti_registration_url %>
+        <p><strong>Registration URL:</strong> <a href="<%= @app.lti_registration_url %>"><%= @app.lti_registration_url %></a></p>
+      <% end %>
+      <p><strong>Outcomes:</strong> <%= @app.lti_outcomes ? @app.lti_outcomes.capitalize : 'No' %></p>
+    </section>
+    <% end %>
+
+    <% if @app.ios_app_id or @app.ios_app_scheme %>
+    <section>
+      <h3>iOS App</h3>
+      <% if @app.ios_app_id %>
+        <p><strong>App Store:</strong> <a href="https://itunes.apple.com/us/app/apple-store/id<%= @app.ios_app_id %>">https://itunes.apple.com/us/app/apple-store/id<%= @app.ios_app_id %></a></p>
+      <% end %>
+      <% if @app.ios_app_scheme %>
+        <p><strong>Launch URL:</strong> <a href="<%= @app.ios_app_scheme %>://<%= @app.ios_app_path %>"><%= @app.ios_app_scheme %>://<%= @app.ios_app_path %></a></p>
+      <% end %>
+    </section>
+    <% end %>
+
+    <% if @app.android_app_package %>
+    <section>
+      <h3>Android App</h3>
+      <p><strong>Play Store From Browser:</strong> <a href="http://play.google.com/store/apps/details?id=<%= @app.android_app_package %>">http://play.google.com/store/apps/details?id=<%= @app.android_app_package %></a></p>
+      <p><strong>Play Store From App:</strong> <a href="market://details?id=<%= @app.android_app_package %>">market://details?id=<%= @app.android_app_package %></a></p>
+      <p><strong>Launch Intent:</strong>
+          <%
+             android_intent = "intent://scan/#Intent"
+             android_intent << ";scheme=#{@app.android_app_scheme}" if @app.android_app_scheme
+             android_intent << ";package=#{@app.android_app_package}" if @app.android_app_package
+             android_intent << ";package=#{@app.android_app_action}" if @app.android_app_action
+             android_intent << ";package=#{@app.android_app_category}" if @app.android_app_category
+             android_intent << ";package=#{@app.android_app_component}" if @app.android_app_component %>
+        <a href="<%= android_intent %>"><%= android_intent %></a>
+      </p>
+    </section>
+    <% end %>
+
+    </div>
+
+  </main>
+
+</article>

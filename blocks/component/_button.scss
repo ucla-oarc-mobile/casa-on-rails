@@ -1,0 +1,64 @@
+button, input[type="button"], input[type="submit"], input[type="reset"], .button {
+
+  display: inline-block;
+  margin-bottom: 0;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+  border: 1px solid transparent;
+  white-space: nowrap;
+  user-select: none;
+  border-radius: 4px;
+  font-size: 13px;
+  padding: 6px 10px;
+  background-color: $color-primary;
+  color: $color-primary-foreground;
+  text-decoration: none;
+
+  &,
+  &:active,
+  &.active {
+    &:focus,
+    &.focus {
+      outline: thin dotted;
+      outline: 5px auto -webkit-focus-ring-color;
+      outline-offset: -2px;
+    }
+  }
+
+  &.raw {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: inherit;
+  }
+
+  &.secondary {
+    background-color: $color-secondary;
+    color: $color-secondary-foreground;
+  }
+
+  &.tertiary {
+    background-color: $color-tertiary;
+    color: $color-tertiary-foreground;
+  }
+
+  &.warning {
+    background-color: $color-warning;
+    color: $color-warning-foreground;
+  }
+
+  &.danger {
+    background-color: $color-danger;
+    color: $color-danger-foreground;
+  }
+
+  &.success {
+    background-color: $color-success;
+    color: $color-success-foreground;
+  }
+
+}

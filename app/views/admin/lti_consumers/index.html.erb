@@ -1,0 +1,51 @@
+<h1>LTI Consumers</h1>
+
+<p class="info">This CASA store has the ability to be used by an LTI Consumer as a way to select apps to add back into it. You can add LTI Consumers that can launch this store through this interface. Note that, for an LTI Consumer to properly use this CASA store to let users select apps, it must support the <a href="http://www.imsglobal.org/lti/#cim1.0" target="_blank">LTI Content-Item Message</a>.</p>
+
+<p><%= link_to 'Create New LTI Consumer',
+            new_admin_lti_consumer_path,
+            :class => 'button',
+            :role => 'button' %></p>
+
+<div style="overflow-x:scroll;">
+
+  <table class="table" id="consumers-list">
+
+    <thead>
+      <tr>
+        <th style="text-align:left;">Name</th>
+        <th style="text-align:left;">Key</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @lti_consumers.each do |lti_consumer| %>
+        <tr>
+          <td><strong><%= lti_consumer.name %></strong></td>
+          <td style="max-width:200px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;"><%= lti_consumer.key %></td>
+          <td><%= link_to 'Show', admin_lti_consumer_path(lti_consumer) %></td>
+          <td><%= link_to 'Edit', edit_admin_lti_consumer_path(lti_consumer) %></td>
+          <td><%= link_to 'Destroy', admin_lti_consumer_path(lti_consumer),
+                      method: :delete,
+                      data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+
+  </table>
+
+</div>
+
+<script type="text/javascript">
+  $('#consumers-list').dataTable({
+    "order": [[0, "asc"]]
+  });
+</script>
+
+<p><%= link_to 'Create New LTI Consumer',
+               new_admin_lti_consumer_path,
+               :class => 'button',
+               :role => 'button' %></p>

@@ -1,0 +1,11 @@
+<%= form_tag categories_url, :class => 'select-navigation' do |f| %>
+  <% select_tag :category_id,
+                options_for_select(Category.order(name: :asc).map(){ |a| [a.name, a.id] }.prepend(['-- Browse Category --', '0']), @category.id),
+                {'class' => 'form-control'} %>
+<% end %>
+<script type="text/javascript">
+  $('.select-navigation select').val(0)
+  $('.select-navigation select').change(function(){
+    window.location = $(this).closest('form').attr('action') + '/' + $(this).val();
+  })
+</script>

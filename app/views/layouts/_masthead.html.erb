@@ -1,0 +1,94 @@
+<header role="banner">
+  <div class="stripe container"></div>
+  <nav class="site container">
+    <button class="menu-toggle">
+      <div class="hamburger-icon">
+        <div class="hide-accessible">Show Menu</div>
+      </div>
+    </button>
+    <a href="<%= root_url %>">
+      <div class="title"><%= raw @site.heading %></div>
+    </a>
+    <ul id="main-menu">
+      <li><a href="<%= root_url %>">Browse</a></li>
+      <li><a href="#" data-toggle="#categories-menu">Categories</a></li>
+      <li><a href="<%= new_manage_app_path %>">Submit an App</a></li>
+      <% if session_user and session_user.admin %>
+      <li><a href="#" data-toggle="#admin-menu">Admin</a></li>
+      <% end %>
+      <li>
+        <% if session_user %>
+        <a href="<%= session_path %>" data-confirm="Are you sure you want to log out?" data-method="delete" rel="nofollow">Logout</a>
+        <% else %>
+        <a href="<%= send(*Rails.application.config.login_route) %>">Login</a>
+        <% end %>
+      </li>
+    </ul>
+    <nav id="submenu">
+      <% if session_user and session_user.admin %>
+        <div id="admin-menu" class="menu" style="display:none;">
+          <ul>
+            <li><a href="<%= admin_apps_url %>">Apps</a></li>
+            <li><a href="<%= admin_in_payloads_url %>">Queued Apps</a></li>
+            <li><a href="<%= admin_categories_url %>">Categories</a></li>
+            <li><a href="<%= admin_in_peers_url %>">In Peers</a></li>
+            <li><a href="<%= admin_in_filter_rulesets_url %>">In Filter Rulesets</a></li>
+            <li><a href="<%= admin_lti_consumers_url %>">LTI Consumers</a></li>
+            <li><a href="<%= admin_out_peers_url %>">Out Peers</a></li>
+            <li><a href="<%= admin_users_url %>">Users</a></li>
+            <li><a href="<%= edit_admin_site_url(@site) %>">Site Settings</a></li>
+          </ul>
+        </div>
+      <% end %>
+      <div id="categories-menu" class="menu" style="display:none;">
+        <ul>
+          <%= raw Category.order(name: :asc).map(){ |c| "<li>#{link_to c.name, c}</li>" }.join %>
+        </ul>
+      </div>
+    </nav>
+  </nav>
+  <nav role="search" class="container">
+    <% unless Rails.application.config.elasticsearch_client.nil? %>
+      <form action="<%= apps_search_url %>" class="navbar-form navbar-right" role="search">
+        <input type="text" name="query" class="form-control" placeholder="Search">
+        <button type="submit" class="raw">
+          <div class="fa fa-search">
+            <div class="hide-accessible">Search</div>
+          </div>
+        </button>
+      </form>
+    <% end %>
+  </nav>
+</header>
+
+<script type="text/javascript">
+$('.menu-toggle').click(function(e){
+  var $ele = $('#main-menu'),
+      $submenu = $('#submenu');
+  if($ele.hasClass('active')){
+    if($('[data-toggle-active="true"]').length > 0){
+      $('[data-toggle-active="true"] a').click();
+    }else{
+      $ele.removeClass('active');
+      $('[data-toggle-active]').attr('data-toggle-active', null);
+      $('#search-form').show();
+    }
+  }else{
+    $ele.addClass('active');
+  }
+})
+$('[data-toggle]').click(function(e){
+  e.preventDefault();
+  var $container = $('#submenu'),
+      $ele = $($(this).attr('data-toggle'));
+  if($ele.is(':visible')){
+    $ele.hide();
+    $('#search-form').show();
+    $('[data-toggle-active]').attr('data-toggle-active', null);
+  }else{
+    $container.children().hide();
+    $ele.show();
+    $(this).closest('li').attr('data-toggle-active', 'true').siblings().attr('data-toggle-active', 'false');
+  }
+})
+</script>

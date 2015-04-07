@@ -1,0 +1,22 @@
+<p>
+  <strong>Name:</strong>
+  <%= @out_peer.name %>
+</p>
+
+<p>
+  <strong>Address:</strong>
+  <%= @out_peer.address %>
+</p>
+
+<p>
+  <strong>Netmask:</strong>
+  <%= raw @out_peer.netmask && @out_peer.netmask.length > 0 ? @out_peer.netmask : '<em class="text-muted">None</em>' %>
+</p>
+
+<p>
+  <strong>Secret:</strong>
+  <%= raw @out_peer.secret && @out_peer.secret.length > 0 ? @out_peer.secret : '<em class="text-muted">None</em>' %>
+</p>
+
+<%= link_to 'Back', admin_out_peers_path %>
+| <%= link_to 'Edit', edit_admin_out_peer_path(@out_peer) %>

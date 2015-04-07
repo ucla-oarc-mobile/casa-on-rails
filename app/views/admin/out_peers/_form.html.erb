@@ -1,0 +1,42 @@
+<%= form_for [:admin, @out_peer], :html => { :role => 'form' } do |f| %>
+
+  <% if @out_peer.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@out_peer.errors.count, "error") %> prohibited
+      this peer from being saved:</h2>
+    <ul>
+    <% @out_peer.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+  <div class="form-field">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="form-field">
+    <%= f.label :address %>
+    <%= f.text_field :address %>
+  </div>
+
+  <div class="form-field">
+    <%= f.label :netmask, data: { help: 'If set, this property allows for specifyin an IP range. For example, if the address is 10.0.0.0, and the netmask is 255.0.0.0, then any requestor in the range 10.0.0.0 - 10.255.255.255 will be considered part of this out peer.' } %>
+    <%= f.text_field :netmask %>
+  </div>
+
+  <div class="form-field">
+    <%= f.label :secret, data: { help: 'If set, for a requestor to be qualified as this peer, it must sent the parameter "secret" with the value here when it requests apps from /casa/out/payloads or /casa/out/payloads/ORIGINATOR_ID/APP_ID.' } %>
+    <%= f.text_field :secret %>
+  </div>
+
+  <p class="text-center">
+    <%= f.submit 'Save Peer' %>
+    <%= link_to 'Back without Saving',
+                admin_out_peers_path,
+                :class => 'button tertiary text-center',
+                :role => 'button' %>
+  </p>
+<% end %>

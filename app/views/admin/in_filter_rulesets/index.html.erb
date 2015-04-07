@@ -1,0 +1,47 @@
+<h1>Inbound Filter Rulesets</h1>
+
+<p class="info">Filter rules may be defined, either for all peers or for individual peers defined in <%= link_to 'ADMIN > IN PEERS', admin_in_peers_url, target: '_blank' %>, that will automatically drop apps that don't meet the specified criteria before adding the remainder to <%= link_to 'ADMIN > APP QUEUE', admin_in_payloads_url, target: '_blank' %>.</p>
+
+<p><%= link_to 'Create New Inbound Filter Ruleset',
+            new_admin_in_filter_ruleset_path,
+            :class => 'button',
+            :role => 'button' %></p>
+
+<div style="overflow-x:scroll;">
+
+  <table class="table" id="filters-list">
+
+    <thead>
+      <tr>
+        <th>Peer</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @in_filter_rulesets.each do |in_filter_ruleset| %>
+        <tr>
+          <td><%= in_filter_ruleset.in_peer ? in_filter_ruleset.in_peer.name : raw('<em>Global</em>') %></td>
+          <td><%= link_to 'Edit', edit_admin_in_filter_ruleset_path(in_filter_ruleset) %></td>
+          <td><%= link_to 'Destroy', admin_in_filter_ruleset_path(in_filter_ruleset),
+                      method: :delete,
+                      data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+
+  </table>
+
+</div>
+
+<script type="text/javascript">
+  $('#filters-list').dataTable({
+    "order": [[0, "asc"]]
+  });
+</script>
+
+<p><%= link_to 'Create New Inbound Filter Ruleset',
+               new_admin_in_filter_ruleset_path,
+               :class => 'button',
+               :role => 'button' %></p>

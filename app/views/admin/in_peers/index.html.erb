@@ -1,0 +1,53 @@
+<h1>Inbound Peers</h1>
+
+<p class="info">Inbound peers are CASA nodes that this CASA engine will query to discover apps. When apps are discovered, they're added to <%= link_to 'ADMIN > APP QUEUE', admin_in_payloads_url, target: '_blank' %>, and you can configure filter rules to limit the types of apps that will be recieved from one of these peers through <%= link_to 'ADMIN > IN FILTER RULESETS', admin_in_filter_rulesets_url, target: '_blank' %>.</p>
+
+<p><%= link_to 'Create New Inbound Peer',
+            new_admin_in_peer_path,
+            :class => 'button',
+            :role => 'button' %></p>
+
+<div style="overflow-x:scroll;">
+
+  <table class="table" id="peers-list">
+
+    <thead>
+      <tr style="text-align:left;">
+        <th>Name</th>
+        <th>URI</th>
+        <th>Secret</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @in_peers.each do |in_peer| %>
+        <tr>
+          <td><strong><%= in_peer.name %></strong></td>
+          <td style="max-width:200px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;"><%= in_peer.uri %></td>
+          <td><%= in_peer.secret && in_peer.secret.length > 0 ? 'Yes' : 'No' %></td>
+          <td><%= link_to 'Show', admin_in_peer_path(in_peer) %></td>
+          <td><%= link_to 'Edit', edit_admin_in_peer_path(in_peer) %></td>
+          <td><%= link_to 'Destroy', admin_in_peer_path(in_peer),
+                      method: :delete,
+                      data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+
+  </table>
+
+</div>
+
+<script type="text/javascript">
+  $('#peers-list').dataTable({
+    "order": [[0, "asc"]]
+  });
+</script>
+
+<p><%= link_to 'Create New Inbound Peer',
+               new_admin_in_peer_path,
+               :class => 'button',
+               :role => 'button' %></p>

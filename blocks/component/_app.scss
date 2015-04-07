@@ -1,0 +1,85 @@
+.app {
+
+  figure {
+    margin: 0;
+  }
+
+  footer {
+    figure, nav, .attribute {
+      margin-bottom: 12px;
+    }
+    .attribute {
+      h4 {
+      }
+      p {
+        font-size: 13px;
+        color: #666;
+        &.one-line {
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          padding-right: 10px;
+        }
+      }
+      h4, p {
+        margin: 0;
+      }
+    }
+  }
+
+  main {
+    .details {
+      section {
+        margin: 36px 0 0;
+      }
+      h3 {
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px;
+      }
+    }
+
+    .badges {
+      .badge:before {
+        display: inline;
+        font-size: 12px;
+        background-color: #ddd;
+        border-radius: 5px;
+        padding: 4px 9px;
+        color: #333;
+      }
+      .badge.official:before {
+        content: 'Official';
+        background-color: #dfeeee;
+      }
+      .badge.mobile-support:before {
+        content: 'Mobile-Ready';
+        background-color: #f7ecb5;
+      }
+    }
+  }
+
+  @media (max-width: 599px) {
+    &.panels {
+      > main > header {
+        display: none;
+      }
+    }
+  }
+
+  @media (min-width: 600px) {
+    &.panels {
+      > header {
+        display: none;
+      }
+      > footer {
+        position: absolute;
+        width: 200px;
+      }
+      > main {
+        margin-left: 216px;
+        width: auto;
+      }
+    }
+  }
+
+}
