@@ -1,3 +1,5 @@
+require 'rest_client'
+
 module ApplicationHelper
 
   def engine
@@ -32,6 +34,128 @@ module ApplicationHelper
     else
       redirect_to session_path
     end
+  end
+
+  def event
+    @event_handler ||= EventHandler.new(self)
+  end
+
+  class EventHandler
+
+    def initialize controller
+      @controller = controller
+    end
+
+    def send_event event
+      if Rails.application.config.caliper and Rails.application.config.caliper.has_key?(:event_store) and Rails.application.config.caliper[:event_store].has_key?(:url)
+        RestClient.post Rails.application.config.caliper[:event_store][:url],
+                        event.to_json,
+                        :content_type => :json,
+                        :accept => :json
+      else
+        Logger.new(STDOUT).info(event.to_json)
+      end
+    end
+
+    def fire_engine_event message, params
+      send_event CasaCaliper::DiscoveryEventsFactory.send message, params
+    end
+
+    def fire_user_event message, params
+
+      case @controller.launch_provider.get
+        when :lti
+          params[:launch_data] = Lti::ContentItemToolProvider.new_from_launch_params(session: @controller.session)
+        when :mobile
+          params[:launch_data] = {
+            mobile_url: @controller.mobile_url
+          }
+      end
+
+      send_event CasaCaliper::DiscoveryEventsFactory.send message, params
+
+    end
+
+    def shared app, params = {}
+      begin
+        fire_engine_event :shared,
+                          {
+                            engine: @controller,
+                            app: app,
+                            peer_engine: {
+                              id: params.has_key?(:peer_id) ? params[:peer_id] : nil,
+                              name: params.has_key?(:peer_name) ? params[:peer_name] : nil,
+                              description: params.has_key?(:peer_description) ? params[:peer_description] : nil
+                            }
+                          }
+      rescue; end
+    end
+
+    def accepted payload, params = {}
+      begin
+        fire_engine_event :accepted,
+                          {
+                            engine: @controller,
+                            payload: payload,
+                            peer_engine: {
+                              id: params.has_key?(:peer_id) ? params[:peer_id] : nil,
+                              name: params.has_key?(:peer_name) ? params[:peer_name] : nil,
+                              description: params.has_key?(:peer_description) ? params[:peer_description] : nil
+                            },
+                            started_at: payload.created_at
+                          }
+      rescue; end
+    end
+
+    def rejected payload, params = {}
+      begin
+        fire_engine_event :rejected,
+                          {
+                            engine: @controller,
+                            payload: payload,
+                            peer_engine: {
+                              id: params.has_key?(:peer_id) ? params[:peer_id] : nil,
+                              name: params.has_key?(:peer_name) ? params[:peer_name] : nil,
+                              description: params.has_key?(:peer_description) ? params[:peer_description] : nil
+                            },
+                            started_at: payload.created_at
+                          }
+      rescue; end
+    end
+
+    def added app, params = {}
+      begin
+        fire_user_event :added,
+                        {
+                          engine: @controller,
+                          app: app,
+                          launch_provider: @controller.launch_provider
+                        }.merge(params)
+      rescue; end
+    end
+
+    def found app, params = {}
+      begin
+        fire_user_event :found,
+                        {
+                          engine: @controller,
+                          app: app,
+                          launch_provider: @controller.launch_provider
+                        }.merge(params)
+      rescue; end
+    end
+
+    def viewed app, params = {}
+      begin
+        fire_user_event :viewed,
+                        {
+                          engine: @controller,
+                          app: app,
+                          launch_provider: @controller.launch_provider
+                        }.merge(params)
+      rescue; end
+    end
+
   end
 
   class Engine

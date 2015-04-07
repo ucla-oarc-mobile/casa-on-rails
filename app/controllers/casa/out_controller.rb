@@ -21,10 +21,18 @@ module Casa
 
     def all
 
-      public_apps = App.where(enabled: true, share: true, restrict: false).map(&:to_transit_payload)
-      private_apps = App.includes(:app_out_peer_permissions).where(enabled: true, share: true, restrict: true, app_out_peer_permissions: { out_peer_id: @matching_peer_ids }).map(&:to_transit_payload)
+      public_apps = App.where(enabled: true, share: true, restrict: false)
+      private_apps = App.includes(:app_out_peer_permissions).where(enabled: true, share: true, restrict: true, app_out_peer_permissions: { out_peer_id: @matching_peer_ids })
+      apps = public_apps + private_apps
 
-      render json: public_apps + private_apps
+      apps.each do |app|
+        event.shared app,
+                     peer_id: params[:requestor_id],
+                     peer_name: params[:requestor_name],
+                     peer_description: request.ip
+      end
+
+      render json: apps.map(&:to_transit_payload)
 
     end
 
@@ -34,6 +42,10 @@ module Casa
 
       unless app.nil? or !app.enabled
         unless app.restrict and (app.app_out_peer_permissions.map(){ |p| p.out_peer_id } & @matching_peer_ids).length == 0
+          event.shared app,
+                       peer_id: params[:requestor_id],
+                       peer_name: params[:requestor_name],
+                       peer_description: request.ip
           render json: app.to_transit_payload
         else
           render status: 403, plain: 'Forbidden'

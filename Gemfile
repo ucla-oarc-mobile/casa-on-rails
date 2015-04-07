@@ -59,3 +59,10 @@ gem 'bcrypt'
 gem 'oauth2'
 
 gem 'thin'
+
+gem 'ims_caliper',
+    path: '/Users/ebollens/Developer/caliper-ruby'
+    #git: 'https://github.com/ebollens/caliper-ruby.git',
+    #branch: 'discovery_metric_profile'
+
+gem 'rest-client'

@@ -6,7 +6,7 @@
       <%= link_to raw('See More &rarr;'), collection, role: 'button', class: 'see-more' %>
     </header>
     <ul class="clearfix list-unstyled">
-      <% collection.apps.where(enabled: true).available_to_launch_method(launch_provider.get).take(9).each do |app| %><li>
+      <% @collection_apps[collection.id].each do |app| %><li>
           <a href="<%= url_for app %>">
             <figure>
               <%= app.icon_tag %>

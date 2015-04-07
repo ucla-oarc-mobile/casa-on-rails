@@ -38,7 +38,7 @@ module Admin
       @app.updated_at = attributes['timestamp']
       @app.casa_id = @in_payload.casa_id
       @app.casa_originator_id = @in_payload.casa_originator_id
-      @app.app_tags = attributes['tags'].map(){ |t| AppTag.new(name: t) }
+      @app.app_tags = attributes['tags'].map(){ |t| AppTag.new(name: t) } if attributes.has_key?('tags')
       @app.short_description = attributes['short_description'] if attributes.has_key?('short_description')
       @app.privacy_url = attributes['privacy_url'] if attributes.has_key?('privacy_url')
       @app.accessibility_url = attributes['accessibility_url'] if attributes.has_key?('accessibility_url')
@@ -111,6 +111,11 @@ module Admin
       @app.save
       @in_payload.update(app_id: @app.id)
 
+      event.accepted @in_payload,
+                     peer_id: @in_payload.in_peer ? @in_payload.in_peer.casa_id : nil,
+                     peer_name: @in_payload.in_peer ? @in_payload.in_peer.name : nil,
+                     peer_description: @in_payload.in_peer ? @in_payload.in_peer.uri : nil
+
       redirect_to @app
 
     end
@@ -124,6 +129,11 @@ module Admin
         InPayloadIgnore.create casa_id: @in_payload.casa_id,
                                casa_originator_id: @in_payload.casa_originator_id
       end
+
+      event.rejected @in_payload,
+                     peer_id: @in_payload.in_peer ? @in_payload.in_peer.casa_id : nil,
+                     peer_name: @in_payload.in_peer ? @in_payload.in_peer.name : nil,
+                     peer_description: @in_payload.in_peer ? @in_payload.in_peer.uri : nil
 
       redirect_to admin_in_payloads_path
 

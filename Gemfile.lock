@@ -13,6 +13,11 @@ GIT
       thor
       yui-compressor
 
+PATH
+  remote: /Users/ebollens/Developer/caliper-ruby
+  specs:
+    ims_caliper (0.1.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -103,6 +108,7 @@ GEM
     multi_xml (0.5.5)
     multipart-post (2.0.0)
     mysql2 (0.3.16)
+    netrc (0.10.3)
     oauth (0.4.7)
     oauth2 (1.0.0)
       faraday (>= 0.8, < 0.10)
@@ -132,6 +138,9 @@ GEM
     rake (10.3.2)
     rdoc (4.1.1)
       json (~> 1.4)
+    rest-client (1.7.3)
+      mime-types (>= 1.16, < 3.0)
+      netrc (~> 0.7)
     ruby-bower (0.0.1)
       execjs
     rufus-scheduler (3.0.8)
@@ -188,12 +197,14 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   elasticsearch
   ims-lti
+  ims_caliper!
   jbuilder (~> 2.0)
   jquery-rails
   mysql2
   oauth
   oauth2
   rails (= 4.1.4)
+  rest-client
   rufus-scheduler
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)

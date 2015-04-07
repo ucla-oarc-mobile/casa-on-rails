@@ -42,6 +42,12 @@ Rails.application.configure do
     }
   }
 
+  config.caliper = {
+    :event_store => {
+      :url => 'http://requestb.in/1izaf181'
+    }
+  }
+
   # Local configuration
   config.store = {
     :user_contact => { :name => 'John Doe', :email => 'invalid@localhost' }
