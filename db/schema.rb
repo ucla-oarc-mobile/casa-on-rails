@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150410220151) do
+ActiveRecord::Schema.define(version: 20150410224241) do
 
   create_table "app_authors", force: true do |t|
     t.integer "app_id"
@@ -216,6 +216,7 @@ ActiveRecord::Schema.define(version: 20150410220151) do
     t.boolean  "official",               default: false
     t.string   "primary_contact_name"
     t.string   "primary_contact_email"
+    t.integer  "default_app_order"
   end
 
   create_table "apps_categories", force: true do |t|

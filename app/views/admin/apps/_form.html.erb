@@ -77,6 +77,21 @@
 
     </fieldset>
 
+    <fieldset>
+
+      <legend>Default</legend>
+
+      <div class="form-checkbox">
+        <input type="checkbox" id="enable_default_app_order" <%= (!@app.new_record? and @app.default_app_order) ? 'checked' : '' %>><label for="enable_default_app_order">Show by Default</label>
+      </div>
+
+      <div class="form-field"style="margin-top:6px;">
+        <%= f.label :default_app_order, 'Default Position' %>
+        <%= f.text_field :default_app_order %>
+      </div>
+
+    </fieldset>
+
     <% if @categories %>
       <div class="form-field">
         <%= f.label :categories %>
@@ -447,6 +462,16 @@
 <% end %>
 
 <script type="text/javascript">
+
+  (function(){
+    $('#enable_default_app_order').change(function(){
+      if($(this).is(':checked')){
+        $('#app_default_app_order').prop('disabled', false).closest('.form-field').show();
+      }else{
+        $('#app_default_app_order').prop('disabled', true).closest('.form-field').hide();
+      }
+    }).change();
+  })();
 
   (function(){
     $('#app_restrict').change(function(){

@@ -28,6 +28,12 @@ module Admin
       JSON.parse(params[:app_authors]).each { |app_author_params| @app.app_authors << AppAuthor.new(app_author_params) }
       JSON.parse(params[:app_organizations]).each { |app_organization_params| @app.app_organizations << AppOrganization.new(app_organization_params) }
 
+      if params[:app][:default_app_order]
+        @app.default_app_order = params[:app][:default_app_order]
+      else
+        @app.default_app_order = nil
+      end
+
       if params[:privacy][:enable] == '1'
         @app.app_privacy_policy = AppPrivacyPolicy.new(params[:app_privacy_policy].permit!) if params[:app_privacy_policy]
       end
@@ -105,6 +111,12 @@ module Admin
             end
           end
         end
+      end
+
+      if params[:app][:default_app_order]
+        @app.default_app_order = params[:app][:default_app_order]
+      else
+        @app.default_app_order = nil
       end
 
       if @app.app_privacy_policy
