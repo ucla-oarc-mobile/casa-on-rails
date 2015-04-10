@@ -11,9 +11,7 @@
             <img src="<%= app.icon ? app.icon : image_url('blank-icon.png') %>" alt="<%= app.title %>">
             <figcaption>
               <h4><%= app.title %></h4>
-              <% if app.short_description %>
-                <p><%= app.short_description %></p>
-              <% end %>
+              <p><%= app.short_description %></p>
             </figcaption>
           </figure>
         </a>
