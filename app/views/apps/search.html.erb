@@ -6,7 +6,7 @@
       <li>
         <a href="<%= url_for app %>">
           <figure>
-            <img src="<%= app.icon ? app.icon : image_url('blank-icon.png') %>" alt="<%= app.title %>">
+            <%= app.icon_tag %>
             <figcaption>
               <h4><%= app.title %></h4>
               <p><%= app.short_description %></p>
