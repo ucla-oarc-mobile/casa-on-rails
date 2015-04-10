@@ -25,8 +25,8 @@
   </div>
 
   <div class="form-field">
-    <%= f.label :css, 'CSS' %>
-    <%= f.text_area :css, style: 'height: 30em;' %>
+    <%= f.label :homepage_categories, 'Categories on Homepage (one name per line)', data: { help: 'List categories, one per line, that, if they exist, will be shown on the homeage.' } %>
+    <%= f.text_area :homepage_categories, style: 'height: 10em;' %>
   </div>
 
   <fieldset>
@@ -51,6 +51,11 @@
     </div>
 
   </fieldset>
+
+  <div class="form-field">
+    <%= f.label :css, 'CSS' %>
+    <%= f.text_area :css, style: 'height: 30em;' %>
+  </div>
 
   <p class="text-center">
     <%= f.submit 'Save Settings' %>

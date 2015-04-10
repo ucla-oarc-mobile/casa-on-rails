@@ -5,7 +5,16 @@ class AppsController < ApplicationController
   def index
 
     @categories = Category.all
-    @collections = DEFAULT_CATEGORIES.map(){|name| @categories.find(){ |c| c.name == name } }.delete_if(){ |c| c.nil? }
+
+    if @site.homepage_categories and @site.homepage_categories.length > 0
+      @collections = [];
+      @site.homepage_categories.split(/\s*\n\s*/).each do |category_name|
+        category = Category.where(name: category_name).first
+        @collections << category if category
+      end
+    else
+      @collections = DEFAULT_CATEGORIES.map(){|name| @categories.find(){ |c| c.name == name } }.delete_if(){ |c| c.nil? }
+    end
 
   end
 
