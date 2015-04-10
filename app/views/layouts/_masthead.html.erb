@@ -49,7 +49,7 @@
   </nav>
   <nav role="search" class="container">
     <% unless Rails.application.config.elasticsearch_client.nil? %>
-      <form action="<%= apps_search_url %>" class="navbar-form navbar-right" role="search">
+      <form action="<%= apps_search_url %>" class="navbar-form navbar-right">
         <input type="text" name="query" class="form-control" placeholder="Search">
         <button type="submit" class="raw">
           <div class="fa fa-search">
