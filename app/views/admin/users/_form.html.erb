@@ -12,25 +12,37 @@
   </div>
   <% end %>
 
-  <div class="form-group">
+  <div class="form-field">
     <%= f.label :username %>
     <%= f.text_field :username,
                      :class => 'form-control' %>
   </div>
 
-  <div class="form-group">
+  <div class="form-field">
     <%= f.label :password %>
     <%= f.password_field :password,
                      :class => 'form-control' %>
   </div>
 
-  <div class="form-group">
-    <%= f.label :password_confirmation %>
-    <%= f.password_field :password_confirmation,
+  <div class="form-field">
+    <%= f.label :first_name, 'First Name' %>
+    <%= f.text_field :first_name,
                      :class => 'form-control' %>
   </div>
 
-  <div class="form-group">
+  <div class="form-field">
+    <%= f.label :last_name, 'Last Name' %>
+    <%= f.text_field :last_name,
+                     :class => 'form-control' %>
+  </div>
+
+  <div class="form-field">
+    <%= f.label :email, 'Email Address' %>
+    <%= f.text_field :email,
+                     :class => 'form-control' %>
+  </div>
+
+  <div class="form-field">
     <%= f.label :admin %>
     <%= f.check_box :admin %>
   </div>

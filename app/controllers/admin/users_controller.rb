@@ -63,7 +63,9 @@ module Admin
     private
 
     def user_params
-      params.require(:user).permit(:username, :password, :password_confirmation, :admin)
+      values = params[:user].permit(:username, :password, :admin, :first_name, :last_name, :email)
+      values[:username] = nil if values[:username].length == 0
+      values
     end
 
   end
