@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150407184640) do
+ActiveRecord::Schema.define(version: 20150410215834) do
 
   create_table "app_authors", force: true do |t|
     t.integer "app_id"
@@ -268,7 +268,7 @@ ActiveRecord::Schema.define(version: 20150407184640) do
     t.string   "secret"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "casa_id"
+    t.string   "casa_id"
   end
 
   create_table "lti_consumers", force: true do |t|
@@ -315,6 +315,7 @@ ActiveRecord::Schema.define(version: 20150407184640) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "mobile_appicon"
+    t.string   "title"
   end
 
   create_table "users", force: true do |t|

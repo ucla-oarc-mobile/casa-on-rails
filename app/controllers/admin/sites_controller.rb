@@ -24,6 +24,7 @@ module Admin
     def update
 
       @site.update params[:site].permit [
+                                            :title,
                                             :heading,
                                             :css,
                                             :mobile_appicon
