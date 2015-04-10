@@ -29,10 +29,28 @@
     <%= f.text_area :css, style: 'height: 30em;' %>
   </div>
 
-  <div class="form-field">
-    <%= f.label :mobile_appicon, 'Mobile Appicon' %>
-    <%= f.text_field :mobile_appicon %>
-  </div>
+  <fieldset>
+
+    <legend>Mobile</legend>
+
+    <p>Settings specific to the mobile app at <%= link_to mobile_url, mobile_url, target: '_blank' %>:</p>
+
+    <div class="form-field">
+      <%= f.label :mobile_title, 'Title' %>
+      <%= f.text_field :mobile_title %>
+    </div>
+
+    <div class="form-field">
+      <%= f.label :mobile_heading, 'Heading' %>
+      <%= f.text_area :mobile_heading, style: 'height: 10em;' %>
+    </div>
+
+    <div class="form-field">
+      <%= f.label :mobile_appicon, 'Appicon' %>
+      <%= f.text_field :mobile_appicon %>
+    </div>
+
+  </fieldset>
 
   <p class="text-center">
     <%= f.submit 'Save Settings' %>

@@ -27,6 +27,8 @@ module Admin
                                             :title,
                                             :heading,
                                             :css,
+                                            :mobile_title,
+                                            :mobile_heading,
                                             :mobile_appicon
                                         ]
 

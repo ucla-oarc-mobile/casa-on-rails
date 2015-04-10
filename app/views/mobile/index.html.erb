@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>CASA Mobile</title>
+  <title><%= (@site.mobile_title and @site.mobile_title.length > 0) ? @site.mobile_title : 'CASA Mobile' %></title>
   <link rel="stylesheet" href="/mobile/assets/blocks.css">
   <script type="text/javascript" src="/mobile/assets/blocks.js"></script>
   <link rel="stylesheet" href="/mobile/assets/jquery-ui.css">
@@ -259,9 +259,8 @@
       <img src="/mobile/assets/storefront-icon.png" alt="UCLA Mobile Storefront">
     </a>
   </nav>
-  <h1>
-    <a href="<%= mobile_url %>">UCLA Mobile</a>
-  </h1>
+  <%= raw((@site.mobile_heading and @site.mobile_heading.length > 0) ? @site.mobile_heading : "<h1><a href=\"#{mobile_url}\">#{@site.mobile_title and @site.mobile_title.length > 0 ? @site.mobile_title : 'CASA Mobile'}</a></h1>") %>
+
 </header>
 
 <main>
