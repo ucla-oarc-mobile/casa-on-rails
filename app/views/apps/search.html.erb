@@ -3,7 +3,7 @@
 <nav class="collection right-space">
   <ul class="clearfix list-unstyled">
     <% @apps.where(enabled: true).each do |app| %>
-      <li>
+      <li <% if app.official %>class="official"<% end %>>
         <a href="<%= url_for app %>">
           <figure>
             <%= app.icon_tag %>

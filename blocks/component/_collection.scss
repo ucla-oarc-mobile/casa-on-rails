@@ -35,6 +35,7 @@ nav.collection {
   figure, ul, h4, p {
     margin: 0;
     padding: 0;
+    position: relative;
   }
   figure {
     margin: 5px;
@@ -70,6 +71,19 @@ nav.collection {
     line-height: 15px;
     height: 30px;
     overflow: hidden;
+  }
+  .official {
+    figure:after {
+      content: 'Official';
+      position: absolute;
+      background-color: darken($color-primary, 8%);
+      color: $color-primary-foreground;
+      border: 1px solid darken($color-primary, 14%);
+      padding: 2px 5px;
+      font-size: 11px;
+      right: -4px;
+      top: -4px;
+    }
   }
   @media (min-width: 600px) {
     li {
@@ -132,97 +146,3 @@ nav.collection {
     }
   }
 }
-
-
-/*
-
-nav.collection {
-  margin: 12px 0 6px 0;
-  header {
-    @extend .clearfix;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 4px;
-    padding-bottom: 4px;
-    h3 {
-      margin: 0;
-      float: left;
-    }
-    .see-more {
-      float: right;
-      text-decoration: none;
-    }
-  }
-  a {
-    color: inherit;
-  }
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  li {
-    display: inline-block;
-    vertical-align: top;
-    width: 300px;
-    margin-bottom: 5px;
-    margin-right: 5px;
-    padding: 4px;
-  }
-  figure {
-    margin: 0;
-    position: relative;
-    min-height: 56px;
-    padding: 4px;
-    &:hover {
-      background-color: #f4f4f4;
-    }
-  }
-  img {
-    vertical-align: top;
-    position: absolute;
-    max-width: 48px;
-    max-height: 48px;
-  }
-  figcaption {
-    vertical-align: top;
-    display: inline-block;
-    margin-left: 60px;
-    width: 225px;
-  }
-  h4 {
-    margin: 0;
-  }
-  p {
-    margin: 4px 0;
-    font-size: 12px;
-  }
-
-  @media (max-width: 740px) {
-    li {
-      width: 240px;
-    }
-    figcaption {
-      width: 165px;
-    }
-  }
-
-  @media (max-width: 600px) {
-    li {
-      width: 200px;
-    }
-    figcaption {
-      width: 125px;
-    }
-  }
-
-  @media (max-width: 510px) {
-    li {
-      width: 100%;
-    }
-    figcaption {
-      width: auto;
-    }
-  }
-}
-
-*/
