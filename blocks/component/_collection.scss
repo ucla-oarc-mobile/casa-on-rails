@@ -40,7 +40,7 @@ nav.collection {
   figure {
     margin: 5px;
     border: 1px solid #ddd;
-    padding: 12px;
+    padding: 6px 12px;
     min-height: 70px;
   }
   img, .letter-icon {
@@ -48,6 +48,7 @@ nav.collection {
     position: absolute;
     max-width: 48px;
     max-height: 48px;
+    margin-top: 6px;
   }
   .letter-icon {
     text-align: center;
@@ -62,27 +63,39 @@ nav.collection {
     color: #444;
   }
   h4 {
-    font-size: 14px;
+    font-size: 12px;
     padding-bottom: 2px;
   }
   p {
     font-size: 11px;
     color: #777;
-    line-height: 15px;
-    height: 30px;
+    line-height: 13px;
+    height: 26px;
     overflow: hidden;
+  }
+  .stars {
+    padding-top: 2px;
+    .filled {
+      color: $color-primary;
+    }
+    .unfilled {
+      color: $color-primary;
+    }
+    .none {
+      color: #ccc;
+    }
   }
   .official {
     figure:after {
       content: 'Official';
       position: absolute;
-      background-color: darken($color-primary, 8%);
+      background-color: $color-primary;
       color: $color-primary-foreground;
-      border: 1px solid darken($color-primary, 14%);
       padding: 2px 5px;
       font-size: 11px;
       right: -4px;
       top: -4px;
+      border-radius: 3px;
     }
   }
   @media (min-width: 600px) {

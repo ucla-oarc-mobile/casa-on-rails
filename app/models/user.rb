@@ -11,6 +11,20 @@ class User < ActiveRecord::Base
     end
   end
 
+  def display_name
+    name = ''
+    if first_name and first_name.length > 0
+      name << first_name
+    end
+    if last_name and last_name.length > 0
+      name << " #{last_name}"
+    end
+    if name.length == 0
+      name = username
+    end
+    name
+  end
+
   class << self
 
     def find_by_credentials credentials

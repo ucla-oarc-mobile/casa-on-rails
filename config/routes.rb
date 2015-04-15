@@ -3,7 +3,11 @@ Rails.application.routes.draw do
   root 'apps#index'
 
   get 'apps/search', to: 'apps#search'
-  resources :apps, :only => [:index, :show]
+  resources :apps, :only => [:index, :show] do
+    member do
+      resources :ratings, module: 'apps', as: 'app_ratings', param: :rating_id
+    end
+  end
 
   resources :categories, :only => [:index, :show]
 

@@ -12,6 +12,14 @@
             <figcaption>
               <h4><%= app.title %></h4>
               <p><%= app.short_description %></p>
+              <div class="stars">
+                <% unless app.average_rating.nan? %>
+                  <span class="filled"><%= raw (1..app.average_rating.round(0)).map { '&#9733;' }.join ' ' %></span>
+                  <span class="unfilled"><%= raw (app.average_rating.round(0)+1..5).map { '&#9734;' }.join ' ' %></span>
+                <% else %>
+                  <span class="none"><%= raw (1..5).map { '&#9734;' }.join ' ' %></span>
+                <% end %>
+              </div>
             </figcaption>
           </figure>
         </a>

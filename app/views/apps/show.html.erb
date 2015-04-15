@@ -104,6 +104,69 @@
 
     <div class="details">
 
+      <% if session_user or @app.app_ratings.count > 0 %>
+
+      <section class="ratings">
+
+        <h3>Reviews</h3>
+
+        <% if @app.app_ratings.count > 0 %>
+
+          <%
+             scores = Array.new(5, 0)
+             @app.app_ratings.each { |rating| scores[rating.score - 1] = scores[rating.score - 1] + 1 }
+          %>
+
+          <div class="average">
+            <%= @app.average_rating %>
+          </div>
+
+          <ul class="scores">
+            <% scores.each.with_index do |value, index| %>
+              <li><%= index + 1 %> Stars: <%= value %></li>
+            <% end %>
+          </ul>
+
+          <ul class="latest reviews">
+            <% @app.app_ratings.where.not(user_id: session_user ? session_user : 0).order(created_at: :desc).take(5).each do |rating| %>
+              <li>
+                <h4>
+                  <span class="stars">
+                    <span class="filled"><%= raw (1..rating.score).map { '&#9733;' }.join ' ' %></span>
+                    <span class="unfilled"><%= raw (rating.score+1..5).map { '&#9734;' }.join ' ' %></span>
+                  </span>
+                  by <%= rating.user.display_name %>
+                  on <%= rating.created_at.strftime('%a %b %d, %Y') %>
+                </h4>
+                <%= simple_format rating.review %>
+              </li>
+            <% end %>
+          </ul>
+
+        <% end %>
+
+        <% if session_user %>
+          <%= form_for AppRating.new(app_id: @app.id) do |f| %>
+            <fieldset>
+            <legend><%= @app_rating.new_record? ? 'Submit a Review' : 'Update Your Review' %></legend>
+              <div class="stars">
+                <% (1..5).each do |i| %>
+                  <%= f.radio_button :score, i, checked: (i == (@app_rating.new_record? ? 3 : @app_rating.score) ? true : false) %>
+                  <%= f.label "score_#{i}", i %>
+                <% end %>
+              </div>
+              <div class="form-field">
+                <%= f.text_area :review, style: 'width:100%;height:8rem;', value: @app_rating.review %>
+              </div>
+              <%= f.submit 'Submit Review', class: 'primary button' %>
+            </fieldset>
+          <% end %>
+        <% end %>
+
+      </section>
+
+      <% end %>
+
     <% if @app.app_privacy_policy or @app.privacy_url %>
       <section>
         <h3>Privacy Policy</h3>
