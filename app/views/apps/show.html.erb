@@ -118,7 +118,7 @@
           %>
 
           <div class="average">
-            <%= @app.average_rating %>
+            <%= @app.average_rating.round(1) %>
           </div>
 
           <ul class="scores">
@@ -158,6 +158,7 @@
               <div class="form-field">
                 <%= f.text_area :review, style: 'width:100%;height:8rem;', value: @app_rating.review %>
               </div>
+              <p class="help-text">by <strong><%= session_user.display_name %></strong> on <strong><%= Time.now.strftime('%a %b %d, %Y') %></strong></p>
               <%= f.submit 'Submit Review', class: 'primary button' %>
             </fieldset>
           <% end %>

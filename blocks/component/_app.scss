@@ -109,6 +109,11 @@
         }
       }
       form {
+        .help-text {
+          margin-top: 0;
+          color: #444;
+          font-size: 12px;
+        }
         .stars {
           font-size: 12px;
           margin-bottom: 8px;
