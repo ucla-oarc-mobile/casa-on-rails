@@ -128,7 +128,7 @@
           </ul>
 
           <ul class="latest reviews">
-            <% @app.app_ratings.where.not(user_id: session_user ? session_user : 0).order(created_at: :desc).take(5).each do |rating| %>
+            <% @app.app_ratings.where.not(user_id: session_user ? session_user : 0).where.not(review: nil).order(created_at: :desc).take(5).each do |rating| %>
               <li>
                 <h4>
                   <span class="stars">

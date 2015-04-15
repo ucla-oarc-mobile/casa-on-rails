@@ -5,6 +5,10 @@
   <link href='http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css' rel='stylesheet' type='text/css'>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <% if @site.mobile_appicon and @site.mobile_appicon.length > 0 %>
+    <link rel="apple-touch-icon" href="<%= @site.mobile_appicon %>">
+    <link rel="apple-touch-icon-precomposed" href="<%= @site.mobile_appicon %>">
+  <% end %>
   <%= csrf_meta_tags %>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style><%= raw @site.css %></style>
