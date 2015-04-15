@@ -35,11 +35,12 @@ nav.collection {
   figure, ul, h4, p {
     margin: 0;
     padding: 0;
+    position: relative;
   }
   figure {
     margin: 5px;
     border: 1px solid #ddd;
-    padding: 12px;
+    padding: 6px 12px;
     min-height: 70px;
   }
   img, .letter-icon {
@@ -47,6 +48,7 @@ nav.collection {
     position: absolute;
     max-width: 48px;
     max-height: 48px;
+    margin-top: 6px;
   }
   .letter-icon {
     text-align: center;
@@ -61,15 +63,40 @@ nav.collection {
     color: #444;
   }
   h4 {
-    font-size: 14px;
+    font-size: 12px;
     padding-bottom: 2px;
   }
   p {
     font-size: 11px;
     color: #777;
-    line-height: 15px;
-    height: 30px;
+    line-height: 13px;
+    height: 26px;
     overflow: hidden;
+  }
+  .stars {
+    padding-top: 2px;
+    .filled {
+      color: $color-primary;
+    }
+    .unfilled {
+      color: $color-primary;
+    }
+    .none {
+      color: #ccc;
+    }
+  }
+  .official {
+    figure:after {
+      content: 'Official';
+      position: absolute;
+      background-color: $color-primary;
+      color: $color-primary-foreground;
+      padding: 2px 5px;
+      font-size: 11px;
+      right: -4px;
+      top: -4px;
+      border-radius: 3px;
+    }
   }
   @media (min-width: 600px) {
     li {
@@ -132,97 +159,3 @@ nav.collection {
     }
   }
 }
-
-
-/*
-
-nav.collection {
-  margin: 12px 0 6px 0;
-  header {
-    @extend .clearfix;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 4px;
-    padding-bottom: 4px;
-    h3 {
-      margin: 0;
-      float: left;
-    }
-    .see-more {
-      float: right;
-      text-decoration: none;
-    }
-  }
-  a {
-    color: inherit;
-  }
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  li {
-    display: inline-block;
-    vertical-align: top;
-    width: 300px;
-    margin-bottom: 5px;
-    margin-right: 5px;
-    padding: 4px;
-  }
-  figure {
-    margin: 0;
-    position: relative;
-    min-height: 56px;
-    padding: 4px;
-    &:hover {
-      background-color: #f4f4f4;
-    }
-  }
-  img {
-    vertical-align: top;
-    position: absolute;
-    max-width: 48px;
-    max-height: 48px;
-  }
-  figcaption {
-    vertical-align: top;
-    display: inline-block;
-    margin-left: 60px;
-    width: 225px;
-  }
-  h4 {
-    margin: 0;
-  }
-  p {
-    margin: 4px 0;
-    font-size: 12px;
-  }
-
-  @media (max-width: 740px) {
-    li {
-      width: 240px;
-    }
-    figcaption {
-      width: 165px;
-    }
-  }
-
-  @media (max-width: 600px) {
-    li {
-      width: 200px;
-    }
-    figcaption {
-      width: 125px;
-    }
-  }
-
-  @media (max-width: 510px) {
-    li {
-      width: 100%;
-    }
-    figcaption {
-      width: auto;
-    }
-  }
-}
-
-*/

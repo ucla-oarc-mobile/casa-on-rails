@@ -15,6 +15,7 @@ class App < ActiveRecord::Base
   has_many :app_browser_features
   has_many :app_out_peer_permissions
   has_many :app_launch_methods
+  has_many :app_ratings
 
   scope :available_to_launch_method, lambda { |m|
     if m
@@ -55,6 +56,12 @@ class App < ActiveRecord::Base
     else
       simple_format description
     end
+  end
+
+  def average_rating
+    total = 0
+    app_ratings.each { |rating| total = total + rating.score }
+    total.to_f / app_ratings.count
   end
 
   def originated?

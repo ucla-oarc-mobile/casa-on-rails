@@ -38,12 +38,23 @@ module Admin
       @app.updated_at = attributes['timestamp']
       @app.casa_id = @in_payload.casa_id
       @app.casa_originator_id = @in_payload.casa_originator_id
-      @app.app_tags = attributes['tags'].map(){ |t| AppTag.new(name: t) }
+      @app.app_tags = attributes['tags'].map(){ |t| AppTag.new(name: t) } if attributes.has_key?('tags')
       @app.short_description = attributes['short_description'] if attributes.has_key?('short_description')
       @app.privacy_url = attributes['privacy_url'] if attributes.has_key?('privacy_url')
       @app.accessibility_url = attributes['accessibility_url'] if attributes.has_key?('accessibility_url')
       @app.vpat_url = attributes['vpat_url'] if attributes.has_key?('vpat_url')
       @app.acceptable = attributes['acceptable'].to_json if attributes.has_key?('acceptable')
+      if attributes.has_key?('categories')
+        @app.categories = attributes['categories'].map(){ |category_name|
+          begin
+            Category.where(name: category_name).first
+          rescue
+            nil
+          end
+        }.delete_if(){ |record|
+          record.nil?
+        }
+      end
 
       if attributes.include? 'lti'
         @app.lti = true
@@ -74,11 +85,13 @@ module Admin
       end
 
       if attributes.include? 'author'
+        @app.app_authors = []
         authors = attributes['author'].is_a?(Array) ? attributes['author'] : [attributes['author']]
         authors.each { |author| @app.app_authors << AppAuthor.new(author) }
       end
 
       if attributes.include? 'organization'
+        @app.app_organizations = []
         organizations = attributes['organization'].is_a?(Array) ? attributes['organization'] : [attributes['organization']]
         organizations.each { |organization| @app.app_organizations << AppOrganization.new(organization) }
       end

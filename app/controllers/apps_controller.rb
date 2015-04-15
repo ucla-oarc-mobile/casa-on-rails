@@ -24,6 +24,9 @@ class AppsController < ApplicationController
 
     return render status: 404, plain: 'Not found' unless @app.enabled or (session_user and session_user.admin)
 
+    @app_rating = AppRating.where(app_id: @app.id, user_id: session_user ? session_user.id : 0).first
+    @app_rating = AppRating.new(app_id: @app.id) unless @app_rating
+
     if return_url = launch_provider.return_url(@app)
       @button = {
           text: 'Add',

@@ -8,6 +8,7 @@ module Casa
             Casa::Attribute::Title.name => Casa::Attribute::Title,
             Casa::Attribute::Description.name => Casa::Attribute::Description,
             Casa::Attribute::ShortDescription.name => Casa::Attribute::ShortDescription,
+            Casa::Attribute::Icon.name => Casa::Attribute::Icon,
             Casa::Attribute::Categories.name => Casa::Attribute::Categories,
             Casa::Attribute::Tags.name => Casa::Attribute::Tags,
             Casa::Attribute::Author.name => Casa::Attribute::Author,

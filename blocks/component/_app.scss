@@ -56,6 +56,113 @@
         background-color: #f7ecb5;
       }
     }
+
+    .ratings {
+      .average {
+        float: left;
+        font-size: 36px;
+        padding: 12px 20px 12px 0;
+      }
+      .scores {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        font-size: 11px;
+        color: #777;
+      }
+      .reviews {
+        list-style: none;
+        padding: 12px 2px 0;
+        margin: 0;
+        li {
+          .stars {
+            .filled {
+              color: $color-primary;
+            }
+            .unfilled {
+              color: $color-primary;
+            }
+          }
+          border: 1px solid #ddd;
+          padding: 12px;
+          margin-bottom: 12px;
+          > :first-child {
+            margin-top: 0;
+          }
+          > :last-child {
+            margin-bottom: 0;
+          }
+          h4 {
+            font-size: 12px;
+            color: #777;
+            strong {
+              color: darken($color-primary, 20%);
+            }
+          }
+          p {
+            font-size: 12px;
+            color: #444;
+          }
+          h4, p {
+            margin: 8px 0;
+          }
+        }
+      }
+      form {
+        .help-text {
+          margin-top: 0;
+          color: #444;
+          font-size: 12px;
+        }
+        .stars {
+          font-size: 12px;
+          margin-bottom: 8px;
+          padding: 10px;
+          input[type="radio"] {
+            height: 1px;
+            width: 1px;
+          }
+          label {
+            margin-right: 10px;
+            float: left;
+          }
+          label {
+            z-index: 10;
+            &, &:before {
+              color: transparent;
+              background-color: $color-primary;
+            }
+          }
+          input[type="radio"]:checked + label ~ label {
+            &, &:before {
+              background-color: #aaa;
+            }
+          }
+          label {
+            width: 16px;
+            height: 16px;
+            position: relative;
+            text-align: center;
+            -webkit-transform: rotate(20deg);
+            -moz-transform: rotate(20deg);
+            -ms-transform: rotate(20deg);
+            -o-transform: rotate(20deg);
+          }
+          label:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 16px;
+            width: 16px;
+            -webkit-transform: rotate(135deg);
+            -moz-transform: rotate(135deg);
+            -ms-transform: rotate(135deg);
+            -o-transform: rotate(135deg);
+          }
+        }
+      }
+    }
   }
 
   @media (max-width: 599px) {
