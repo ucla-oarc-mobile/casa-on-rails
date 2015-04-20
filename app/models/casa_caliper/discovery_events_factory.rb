@@ -50,7 +50,7 @@ module CasaCaliper
       def found params
 
         event = Caliper::Event::DiscoveryEvent.new
-        event.actor = CasaCaliper::PersonFactory.from params[:launch_provider], (params.has_key?(:launch_data) ? params[:launch_data] : nil)
+        event.actor = nil # TODO -- maybe like... CasaCaliper::PersonFactory.from params[:launch_provider], (params.has_key?(:launch_data) ? params[:launch_data] : nil)
         event.action = Caliper::Profiles::DiscoveryActions::FOUND
         event.source  = CasaCaliper::DiscoveryEntityFactory.portal params[:engine]
         event.object = CasaCaliper::SoftwareApplicationFactory.from params[:app]
