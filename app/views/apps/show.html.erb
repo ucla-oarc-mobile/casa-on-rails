@@ -137,6 +137,11 @@
                   </span>
                   by <%= rating.user.display_name %>
                   on <%= rating.created_at.strftime('%a %b %d, %Y') %>
+                  <% if session_user and session_user.admin %>
+                    <%= link_to '(delete)', app_rating_url(@app, rating),
+                                method: :delete,
+                                data: { confirm: 'Are you sure?' } %>
+                  <% end %>
                 </h4>
                 <%= simple_format rating.review %>
               </li>
@@ -160,6 +165,12 @@
               </div>
               <p class="help-text">by <strong><%= session_user.display_name %></strong> on <strong><%= Time.now.strftime('%a %b %d, %Y') %></strong></p>
               <%= f.submit 'Submit Review', class: 'primary button' %>
+              <% unless @app_rating.new_record? %>
+                <%= link_to 'Delete Review', app_rating_url(@app, @app_rating),
+                            method: :delete,
+                            class: 'button danger',
+                            data: { confirm: 'Are you sure?' } %>
+              <% end %>
             </fieldset>
           <% end %>
         <% end %>

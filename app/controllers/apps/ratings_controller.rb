@@ -23,5 +23,13 @@ module Apps
 
     end
 
+    def destroy
+
+      @rating = AppRating.find params[:rating_id]
+      @rating.destroy if session_user and (session_user.admin == 1 or @rating.user_id = session_user.id)
+      redirect_to app_url params[:id]
+
+    end
+
   end
 end
