@@ -30,6 +30,7 @@ module Admin
                                             :css,
                                             :mobile_title,
                                             :mobile_heading,
+                                            :mobile_footer,
                                             :mobile_appicon
                                         ]
 

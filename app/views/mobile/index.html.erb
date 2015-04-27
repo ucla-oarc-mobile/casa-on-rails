@@ -278,6 +278,9 @@
       <a href="#" data-reset-to-default-apps class="button">Reset to Default</a>
     </div>
   </nav>
+  <div id="footer">
+    <%= raw((@site.mobile_footer and @site.mobile_footer.length > 0) ? @site.mobile_footer : '') %>
+  </div>
 </footer>
 
 <script type="text/javascript">

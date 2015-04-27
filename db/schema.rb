@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150414141331) do
+ActiveRecord::Schema.define(version: 20150427212515) do
 
   create_table "app_authors", force: true do |t|
     t.integer "app_id"
@@ -329,6 +329,7 @@ ActiveRecord::Schema.define(version: 20150414141331) do
     t.string   "mobile_title"
     t.text     "mobile_heading"
     t.text     "homepage_categories"
+    t.text     "mobile_footer"
   end
 
   create_table "users", force: true do |t|
