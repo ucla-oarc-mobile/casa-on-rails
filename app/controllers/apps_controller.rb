@@ -22,7 +22,7 @@ class AppsController < ApplicationController
 
     @app = App.find params[:id]
 
-    return render status: 404, plain: 'Not found' unless @app.enabled or (session_user and session_user.admin)
+    return render status: 404, plain: 'Not found' unless @app.enabled or (session_user and (session_user.admin or session_user.id == @app.created_by))
 
     @app_rating = AppRating.where(app_id: @app.id, user_id: session_user ? session_user.id : 0).first
     @app_rating = AppRating.new(app_id: @app.id) unless @app_rating

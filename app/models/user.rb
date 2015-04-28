@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   attr_accessor :password
 
   has_one :oauth2_identity
+  has_many :apps, foreign_key: :created_by
 
   before_save do
     if password.present?

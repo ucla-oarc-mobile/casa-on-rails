@@ -13,6 +13,9 @@
       <li><a href="<%= root_url %>">Browse</a></li>
       <li><a href="#" data-toggle="#categories-menu">Categories</a></li>
       <li><a href="<%= new_manage_app_path %>">Submit an App</a></li>
+      <% if session_user and session_user.apps.length > 0 %>
+      <li><a href="<%= manage_apps_path %>">Your Submissions</a></li>
+      <% end %>
       <% if session_user and session_user.admin %>
       <li><a href="#" data-toggle="#admin-menu">Admin</a></li>
       <% end %>

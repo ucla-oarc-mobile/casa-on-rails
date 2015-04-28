@@ -5,6 +5,12 @@ module Manage
 
     before_action :require_session_user!, except: [:new]
 
+    def index
+
+      @apps = session_user.apps.order(created_at: :desc)
+
+    end
+
     def new
 
       if session_user
