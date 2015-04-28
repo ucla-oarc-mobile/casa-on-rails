@@ -50,6 +50,16 @@
     </div>
 
     <div class="form-field">
+      <%= f.label :sharing_preference, 'Sharing Preference' %>
+      <%= f.select :sharing_preference,
+                    options_for_select([
+                                         'Only in the UCLA App Store',
+                                         'Share with Affiliated App Stores',
+                                         'Propagate throughout the App Store Network'
+                                       ])  %>
+    </div>
+
+    <div class="form-field">
       <%= f.label :app_tags, 'Tags (one per line)', data: { help: 'Flexible metadata values that may be assigned to apps to improve searchability.' } %>
       <%= f.text_area :app_tags, value: @app.app_tags.map(){ |t| t.name }.join("\n") %>
     </div>

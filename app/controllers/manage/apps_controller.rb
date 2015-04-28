@@ -89,7 +89,8 @@ module Manage
         :lti_launch_url,
         :mobile_support,
         :primary_contact_name,
-        :primary_contact_email
+        :primary_contact_email,
+        :sharing_preference
       ])
 
     end
