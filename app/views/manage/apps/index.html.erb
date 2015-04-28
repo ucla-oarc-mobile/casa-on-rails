@@ -1,0 +1,43 @@
+<h1>Your Submissions</h1>
+
+<p><%= link_to 'Submit An App',
+               new_manage_app_path,
+               :class => 'button',
+               :role => 'button' %></p>
+
+<div>
+
+  <table class="table" id="app-list" style="text-align:left">
+
+    <thead>
+    <tr>
+      <th>Title</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @apps.each do |app| %>
+      <tr>
+        <td><strong><%= app.title %></strong></td>
+        <td><%= app.enabled ? 'Enabled' : 'Not Enabled' %></td>
+        <td><%= link_to 'Show', app_path(app) %></td>
+      </tr>
+    <% end %>
+    </tbody>
+
+  </table>
+
+</div>
+
+<script type="text/javascript">
+  $('#app-list').dataTable({
+    "order": [[0, "asc"], [1, "desc"], [2, "asc"]]
+  });
+</script>
+
+<p><%= link_to 'Submit An App',
+               new_manage_app_path,
+               :class => 'button',
+               :role => 'button' %></p>
