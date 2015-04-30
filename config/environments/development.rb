@@ -44,7 +44,9 @@ Rails.application.configure do
 
   config.caliper = {
     :event_store => {
-      :url => 'http://requestb.in/1izaf181'
+      :url => 'http://requestb.in/1izaf181',
+      :api_key => 'secret',
+      :sensor_id => '89535BAA-F345-45C0-9851-5E08FC1C0122'
     }
   }
 

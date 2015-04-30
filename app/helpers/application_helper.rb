@@ -49,7 +49,11 @@ module ApplicationHelper
     def send_event event
       if Rails.application.config.caliper and Rails.application.config.caliper.has_key?(:event_store) and Rails.application.config.caliper[:event_store].has_key?(:url)
         RestClient.post Rails.application.config.caliper[:event_store][:url],
-                        event.to_json,
+                        [{
+                            'apiKey' => Rails.application.config.caliper[:event_store][:api_key],
+                            'sensorId' => Rails.application.config.caliper[:event_store][:sensor_id],
+                            'event' => event
+                         }].to_json,
                         :content_type => :json,
                         :accept => :json
       else
