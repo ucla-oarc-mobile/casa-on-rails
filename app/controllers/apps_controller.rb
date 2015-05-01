@@ -11,6 +11,7 @@ class AppsController < ApplicationController
     @collections.each do |collection|
       @collection_apps[collection.id] = []
       collection.apps.where(enabled: true).available_to_launch_method(launch_provider.get).take(9).each do |app|
+        Rails.logger.info "Sending event for app from collection"
         event.found app
         @collection_apps[collection.id] << app
       end
