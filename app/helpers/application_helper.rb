@@ -99,7 +99,9 @@ module ApplicationHelper
                               description: params.has_key?(:peer_description) ? params[:peer_description] : nil
                             }
                           }
-      rescue; end
+      rescue => e
+        Rails.logger.info e
+      end
     end
 
     def accepted payload, params = {}
@@ -115,7 +117,9 @@ module ApplicationHelper
                             },
                             started_at: payload.created_at
                           }
-      rescue; end
+      rescue => e
+        Rails.logger.info e
+      end
     end
 
     def rejected payload, params = {}
@@ -131,7 +135,9 @@ module ApplicationHelper
                             },
                             started_at: payload.created_at
                           }
-      rescue; end
+      rescue => e
+        Rails.logger.info e
+      end
     end
 
     def added app, params = {}
@@ -142,7 +148,9 @@ module ApplicationHelper
                           app: app,
                           launch_provider: @controller.launch_provider
                         }.merge(params)
-      rescue; end
+      rescue => e
+        Rails.logger.info e
+      end
     end
 
     def found app, params = {}
@@ -166,7 +174,9 @@ module ApplicationHelper
                           app: app,
                           launch_provider: @controller.launch_provider
                         }.merge(params)
-      rescue; end
+      rescue => e
+        Rails.logger.info e
+      end
     end
 
   end
