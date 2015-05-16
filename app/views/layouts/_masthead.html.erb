@@ -26,6 +26,11 @@
         <a href="<%= send(*Rails.application.config.login_route) %>">Login</a>
         <% end %>
       </li>
+      <% if launch_provider.return_url %>
+      <li>
+        <a href="<%= launch_provider.return_url %>">Go Back</a>
+      </li>
+      <% end %>
     </ul>
     <nav id="submenu">
       <% if session_user and session_user.admin %>

@@ -26,6 +26,7 @@ module Admin
       @site.update params[:site].permit [
                                             :title,
                                             :heading,
+                                            :footer,
                                             :homepage_categories,
                                             :css,
                                             :mobile_title,

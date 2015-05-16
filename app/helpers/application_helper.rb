@@ -64,18 +64,27 @@ module ApplicationHelper
       set nil
     end
 
-    def return_url app
-      case get
-        when :lti
-          "/lti/content_item/#{app.id}"
-        when :mobile
-          "/mobile/return/#{app.id}"
-        when :cordova
-          "/mobile/cordova/exec/#{app.id}"
-        when :web_view_javascript_bridge
-          "/mobile/web_view_javascript_bridge/send/#{app.id}"
-        else
-          false
+    def return_url app = nil
+      if app
+        case get
+          when :lti
+            "/lti/content_item/#{app.id}"
+          when :mobile
+            "/mobile/return/#{app.id}"
+          when :cordova
+            "/mobile/cordova/exec/#{app.id}"
+          when :web_view_javascript_bridge
+            "/mobile/web_view_javascript_bridge/send/#{app.id}"
+          else
+            false
+        end
+      else
+        case get
+          when :mobile
+            "/mobile/abort"
+          else
+            false
+        end
       end
     end
 
