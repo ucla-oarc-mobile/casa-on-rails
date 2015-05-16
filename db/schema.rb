@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150428185817) do
+ActiveRecord::Schema.define(version: 20150516190132) do
 
   create_table "app_authors", force: true do |t|
     t.integer "app_id"
@@ -323,6 +323,7 @@ ActiveRecord::Schema.define(version: 20150428185817) do
   create_table "sites", force: true do |t|
     t.text     "heading"
     t.text     "css"
+    t.text     "10485760"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "mobile_appicon"
@@ -331,6 +332,7 @@ ActiveRecord::Schema.define(version: 20150428185817) do
     t.text     "mobile_heading"
     t.text     "homepage_categories"
     t.text     "mobile_footer"
+    t.text     "footer"
   end
 
   create_table "users", force: true do |t|

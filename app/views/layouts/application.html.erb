@@ -21,6 +21,10 @@
   <%= yield %>
 </main>
 
+<footer role="contentinfo" class="container">
+    <%= raw @site.footer %>
+</footer>
+
 <script type="text/javascript">
   $('[data-help]').each(function(){
     $('<a>')

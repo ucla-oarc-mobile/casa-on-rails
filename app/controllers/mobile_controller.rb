@@ -27,4 +27,9 @@ class MobileController < ApplicationController
     render layout: 'application'
   end
 
+  def abort
+    launch_provider.destroy!
+    redirect_to mobile_url
+  end
+
 end

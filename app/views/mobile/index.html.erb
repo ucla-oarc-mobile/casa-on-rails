@@ -253,10 +253,10 @@
 
 <body class="mobile">
 
-<header>
+<header style="min-height: 40px;">
   <nav class="add-button">
-    <a href="<%= mobile_launch_url %>">
-      <img src="/mobile/assets/storefront-icon.png" alt="UCLA Mobile Storefront">
+    <a href="<%= mobile_launch_url %>" style="font-size: 28px;">
+      +
     </a>
   </nav>
   <%= raw((@site.mobile_heading and @site.mobile_heading.length > 0) ? @site.mobile_heading : "<h1><a href=\"#{mobile_url}\">#{@site.mobile_title and @site.mobile_title.length > 0 ? @site.mobile_title : 'CASA Mobile'}</a></h1>") %>
@@ -270,6 +270,7 @@
 <footer>
   <nav>
     <div class="when-not-editing">
+      <a href="<%= mobile_launch_url %>" class="button">Add App</a>
       <a href="#" data-start-rearrange-apps class="button">Rearrange Apps</a>
       <a href="#" data-start-delete-apps class="button">Delete Apps</a>
     </div>

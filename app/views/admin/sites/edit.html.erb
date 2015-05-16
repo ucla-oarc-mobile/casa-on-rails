@@ -24,6 +24,11 @@
     <%= f.text_area :heading, style: 'height: 10em;' %>
   </div>
 
+    <div class="form-field">
+      <%= f.label :footer %>
+      <%= f.text_area :footer, style: 'height: 10em;' %>
+    </div>
+
   <div class="form-field">
     <%= f.label :homepage_categories, 'Categories on Homepage (one name per line)', data: { help: 'List categories, one per line, that, if they exist, will be shown on the homeage.' } %>
     <%= f.text_area :homepage_categories, style: 'height: 10em;' %>

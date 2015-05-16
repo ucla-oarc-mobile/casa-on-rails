@@ -69,5 +69,6 @@ Rails.application.routes.draw do
   get 'mobile', to: 'mobile#index'
   get 'mobile/launch', to: 'mobile#launch'
   get 'mobile/return/(:id)', to: 'mobile#return'
+  get 'mobile/abort', to: 'mobile#abort'
 
 end
