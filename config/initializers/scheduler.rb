@@ -29,15 +29,23 @@ Rufus::Scheduler.singleton.every '30m' do
         # the original section
         Casa::Payload.squash_in payload
 
+        # skip if receiving a payload introduced by this engine
+        if Rails.application.config.casa[:engine][:uuid] == payload['identity']['originator_id']
+          Rails.logger.info "#{Time.now} - #{peer.name} - SKIP - #{payload['identity']['id']}@#{payload['identity']['originator_id']}"
+          next
+        end
+
         # must skip this iteration and go to next unless filter passes
         unless Casa::Payload.filter_in payload, peer
           Rails.logger.info "#{Time.now} - #{peer.name} - SKIP - #{payload['identity']['id']}@#{payload['identity']['originator_id']}"
           next
         end
 
-        if InPayload.where(casa_originator_id: payload['identity']['originator_id'],
-                           casa_id: payload['identity']['id'],
-                           casa_timestamp: payload['attributes']['timestamp']).count == 0
+        # if this is the newest payload seen for the app, then add it to the queue
+        if InPayload.where({
+                             casa_originator_id: payload['identity']['originator_id'],
+                             casa_id: payload['identity']['id']
+                           }).where("casa_timestamp >= ?", payload['attributes']['timestamp']).count == 0
 
           begin
 
@@ -47,6 +55,14 @@ Rufus::Scheduler.singleton.every '30m' do
                                        in_peer_id: peer.id,
                                        content: payload.to_json,
                                        original_content: original_payload
+
+            # mark older versions of this payload as deleted so only one copy of the payload is shown at any time
+            # in the queued apps list
+            InPayload.where(casa_originator_id: payload['identity']['originator_id'],
+                            casa_id: payload['identity']['id'],
+                            deleted_at: nil).where("created_at < ?", payload['attributes']['timestamp']).each do |old_in_payload|
+              old_in_payload.update(deleted_at: Time.now)
+            end
 
             Rails.logger.info "#{Time.now} - #{peer.name} - ADDED - #{payload.casa_id}@#{payload.casa_originator_id}"
 
