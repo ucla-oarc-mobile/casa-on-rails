@@ -161,8 +161,7 @@ class App < ActiveRecord::Base
     end
 
     content_item['text'] = self.description if self.description.length > 0
-
-    # TODO: add icon and thumbnail properties
+    content_item['icon'] = { '@id' => self.icon } if self.icon and self.icon.length > 0
 
     content_item
 
