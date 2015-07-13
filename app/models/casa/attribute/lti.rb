@@ -17,7 +17,7 @@ module Casa
             data['registration_url'] = app.lti_registration_url if app.lti_registration_url
             data['versions_supported'] = app.app_lti_versions.map(){ |r| r.version } if app.app_lti_versions.length > 0
             data['outcomes'] = app.lti_outcomes if app.lti_outcomes
-            data.keys.length > 0 ? data : true
+            data
           else
             nil
           end
