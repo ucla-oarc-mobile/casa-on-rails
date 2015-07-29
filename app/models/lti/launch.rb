@@ -63,7 +63,7 @@ module Lti
 
       if !@tp.valid_request?(request)
         @error = 403
-        show_error "The OAuth signature was invalid"
+        Rails.logger.info "The OAuth signature was invalid"
         return false
       end
 
