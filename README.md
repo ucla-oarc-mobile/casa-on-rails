@@ -1,5 +1,7 @@
 # CASA On Rails
 
+[![Join the chat at https://gitter.im/ucla/casa-on-rails](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ucla/casa-on-rails?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This application is a simple, easy-to-use app store that presents an storefront for finding and selecting apps, implements the [Community App Sharing Architecture protocol](http://imsglobal.github.io/casa-protocol), provides a mobile app dashboard using [Web Storage](http://dev.w3.org/html5/webstorage), and supports integration with learning management systems through [LTI Content-Item](http://www.imsglobal.org/lti/ltiv1p2pd/ltiCIMv1p0pd.html).
 
 This application is **under development** and not intended for production use at this time.
