@@ -177,6 +177,10 @@ This configuration makes it possible for users with the `employee@ucla.edu` eduP
 
 CASA on Rails is a standard Rails server. Once you ensure that the database and Elasticsearch are running, start it as you'd usually start a Rails server.
 
+### Docker Container
+
+CASA on Rails now has a docker container to facilitate getting started developing or testing the project.  Visit the [docker hub page](https://hub.docker.com/r/stevenolen/casa-on-rails/) for more details. 
+
 ## License
 
 CASA On Rails is **open-source** and licensed under the AFFERO GENERAL PUBLIC LICENSE. The full text of the license may be found in the `LICENSE` file.
