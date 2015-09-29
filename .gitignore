@@ -24,3 +24,6 @@
 # Ignore editor and environment files
 .DS_Store
 /.idea
+
+# Ignore es config file
+/config/elasticsearch.yml
