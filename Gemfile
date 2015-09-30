@@ -41,7 +41,8 @@ gem 'spring',        group: :development
 # gem 'debugger', group: [:development, :test]
 
 # Use web_blocks to compile Javascript assets
-gem 'web_blocks', :git => 'https://github.com/WebBlocks/WebBlocks.git'
+# gem 'web_blocks', :git => 'https://github.com/WebBlocks/WebBlocks.git'
+gem 'web_blocks', :git => 'https://github.com/WebBlocks/WebBlocks.git', :tag => '2.0.4.dev'
 
 # Use rufus-scheduler for scheduled tasks
 gem 'rufus-scheduler'
