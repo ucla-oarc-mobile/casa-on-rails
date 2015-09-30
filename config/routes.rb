@@ -71,4 +71,6 @@ Rails.application.routes.draw do
   get 'mobile/return/(:id)', to: 'mobile#return'
   get 'mobile/abort', to: 'mobile#abort'
 
+  # get 'status.json' is used by the rapporteur gem.
+
 end

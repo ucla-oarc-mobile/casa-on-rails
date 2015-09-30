@@ -60,3 +60,6 @@ gem 'bcrypt'
 gem 'oauth2'
 
 gem 'thin'
+
+# generates a status page at /status.json
+gem 'rapporteur'
