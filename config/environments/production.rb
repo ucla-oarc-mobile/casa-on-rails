@@ -83,16 +83,4 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  # Community App Sharing Architecture configuration
-  config.casa = {
-    :engine => {
-      :uuid => 'dd8c99e2-fe5b-4911-a815-73c17b46d3fc'
-    }
-  }
-
-  # Local configuration
-  config.store = {
-    :user_contact => { :name => 'John Doe', :email => 'invalid@localhost' }
-  }
-
 end
