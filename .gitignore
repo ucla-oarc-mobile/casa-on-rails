@@ -27,3 +27,6 @@
 
 # Ignore es config file
 /config/elasticsearch.yml
+
+# Ignore CASA metadata config file
+config/casa.yml

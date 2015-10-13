@@ -12,7 +12,7 @@ config = {
 
 # Override with YAML
 if File.exists?('config/casa.yml')
-  Rails.application.config.merge!(YAML.load_file('config/casa.yml').deep_symbolize_keys)
+  config.merge!(YAML.load_file('config/casa.yml').deep_symbolize_keys)
 end
 
 Rails.application.config.casa = config[:casa]
