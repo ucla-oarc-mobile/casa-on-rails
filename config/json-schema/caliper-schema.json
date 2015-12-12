@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Schema for CASA Attribute ID d96e4185-c52d-4f46-9fcb-59d28087c7d1.",
+  "title": "caliper",
+  "type": "object",
+  "properties": {
+    "metric_profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "profile": {
+            "type": "string"
+          },
+          "actions": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required":["profile"]
+      }
+    },
+    "ims_global_certifications": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "description": "A list of Caliper Analytics certifications.",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "E.g., Caliper Analytics v1.0 Compliant."
+          },
+          "metric_profiles": {
+            "type": "array",
+            "description": "A list of certified metric profile names.",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          },
+          "registration_number": {
+            "type":"string",
+            "description":"The conformance certification number provided by IMS Global for this tool."
+          },
+          "conformance_date": {
+            "type": "string",
+            "description": "A human-readable date."
+          },
+          "link": {
+            "type": "string",
+            "description": "A link to the vendor's detailed certification page on www.imsglobal.org."
+          }
+        },
+        "required":["registration_number","metric_profiles"]
+      }
+    }
+  }
+}

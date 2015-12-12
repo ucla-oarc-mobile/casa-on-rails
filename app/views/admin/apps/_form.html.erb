@@ -1,10 +1,10 @@
 <%= form_for [:admin, @app], :html => { :id => 'app-form' } do |f| %>
 
   <% if @app.errors.any? %>
-  <div id="error_explanation">
-    <h2><%= pluralize(@app.errors.count, "error") %> prohibited
+  <div id="error_explanation" style="padding-bottom: 5px;">
+    <h2 style="color: red;"><%= pluralize(@app.errors.count, "error") %> prohibited
       this app from being saved:</h2>
-    <ul>
+    <ul style="color: red;">
     <% @app.errors.full_messages.each do |msg| %>
       <li><%= msg %></li>
     <% end %>
@@ -343,6 +343,31 @@
 
     </fieldset>
 
+    <fieldset>
+
+      <legend>Caliper</legend>
+
+      <p>IMS Global's <a href="https://www.imsglobal.org/activity/caliperram" target="_blank">Caliper</a> standard allows
+        apps to generate analytics data in an interoperable way. The JSON schema for this attribute can be found
+        <a href="http://imsglobal.github.io/casa-protocol/#Attributes/Interoperability:caliper" target="_blank">here</a>.</p>
+
+      <div class="form-field">
+        <%= f.label :caliper, 'Supports Caliper' %>
+        <%= f.check_box :caliper %>
+      </div>
+
+      <div class="form-field">
+        <%= f.label :caliper_metric_profiles, raw('Caliper Metric Profile JSON <span class="required">(required)</span>')  %>
+        <%= f.text_area :caliper_metric_profiles, style: 'height: 30em;' %>
+      </div>
+
+      <div class="form-field">
+        <%= f.label :caliper_ims_global_certifications, 'IMS Global Caliper Certification JSON' %>
+        <%= f.text_area :caliper_ims_global_certifications, style: 'height: 30em;' %>
+      </div>
+
+    </fieldset>
+
   </fieldset>
 
   <fieldset role="tab" id="privacy">
@@ -432,7 +457,11 @@
     <div class="form-field" style="margin-top:12px;">
       <%= f.label :app_out_peer_permissions, 'Allowed Peers' %>
       <%= f.select :app_out_peer_permissions,
-                   options_for_select(@out_peers.map(){ |p| [p.name, p.id] }, @app.app_out_peer_permissions.map(){ |p| p.out_peer.id }),
+                   if(@out_peers)
+                     options_for_select(@out_peers.map(){ |p| [p.name, p.id] }, @app.app_out_peer_permissions.map(){ |p| p.out_peer.id })
+                   else
+                      ''
+                   end ,
                    {},
                    multiple: true %>
     </div>
@@ -588,6 +617,16 @@
         $(this).closest('.form-field').siblings('.form-field').hide();
       }
     }).change();
+  })();
+
+  (function(){
+      $('#app_caliper').change(function(){
+          if($(this).is(':checked')) {
+              $(this).closest('.form-field').siblings('.form-field').show();
+          }else{
+              $(this).closest('.form-field').siblings('.form-field').hide();
+          }
+      }).change();
   })();
 
   (function(){

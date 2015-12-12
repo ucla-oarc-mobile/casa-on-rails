@@ -1,4 +1,6 @@
+
 class App < ActiveRecord::Base
+  include AttributeConcern
 
   NULL_IF_BLANK_ATTRS = %w( icon description short_description privacy_url accessibility_url vpat_url acceptable lti_configuration_url lti_registration_url lti_outcomes ios_app_id ios_app_scheme ios_app_path ios_app_affiliate_data android_app_package android_app_scheme android_app_action android_app_category android_app_component lti_launch_url )
 
@@ -22,6 +24,8 @@ class App < ActiveRecord::Base
       joins('LEFT OUTER JOIN `app_launch_methods` ON `apps`.`id` = `app_launch_methods`.`app_id`').where('restrict_launch = 0 OR `app_launch_methods`.`method` = :method', { method: m })
     end
   }
+
+  validate :caliper_attribute_is_valid
 
   validates :title,
     presence: true,
@@ -175,6 +179,53 @@ class App < ActiveRecord::Base
                                 type: 'local',
                                 id: self.id,
                                 body: to_local_payload
+
+  end
+
+  def caliper_attribute_is_valid
+
+    if self.caliper
+
+      if self.caliper_metric_profiles.nil? or self.caliper_metric_profiles.empty?
+        errors.add(:interoperability, '-- At least one Metric Profile should be configured if the Caliper checkbox is checked.')
+        return
+      end
+
+      unless self.caliper_metric_profiles.nil? or self.caliper_metric_profiles.empty?
+        error_text = fully_validate_against_json_schema('config/json-schema/caliper-schema.json', self.caliper_metric_profiles)
+
+        unless error_text.nil? or error_text.empty?
+          Rails.logger.info('caliper_metric_profile property failed schema validation: ' + error_text.map { |s| "'#{s}'" }.join(' '))
+
+          errors.add(:interoperability, ' -- The Caliper Metric Profiles JSON did not pass schema validation. The Caliper attribute' +
+           ' schema can be found here: http://imsglobal.github.io/casa-protocol/#Attributes/Interoperability:caliper')
+        else
+          # Remove any pretty printing from the JSON
+          self.caliper_metric_profiles = JSON.generate(JSON.parse(caliper_metric_profiles))
+        end
+      end
+
+      unless self.caliper_ims_global_certifications.nil? or self.caliper_ims_global_certifications.empty?
+        error_text = fully_validate_against_json_schema('config/json-schema/caliper-schema.json', self.caliper_ims_global_certifications)
+
+        unless error_text.nil? or error_text.empty?
+          Rails.logger.info('caliper_ims_global_certifications failed schema validation: ' + error_text.map { |s| "'#{s}'" }.join(' '))
+
+          errors.add(:interoperability, ' -- The Caliper IMS Global Certifications JSON did not pass schema validation. The Caliper attribute' +
+                                          ' schema can be found here: http://imsglobal.github.io/casa-protocol/#Attributes/Interoperability:caliper')
+        else
+          # Remove any pretty printing from the JSON
+          self.caliper_ims_global_certifications = JSON.generate(JSON.parse(caliper_ims_global_certifications))
+        end
+      end
+
+    else
+
+      # Reset the detailed properties
+      self.caliper_metric_profiles = nil
+      self.caliper_ims_global_certifications = nil
+
+    end
 
   end
 

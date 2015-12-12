@@ -17,6 +17,7 @@ module Casa
             Casa::Attribute::AndroidApp.name => Casa::Attribute::AndroidApp,
             Casa::Attribute::IosApp.name => Casa::Attribute::IosApp,
             Casa::Attribute::Lti.name => Casa::Attribute::Lti,
+            Casa::Attribute::Caliper.name => Casa::Attribute::Caliper,
             Casa::Attribute::Privacy.name => Casa::Attribute::Privacy,
             Casa::Attribute::PrivacyUrl.name => Casa::Attribute::PrivacyUrl,
             Casa::Attribute::AccessibilityUrl.name => Casa::Attribute::AccessibilityUrl,

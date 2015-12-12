@@ -63,3 +63,6 @@ gem 'thin'
 
 # generates a status page at /status.json
 gem 'rapporteur'
+
+# for JSON Schema validation of payload attribute data
+gem 'json-schema', '2.5.2'

@@ -96,7 +96,10 @@ module Manage
         :mobile_support,
         :primary_contact_name,
         :primary_contact_email,
-        :sharing_preference
+        :sharing_preference,
+        :caliper,
+        :caliper_metric_profiles,
+        :caliper_ims_global_certifications
       ])
 
     end
