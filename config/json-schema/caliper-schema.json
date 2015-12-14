@@ -20,9 +20,10 @@
               "type": "string"
             }
           }
-        },
-        "required":["profile"]
-      }
+        }
+      },
+      "required":["profile"]
+
     },
     "ims_global_certifications": {
       "type": "array",
@@ -56,7 +57,7 @@
             "description": "A link to the vendor's detailed certification page on www.imsglobal.org."
           }
         },
-        "required":["registration_number","metric_profiles"]
+        "required":["metric_profiles","registration_number","conformance_date"]
       }
     }
   }

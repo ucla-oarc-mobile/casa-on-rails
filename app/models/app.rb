@@ -200,8 +200,19 @@ class App < ActiveRecord::Base
           errors.add(:interoperability, ' -- The Caliper Metric Profiles JSON did not pass schema validation. The Caliper attribute' +
            ' schema can be found here: http://imsglobal.github.io/casa-protocol/#Attributes/Interoperability:caliper')
         else
-          # Remove any pretty printing from the JSON
-          self.caliper_metric_profiles = JSON.generate(JSON.parse(caliper_metric_profiles))
+
+          json_as_map = JSON.parse(caliper_metric_profiles)
+
+          json_as_map['metric_profiles'].each do | p |
+              if p['profile'].blank?
+                errors.add(:interoperability, ' -- The Caliper Metric Profiles cannot contain empty profiles.')
+              end
+           end
+
+          if errors.empty?
+             # Remove any pretty printing from the JSON
+            self.caliper_metric_profiles = JSON.generate(json_as_map)
+          end
         end
       end
 
@@ -214,8 +225,27 @@ class App < ActiveRecord::Base
           errors.add(:interoperability, ' -- The Caliper IMS Global Certifications JSON did not pass schema validation. The Caliper attribute' +
                                           ' schema can be found here: http://imsglobal.github.io/casa-protocol/#Attributes/Interoperability:caliper')
         else
-          # Remove any pretty printing from the JSON
-          self.caliper_ims_global_certifications = JSON.generate(JSON.parse(caliper_ims_global_certifications))
+          json_as_map = JSON.parse(caliper_ims_global_certifications)
+
+          json_as_map['ims_global_certifications'].each do | c |
+            c['metric_profiles'].each do | mp |
+              if mp.blank?
+                errors.add(:interoperability, ' -- The Caliper IMS Global Certifications cannot contain empty metric profiles')
+              end
+            end
+            if c['registration_number'].blank?
+              errors.add(:interoperability, ' -- The Caliper IMS Global Certifications cannot contain empty registration numbers.')
+            end
+            if c['conformance_date'].blank?
+              errors.add(:interoperability, ' -- The Caliper IMS Global Certifications cannot contain empty conformance dates.')
+            end
+          end
+
+          if errors.empty?
+            # Remove any pretty printing from the JSON
+            self.caliper_ims_global_certifications = JSON.generate(json_as_map)
+          end
+
         end
       end
 
