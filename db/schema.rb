@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151209230748) do
+ActiveRecord::Schema.define(version: 20151215173418) do
 
   create_table "app_authors", force: true do |t|
     t.integer "app_id"
@@ -28,6 +28,13 @@ ActiveRecord::Schema.define(version: 20151209230748) do
 
   add_index "app_browser_features", ["feature"], name: "index_app_browser_features_on_feature", using: :btree
   add_index "app_browser_features", ["level"], name: "index_app_browser_features_on_level", using: :btree
+
+  create_table "app_competencies", force: true do |t|
+    t.integer  "app_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "app_launch_methods", force: true do |t|
     t.integer  "app_id"

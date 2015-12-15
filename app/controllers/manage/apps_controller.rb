@@ -53,6 +53,11 @@ module Manage
         @app.app_tags << AppTag.new(name: t)
       end
 
+      new_competencies = params[:app][:app_competencies].gsub("\r", '').split("\n")
+      new_competencies.each do |t|
+        @app.app_competencies << AppCompetency.new(name: t)
+      end
+
       @app.created_by = session_user.id
 
       if @app.save

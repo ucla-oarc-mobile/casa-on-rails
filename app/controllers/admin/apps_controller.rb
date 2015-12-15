@@ -58,6 +58,11 @@ module Admin
         @app.app_tags << AppTag.new(name: t)
       end
 
+      new_competencies = params[:app][:app_competencies].gsub("\r", '').split("\n")
+      new_competencies.each do |t|
+        @app.app_competencies << AppCompetency.new(name: t)
+      end
+
       if params[:app][:restrict_launch]
         new_methods = params[:app][:app_launch_methods].keep_if(){ |m| m != '' }
         new_methods.each do |m|
@@ -167,6 +172,15 @@ module Admin
       end
       (new_tags - current_tags).each do |t|
         @app.app_tags << AppTag.new(name: t)
+      end
+
+      current_competencies = @app.app_competencies.map(){ |t| t.name }
+      new_competencies = params[:app][:app_competencies].gsub("\r", '').split("\n")
+      (current_competencies - new_competencies).each do |t|
+        @app.app_competencies.where(name: t).each { |r| r.delete }
+      end
+      (new_competencies - current_competencies).each do |t|
+        @app.app_competencies << AppCompetency.new(name: t)
       end
 
       if params[:app][:restrict_launch]
