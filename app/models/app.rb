@@ -32,6 +32,9 @@ class App < ActiveRecord::Base
     presence: true,
     length: { minimum: 1 }
 
+  validates :icon,
+    length: { maximum: 65530, message: '-- The app icon is too large. The recommended icon size is 180x180 and the file must be smaller than 64KB.'}
+
   before_save do
     ['icon'].each { |column| self[column].present? || self[column] = nil }
     NULL_IF_BLANK_ATTRS.each { |attr| self[attr] = nil if self[attr].blank? }
