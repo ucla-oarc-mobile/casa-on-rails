@@ -253,7 +253,8 @@ module Admin
         :support_contact_email,
         :caliper,
         :caliper_metric_profiles,
-        :caliper_ims_global_certifications
+        :caliper_ims_global_certifications,
+        :download_size
       ])
 
     end

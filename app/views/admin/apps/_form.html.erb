@@ -180,6 +180,17 @@
 
     </fieldset>
 
+    <fieldset class="form-fields">
+
+      <!--<legend>Download Size</legend>-->
+
+      <div class="form-field">
+        <%= f.label :download_size, 'Download Size', data: { help: 'The size of the app or learning activity, e.g., 500KB, 10 Megabytes, an e-book that requires downloads of large images.' } %>
+        <%= f.text_field :download_size %>
+      </div>
+
+    </fieldset>
+
   </fieldset>
 
   <fieldset role="tab" id="browser">

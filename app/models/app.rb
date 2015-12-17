@@ -42,6 +42,9 @@ class App < ActiveRecord::Base
     length: { minimum: 6, maximum: 255, message: ' -- Please provide a valid email address.'},
     allow_blank: true
 
+  validates :download_size,
+   length: { maximum: 255, message: ' -- Please provide shorter description.' }
+
   before_save do
     ['icon'].each { |column| self[column].present? || self[column] = nil }
     NULL_IF_BLANK_ATTRS.each { |attr| self[attr] = nil if self[attr].blank? }
