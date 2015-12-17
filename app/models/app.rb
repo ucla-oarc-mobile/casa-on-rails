@@ -1,11 +1,17 @@
 
 class App < ActiveRecord::Base
-  include AttributeConcern
+  include AttributeConcern, ActiveModel::Validations
 
   NULL_IF_BLANK_ATTRS = %w( icon description short_description privacy_url accessibility_url vpat_url acceptable lti_configuration_url lti_registration_url lti_outcomes ios_app_id ios_app_scheme ios_app_path ios_app_affiliate_data android_app_package android_app_scheme android_app_action android_app_category android_app_component lti_launch_url )
 
   include ActionView::Helpers::SanitizeHelper
   include ActionView::Helpers::TextHelper
+
+  class VarChar255Validator < ActiveModel::EachValidator
+    def validate_each(record, attribute, value)
+      record.errors[attribute] << 'must contain 255 characters or fewer.' unless (value.to_s.size <= 255)
+    end
+  end
 
   has_and_belongs_to_many :categories
   has_many :app_tags
@@ -35,15 +41,12 @@ class App < ActiveRecord::Base
   validates :icon,
     length: { maximum: 65530, message: '-- The app icon is too large. The recommended icon size is 180x180 and the file must be smaller than 64KB.'}
 
-  validates :support_contact_name,
-    length: { maximum: 255, message: ' -- Please provide a name.'  }
-
   validates :support_contact_email,
     length: { minimum: 6, maximum: 255, message: ' -- Please provide a valid email address.'},
     allow_blank: true
 
-  validates :download_size,
-   length: { maximum: 255, message: ' -- Please provide shorter description.' }
+  validates :download_size, :support_contact_name,
+   :varChar255 => true
 
   before_save do
     ['icon'].each { |column| self[column].present? || self[column] = nil }
