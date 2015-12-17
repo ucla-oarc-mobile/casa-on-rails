@@ -36,10 +36,11 @@ class App < ActiveRecord::Base
     length: { maximum: 65530, message: '-- The app icon is too large. The recommended icon size is 180x180 and the file must be smaller than 64KB.'}
 
   validates :support_contact_name,
-    length: { maximum: 255, message: ' -- Please provide a shorter support contact name.'  }
+    length: { maximum: 255, message: ' -- Please provide a name.'  }
 
   validates :support_contact_email,
-    length: { minimum: 6, maximum: 255, message: ' -- Please provide a valid email address.'}
+    length: { minimum: 6, maximum: 255, message: ' -- Please provide a valid email address.'},
+    allow_blank: true
 
   before_save do
     ['icon'].each { |column| self[column].present? || self[column] = nil }
