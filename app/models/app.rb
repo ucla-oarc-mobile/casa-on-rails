@@ -45,7 +45,7 @@ class App < ActiveRecord::Base
     length: { minimum: 6, maximum: 255, message: ' -- Please provide a valid email address.'},
     allow_blank: true
 
-  validates :download_size, :support_contact_name,
+  validates :download_size, :support_contact_name, :supported_languages,
    :varChar255 => true
 
   before_save do

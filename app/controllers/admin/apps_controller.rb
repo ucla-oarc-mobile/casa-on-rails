@@ -254,7 +254,8 @@ module Admin
         :caliper,
         :caliper_metric_profiles,
         :caliper_ims_global_certifications,
-        :download_size
+        :download_size,
+        :supported_languages
       ])
 
     end
