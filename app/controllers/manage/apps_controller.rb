@@ -101,6 +101,8 @@ module Manage
         :mobile_support,
         :primary_contact_name,
         :primary_contact_email,
+        :support_contact_name,
+        :support_contact_email,
         :sharing_preference,
         :caliper,
         :caliper_metric_profiles,

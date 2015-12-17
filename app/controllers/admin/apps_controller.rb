@@ -249,6 +249,8 @@ module Admin
         :official,
         :primary_contact_name,
         :primary_contact_email,
+        :support_contact_name,
+        :support_contact_email,
         :caliper,
         :caliper_metric_profiles,
         :caliper_ims_global_certifications

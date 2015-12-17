@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151215173418) do
+ActiveRecord::Schema.define(version: 20151216224315) do
 
   create_table "app_authors", force: true do |t|
     t.integer "app_id"
@@ -237,6 +237,8 @@ ActiveRecord::Schema.define(version: 20151215173418) do
     t.boolean  "caliper",                           default: false
     t.text     "caliper_metric_profiles"
     t.text     "caliper_ims_global_certifications"
+    t.string   "support_contact_name"
+    t.string   "support_contact_email"
   end
 
   create_table "apps_categories", force: true do |t|
