@@ -123,6 +123,45 @@
 
     </fieldset>
 
+    <fieldset class="form-fields">
+
+      <legend>Support Contact</legend>
+
+      <div class="form-field">
+        <%= f.label :support_contact_name, 'Name' %>
+        <%= f.text_field :support_contact_name %>
+      </div>
+
+      <div class="form-field">
+        <%= f.label :support_contact_email, 'Email' %>
+        <%= f.text_field :support_contact_email %>
+      </div>
+
+    </fieldset>
+
+    <fieldset class="form-fields">
+
+      <!--<legend>Download Size</legend>-->
+
+      <div class="form-field">
+        <%= f.label :download_size, 'Download Size', data: { help: 'The size requirements for installing the app, e.g., 500KB, 10 Megabytes, an e-book that requires downloads of large images.' } %>
+        <%= f.text_field :download_size %>
+      </div>
+
+    </fieldset>
+
+    <fieldset class="form-fields">
+
+      <!--<legend>Supported Languages<legend>-->
+
+      <div class="form-field">
+        <%= f.label :supported_languages, 'Supported Languages', data: { help: 'The languages supported by the app.' } %>
+        <%= f.text_field :supported_languages %>
+      </div>
+
+    </fieldset>
+
+
   </fieldset>
 
   <fieldset role="tab" id="browser">
