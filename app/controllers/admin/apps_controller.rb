@@ -255,7 +255,16 @@ module Admin
         :caliper_metric_profiles,
         :caliper_ims_global_certifications,
         :download_size,
-        :supported_languages
+        :supported_languages,
+        :license_is_free,
+        :license_is_paid,
+        :license_is_recharge,
+        :license_is_by_seat,
+        :license_is_free,
+        :license_is_subscription,
+        :license_is_ad_supported,
+        :license_is_other,
+        :license_text
       ])
 
     end

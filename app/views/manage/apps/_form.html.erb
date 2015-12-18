@@ -20,6 +20,7 @@
       <li><a href="#" data-target="#interoperability">Interoperability</a></li>
       <li><a href="#" data-target="#privacy">Privacy</a></li>
       <li><a href="#" data-target="#accessibility">Accessibility</a></li>
+      <li><a href="#" data-target="#licensing">Licensing</a></li>
     </ul>
   </div>
 
@@ -401,9 +402,75 @@
 
   </fieldset>
 
-  <p class="text-center">
-    <%= f.submit 'Submit App' %>
-  </p>
+  <fieldset role="tab" id="licensing">
+
+    <fieldset>
+    <legend>Cost Model</legend>
+
+    <div class="form-field">
+      <div class="form-field">
+        <%= f.label :license_is_free, 'Free' %>
+        <%= f.check_box :license_is_free %>
+      </div>
+    </div>
+
+    <div class="form-field">
+      <div class="form-field">
+        <%= f.label :license_is_paid, 'Paid' %>
+        <%= f.check_box :license_is_paid %>
+      </div>
+    </div>
+
+    <div class="form-field">
+      <div class="form-field">
+        <%= f.label :license_is_recharge, 'Recharge' %>
+        <%= f.check_box :license_is_recharge %>
+      </div>
+    </div>
+
+    <div class="form-field">
+      <div class="form-field">
+        <%= f.label :license_is_by_seat, 'By Seat' %>
+        <%= f.check_box :license_is_by_seat %>
+      </div>
+    </div>
+
+    <div class="form-field">
+      <div class="form-field">
+        <%= f.label :license_is_subscription, 'Subscription' %>
+        <%= f.check_box :license_is_subscription %>
+      </div>
+    </div>
+
+    <div class="form-field">
+      <div class="form-field">
+        <%= f.label :license_is_ad_supported, 'Ad Supported' %>
+        <%= f.check_box :license_is_ad_supported %>
+      </div>
+    </div>
+
+    <div class="form-field">
+      <div class="form-field">
+        <%= f.label :license_is_other, 'Other' %>
+        <%= f.check_box :license_is_other %>
+      </div>
+    </div>
+    </fieldset>
+
+  <fieldset>
+
+    <div class="form-field">
+      <%= f.label :license_text, raw('License Text') %>
+      <%= f.text_area :license_text, style: 'height: 30em;' %>
+    </div>
+
+  </fieldset>
+
+  </fieldset>
+
+    <p class="text-center">
+        <%= f.submit 'Submit App' %>
+    </p>
 <% end %>
 
 <script type="text/javascript">

@@ -1,15 +1,21 @@
 
 class App < ActiveRecord::Base
-  include AttributeConcern, ActiveModel::Validations
+  include AttributeConcern,
+          ActiveModel::Validations,
+          ActionView::Helpers::SanitizeHelper,
+          ActionView::Helpers::TextHelper
 
   NULL_IF_BLANK_ATTRS = %w( icon description short_description privacy_url accessibility_url vpat_url acceptable lti_configuration_url lti_registration_url lti_outcomes ios_app_id ios_app_scheme ios_app_path ios_app_affiliate_data android_app_package android_app_scheme android_app_action android_app_category android_app_component lti_launch_url )
-
-  include ActionView::Helpers::SanitizeHelper
-  include ActionView::Helpers::TextHelper
 
   class VarChar255Validator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       record.errors[attribute] << 'must contain 255 characters or fewer.' unless (value.to_s.size <= 255)
+    end
+  end
+
+  class TextBlobValidator < ActiveModel::EachValidator
+    def validate_each(record, attribute, value)
+      record.errors[attribute] << 'is too large and would be truncated if saved. Please reduce the size and submit again.' unless (value.to_s.size <= 65530)
     end
   end
 
@@ -38,8 +44,8 @@ class App < ActiveRecord::Base
     presence: true,
     length: { minimum: 1 }
 
-  validates :icon,
-    length: { maximum: 65530, message: '-- The app icon is too large. The recommended icon size is 180x180 and the file must be smaller than 64KB.'}
+  validates :icon, :license_text,
+    :textBlob => true
 
   validates :support_contact_email,
     length: { minimum: 6, maximum: 255, message: ' -- Please provide a valid email address.'},

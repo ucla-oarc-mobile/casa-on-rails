@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151217220047) do
+ActiveRecord::Schema.define(version: 20151217231628) do
 
   create_table "app_authors", force: true do |t|
     t.integer "app_id"
@@ -241,6 +241,14 @@ ActiveRecord::Schema.define(version: 20151217220047) do
     t.string   "support_contact_email"
     t.string   "download_size"
     t.string   "supported_languages"
+    t.boolean  "license_is_free"
+    t.boolean  "license_is_paid"
+    t.boolean  "license_is_recharge"
+    t.boolean  "license_is_by_seat"
+    t.boolean  "license_is_subscription"
+    t.boolean  "license_is_ad_supported"
+    t.boolean  "license_is_other"
+    t.text     "license_text"
   end
 
   create_table "apps_categories", force: true do |t|
