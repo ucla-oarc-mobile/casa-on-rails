@@ -21,6 +21,7 @@
       <li><a href="#" data-target="#privacy">Privacy</a></li>
       <li><a href="#" data-target="#accessibility">Accessibility</a></li>
       <li><a href="#" data-target="#licensing">Licensing</a></li>
+      <li><a href="#" data-target="#security">Security</a></li>
       <li><a href="#" data-target="#acl">Access Control</a></li>
     </ul>
   </div>
@@ -547,7 +548,89 @@
   </fieldset>
 </fieldset>
 
-  <fieldset role="tab" id="acl">
+    <fieldset role="tab" id="security">
+
+      <fieldset>
+        <legend>Security Declarations</legend>
+
+        <fieldset>
+          <div class="form-field">
+            <div class="form-field">
+              <%= f.label :security_uses_https, 'Uses HTTPS for Network Encryption', data: { help: 'Check this box if an SSL certificate is used to secure network traffic to and from the app.' }%>
+              <%= f.check_box :security_uses_https %>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <div class="form-field">
+              <%= f.label :security_uses_additional_encryption, 'Uses Additional Methods of Encryption', data: { help: 'Check this box if additional methods of encryption are used, for example, if data is encrypted at rest.' }%>
+              <%= f.check_box :security_uses_additional_encryption %>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <div class="form-field">
+              <%= f.label :security_requires_cookies, 'Requires Cookies', data: { help: 'Check this box if the app requires cookies in order to function.' } %>
+              <%= f.check_box :security_requires_cookies %>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <div class="form-field">
+              <%= f.label :security_requires_third_party_cookies, 'Requires Third-Party Cookies', data: { help: 'Check this box if the app requires third-party cookies in order to function.' } %>
+              <%= f.check_box :security_requires_third_party_cookies %>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <div class="form-field">
+              <%= f.label :security_sets_local_data, 'Sets Local Data', data: { help: 'Check this box if the app stores data locally to the user\'s device.' } %>
+              <%= f.check_box :security_sets_local_data %>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <div class="form-field">
+            <div class="form-field">
+              <%= f.label :security_session_lifetime, 'Session Lifetime', data: { help: 'The amount of time a user has between interactions before their login session is ended.' } %>
+              <%= f.text_field :security_session_lifetime %>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <div class="form-field">
+              <%= f.label :security_cloud_vendor, 'Cloud Vendor', data: { help: 'If a cloud vendor is used, the vendor\'s name.' } %>
+              <%= f.text_field :security_cloud_vendor %>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <div class="form-field">
+              <%= f.label :security_policy_url, 'Security Policy URL', data: { help: 'A link to information about the app\'s security policy.' }%>
+              <%= f.text_field :security_policy_url %>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <div class="form-field">
+              <%= f.label :security_sla_url, 'Security SLA URL', data: { help: 'A link to information about the app\'s SLA (Service Level Agreement).' }%>
+              <%= f.text_field :security_sla_url %>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <div class="form-field">
+            <%= f.label :security_text, raw('Security Text'), data: { help: 'Free form text describing additional information about how the app handles security.' } %>
+            <%= f.text_area :security_text, style: 'height: 30em;' %>
+          </div>
+
+        </fieldset>
+      </fieldset>
+    </fieldset>
+
+      <fieldset role="tab" id="acl">
 
     <legend>Access Control</legend>
 

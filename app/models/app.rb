@@ -15,7 +15,7 @@ class App < ActiveRecord::Base
 
   class TextBlobValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
-      record.errors[attribute] << 'is too large and would be truncated if saved. Please reduce the size and submit again.' unless (value.to_s.size <= 65530)
+      record.errors[attribute] << 'is too large and would be truncated if saved. Please reduce the size to less than 64KB and submit again.' unless (value.to_s.size <= 65535)
     end
   end
 
@@ -44,7 +44,7 @@ class App < ActiveRecord::Base
     presence: true,
     length: { minimum: 1 }
 
-  validates :icon, :license_text,
+  validates :icon, :license_text, :security_text,
     :textBlob => true
 
   validates :support_contact_email,
@@ -52,6 +52,8 @@ class App < ActiveRecord::Base
     allow_blank: true
 
   validates :download_size, :support_contact_name, :supported_languages,
+            :security_session_lifetime, :security_cloud_vendor, :security_policy_url ,
+            :security_sla_url,
    :varChar255 => true
 
   before_save do

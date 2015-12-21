@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151217231628) do
+ActiveRecord::Schema.define(version: 20151221182512) do
 
   create_table "app_authors", force: true do |t|
     t.integer "app_id"
@@ -197,9 +197,9 @@ ActiveRecord::Schema.define(version: 20151217231628) do
     t.text     "uri"
     t.text     "icon"
     t.text     "description"
-    t.boolean  "enabled",                           default: false
-    t.boolean  "share",                             default: true
-    t.boolean  "propagate",                         default: true
+    t.boolean  "enabled",                               default: false
+    t.boolean  "share",                                 default: true
+    t.boolean  "propagate",                             default: true
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "casa_in_payload"
@@ -223,18 +223,18 @@ ActiveRecord::Schema.define(version: 20151217231628) do
     t.text     "android_app_action"
     t.text     "android_app_category"
     t.text     "android_app_component"
-    t.boolean  "lti",                               default: false
+    t.boolean  "lti",                                   default: false
     t.text     "lti_launch_url"
-    t.boolean  "restrict",                          default: false
-    t.boolean  "mobile_support",                    default: false
-    t.boolean  "restrict_launch",                   default: false
+    t.boolean  "restrict",                              default: false
+    t.boolean  "mobile_support",                        default: false
+    t.boolean  "restrict_launch",                       default: false
     t.integer  "created_by"
-    t.boolean  "official",                          default: false
+    t.boolean  "official",                              default: false
     t.string   "primary_contact_name"
     t.string   "primary_contact_email"
     t.integer  "default_app_order"
     t.string   "sharing_preference"
-    t.boolean  "caliper",                           default: false
+    t.boolean  "caliper",                               default: false
     t.text     "caliper_metric_profiles"
     t.text     "caliper_ims_global_certifications"
     t.string   "support_contact_name"
@@ -249,6 +249,16 @@ ActiveRecord::Schema.define(version: 20151217231628) do
     t.boolean  "license_is_ad_supported"
     t.boolean  "license_is_other"
     t.text     "license_text"
+    t.boolean  "security_uses_https"
+    t.boolean  "security_uses_additional_encryption"
+    t.boolean  "security_requires_cookies"
+    t.boolean  "security_requires_third_party_cookies"
+    t.boolean  "security_sets_local_data"
+    t.string   "security_session_lifetime"
+    t.string   "security_cloud_vendor"
+    t.string   "security_policy_url"
+    t.string   "security_sla_url"
+    t.text     "security_text"
   end
 
   create_table "apps_categories", force: true do |t|
