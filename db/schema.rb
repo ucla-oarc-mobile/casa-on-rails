@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151221182512) do
+ActiveRecord::Schema.define(version: 20151221214406) do
 
   create_table "app_authors", force: true do |t|
     t.integer "app_id"
@@ -253,7 +253,7 @@ ActiveRecord::Schema.define(version: 20151221182512) do
     t.boolean  "security_uses_additional_encryption"
     t.boolean  "security_requires_cookies"
     t.boolean  "security_requires_third_party_cookies"
-    t.boolean  "security_sets_local_data"
+    t.boolean  "student_data_stores_local_data"
     t.string   "security_session_lifetime"
     t.string   "security_cloud_vendor"
     t.string   "security_policy_url"

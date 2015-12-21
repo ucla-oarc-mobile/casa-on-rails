@@ -269,7 +269,6 @@ module Admin
         :security_uses_additional_encryption,
         :security_requires_cookies,
         :security_requires_third_party_cookies,
-        :security_sets_local_data,
         :security_session_lifetime,
         :security_cloud_vendor,
         :security_policy_url,
