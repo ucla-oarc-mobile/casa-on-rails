@@ -183,6 +183,15 @@ module Admin
         @app.app_competencies << AppCompetency.new(name: t)
       end
 
+      current_features = @app.app_features.map(){ |t| t.feature_name }
+      new_features = params[:app][:app_features].gsub("\r", '').split("\n")
+      (current_features - new_features).each do |t|
+        @app.app_features.where(feature_name: t).each { |r| r.delete }
+      end
+      (new_features - current_features).each do |t|
+        @app.app_features << AppFeature.new(feature_name: t)
+      end
+
       if params[:app][:restrict_launch]
         current_methods = @app.app_launch_methods.map(){ |t| t.method }
         new_methods = params[:app][:app_launch_methods].keep_if(){ |m| m != '' }

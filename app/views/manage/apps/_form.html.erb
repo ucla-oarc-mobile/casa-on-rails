@@ -73,6 +73,11 @@
     </div>
 
     <div class="form-field">
+      <%= f.label :app_features, 'Features (one word or phrase per line)', data: { help: 'Features that the app has, such as "discussion board" or "quizzes" or "interactive math problems".' } %>
+      <%= f.text_area :app_features, value: @app.app_features.map(){ |t| t.feature_name }.join("\n") %>
+    </div>
+
+    <div class="form-field">
       <%= f.label :short_description, 'Short Description', data: { help: 'This short text is used as a sub-title for the app in the storefront.' } %>
       <%= f.text_area :short_description,
                       :maxlength => 255 %>

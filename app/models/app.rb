@@ -22,6 +22,7 @@ class App < ActiveRecord::Base
   has_and_belongs_to_many :categories
   has_many :app_tags
   has_many :app_competencies
+  has_many :app_features, :dependent => :destroy
   has_many :app_authors, :dependent => :destroy
   has_many :app_organizations, :dependent => :destroy
   belongs_to :app_privacy_policy

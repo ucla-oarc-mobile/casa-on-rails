@@ -58,6 +58,11 @@ module Manage
         @app.app_competencies << AppCompetency.new(name: t)
       end
 
+      new_features = params[:app][:app_features].gsub("\r", '').split("\n")
+      new_features.each do |t|
+        @app.app_features << AppFeature.new(feature_name: t)
+      end
+
       @app.created_by = session_user.id
 
       if @app.save
