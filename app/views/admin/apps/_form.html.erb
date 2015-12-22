@@ -22,6 +22,7 @@
       <li><a href="#" data-target="#accessibility">Accessibility</a></li>
       <li><a href="#" data-target="#licensing">Licensing</a></li>
       <li><a href="#" data-target="#security">Security</a></li>
+      <li><a href="#" data-target="#student-data">Student Data</a></li>
       <li><a href="#" data-target="#acl">Access Control</a></li>
     </ul>
   </div>
@@ -624,7 +625,64 @@
       </fieldset>
     </fieldset>
 
-      <fieldset role="tab" id="acl">
+    <fieldset role="tab" id="student-data">
+
+      <fieldset>
+        <legend>Student Data Declarations</legend>
+
+        <fieldset>
+        <div class="form-field">
+          <%= f.label :student_data_stores_local_data, 'The app stores local data.', data: { help: 'Check this box if the app stores any local data about the student.' }%>
+          <%= f.check_box :student_data_stores_local_data %>
+        </div>
+        </fieldset>
+
+        <fieldset>
+        <div class="form-field">
+          <%= f.label :student_data_stores_pii, 'The app stores personally identifying information (PII) about the student.', data: { help: 'Check this box if the app stores any PII regarding the student.' }%>
+          <%= f.check_box :student_data_stores_pii %>
+        </div>
+          </fieldset>
+
+        <fieldset>
+        <div class="form-field">
+          <%= f.label :student_data_requires_account, 'The app requires the student to create an account.', data: { help: 'Check this box if the app requires the student to create an account.' }%>
+          <%= f.check_box :student_data_requires_account %>
+        </div>
+          </fieldset>
+
+        <fieldset>
+        <div class="form-field">
+          <%= f.label :student_data_has_opt_out_for_data_collection, 'The app allows students to opt-out of data collection.', data: { help: 'Check this box if the student is given the option to opt-out of data collection.' }%>
+          <%= f.check_box :student_data_has_opt_out_for_data_collection %>
+        </div>
+          </fieldset>
+
+        <fieldset>
+        <div class="form-field">
+          <%= f.label :student_data_has_opt_in_for_data_collection, 'The app allows students to opt-in to data collection.', data: { help: 'Check this box if the student is given the option to opt-in to data collection.' }%>
+          <%= f.check_box :student_data_has_opt_in_for_data_collection %>
+        </div>
+          </fieldset>
+
+        <fieldset>
+        <div class="form-field">
+          <%= f.label :student_data_shows_eula, 'The app displays a EULA to students.', data: { help: 'Check this box if an End User License Agreement (EULA) is presented to the student.' }%>
+          <%= f.check_box :student_data_shows_eula %>
+        </div>
+          </fieldset>
+
+        <fieldset>
+        <div class="form-field">
+          <%= f.label :student_data_is_app_externally_hosted, 'The app is hosted outside of the institution.', data: { help: 'Check this box if the app is hosted externally.' }%>
+          <%= f.check_box :student_data_is_app_externally_hosted %>
+        </div>
+          </fieldset>
+
+      </fieldset>
+    </fieldset>
+
+    <fieldset role="tab" id="acl">
 
     <legend>Access Control</legend>
 

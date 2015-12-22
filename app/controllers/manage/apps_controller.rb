@@ -126,7 +126,14 @@ module Manage
         :security_cloud_vendor,
         :security_policy_url,
         :security_sla_url,
-        :security_text
+        :security_text,
+        :student_data_stores_local_data,
+        :student_data_requires_account,
+        :student_data_has_opt_out_for_data_collection,
+        :student_data_has_opt_in_for_data_collection,
+        :student_data_shows_eula,
+        :student_data_is_app_externally_hosted,
+        :student_data_stores_pii
       ])
 
     end
