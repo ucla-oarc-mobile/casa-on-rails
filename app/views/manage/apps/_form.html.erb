@@ -141,28 +141,15 @@
 
     </fieldset>
 
-    <fieldset class="form-fields">
-
-      <!--<legend>Download Size</legend>-->
-
       <div class="form-field">
         <%= f.label :download_size, 'Download Size', data: { help: 'The size requirements for installing the app, e.g., 500KB, 10 Megabytes, an e-book that requires downloads of large images.' } %>
         <%= f.text_field :download_size %>
       </div>
 
-    </fieldset>
-
-    <fieldset class="form-fields">
-
-      <!--<legend>Supported Languages<legend>-->
-
       <div class="form-field">
         <%= f.label :supported_languages, 'Supported Languages', data: { help: 'The languages supported by the app.' } %>
         <%= f.text_field :supported_languages %>
       </div>
-
-    </fieldset>
-
 
   </fieldset>
 
@@ -445,26 +432,25 @@
 
   <fieldset role="tab" id="licensing">
 
-    <fieldset>
-        <legend>Cost Model</legend>
+        <legend data-help="Check any of the licesing models below that the app supports.">Cost Model</legend>
 
       <fieldset>
         <div class="form-field">
-            <%= f.label :license_is_free, 'Free' %>
+            <%= f.label :license_is_free, 'Free', data: { help: 'Check this box if the app has a free cost model.' } %>
             <%= f.check_box :license_is_free %>
         </div>
       </fieldset>
 
       <fieldset>
         <div class="form-field">
-            <%= f.label :license_is_paid, 'Paid' %>
+            <%= f.label :license_is_paid, 'Paid', data: { help: 'Check this box if the app has a paid cost model.' } %>
             <%= f.check_box :license_is_paid %>
         </div>
       </fieldset>
 
       <fieldset>
         <div class="form-field">
-            <%= f.label :license_is_recharge, 'Recharge' %>
+            <%= f.label :license_is_recharge, 'Recharge', data: { help: 'Check this box if the app uses an operational or departmental recharge cost model.' } %>
             <%= f.check_box :license_is_recharge %>
         </div>
       </fieldset>
@@ -472,14 +458,14 @@
 
     <fieldset>
         <div class="form-field">
-            <%= f.label :license_is_by_seat, 'By Seat' %>
+            <%= f.label :license_is_by_seat, 'By Seat', data: { help: 'Check this box if the app uses by-seat licensing. Details about different by-seat plans may be added to the License Text section below.' } %>
             <%= f.check_box :license_is_by_seat %>
         </div>
     </fieldset>
 
     <fieldset>
         <div class="form-field">
-            <%= f.label :license_is_subscription, 'Subscription' %>
+            <%= f.label :license_is_subscription, 'Subscription', data: { help: 'Check this box if the app has a subscription-based cost model. Details about different subscription plans may be added to the License Text section below.' } %>
             <%= f.check_box :license_is_subscription %>
         </div>
     </fieldset>
@@ -487,21 +473,18 @@
 
     <fieldset>
         <div class="form-field">
-            <%= f.label :license_is_ad_supported, 'Ad Supported' %>
+            <%= f.label :license_is_ad_supported, 'Ad Supported', data: { help: 'Check this box if the app has an ad-supported cost model. Ad network or other ad details may be added to the License Text section below. Information about ads that set local cookies can be declared in the Security details for this app\'s configuration.' } %>
             <%= f.check_box :license_is_ad_supported %>
         </div>
     </fieldset>
 
     <fieldset>
         <div class="form-field">
-            <%= f.label :license_is_other, 'Other' %>
+            <%= f.label :license_is_other, 'Other', data: { help: 'Check this box if the app has a cost model that is not one of the models above. The License Text field below may be used to describe any other licensing details.' } %>
             <%= f.check_box :license_is_other %>
         </div>
     </fieldset>
 
-    </fieldset>
-
-  <fieldset>
 
     <div class="form-field">
       <%= f.label :license_text, raw('License Text') %>
@@ -509,11 +492,9 @@
     </div>
 
   </fieldset>
-  </fieldset>
 
     <fieldset role="tab" id="security">
 
-      <fieldset>
         <legend>Security Declarations</legend>
 
         <fieldset>
@@ -546,7 +527,6 @@
         </fieldset>
 
 
-      <fieldset>
         <div class="form-field">
             <%= f.label :security_session_lifetime, 'Session Lifetime', data: { help: 'The amount of time a user has between interactions before their login session is ended.' } %>
             <%= f.text_field :security_session_lifetime %>
@@ -566,21 +546,15 @@
             <%= f.label :security_sla_url, 'Security SLA URL', data: { help: 'A link to information about the app\'s SLA (Service Level Agreement).' }%>
             <%= f.text_field :security_sla_url %>
         </div>
-        </fieldset>
-
-      <fieldset>
         <div class="form-field">
           <%= f.label :security_text, raw('Security Text'), data: { help: 'Free form text describing additional information about how the app handles security.' } %>
           <%= f.text_area :security_text, style: 'height: 30em;' %>
         </div>
 
-        </fieldset>
-      </fieldset>
     </fieldset>
 
     <fieldset role="tab" id="student-data">
 
-      <fieldset>
         <legend>Student Data Declarations</legend>
 
         <fieldset>
@@ -632,7 +606,6 @@
           </div>
         </fieldset>
 
-      </fieldset>
     </fieldset>
 
     <p class="text-center">
