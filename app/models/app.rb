@@ -20,18 +20,18 @@ class App < ActiveRecord::Base
   end
 
   has_and_belongs_to_many :categories
-  has_many :app_tags
-  has_many :app_competencies
+  has_many :app_tags, :dependent => :destroy
+  has_many :app_competencies, :dependent => :destroy
   has_many :app_features, :dependent => :destroy
   has_many :app_authors, :dependent => :destroy
   has_many :app_organizations, :dependent => :destroy
-  belongs_to :app_privacy_policy
-  has_many :app_media_requirements
-  has_many :app_lti_versions
-  has_many :app_browser_features
-  has_many :app_out_peer_permissions
-  has_many :app_launch_methods
-  has_many :app_ratings
+  belongs_to :app_privacy_policy, :dependent => :destroy
+  has_many :app_media_requirements, :dependent => :destroy
+  has_many :app_lti_versions, :dependent => :destroy
+  has_many :app_browser_features, :dependent => :destroy
+  has_many :app_out_peer_permissions, :dependent => :destroy
+  has_many :app_launch_methods, :dependent => :destroy
+  has_many :app_ratings, :dependent => :destroy
 
   scope :available_to_launch_method, lambda { |m|
     if m
