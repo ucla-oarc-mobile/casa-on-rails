@@ -489,40 +489,54 @@
   <fieldset>
     <legend>Cost Model</legend>
 
+    <fieldset>
     <div class="form-field">
         <%= f.label :license_is_free, 'Free' %>
         <%= f.check_box :license_is_free %>
     </div>
+    </fieldset>
 
+    <fieldset>
     <div class="form-field">
         <%= f.label :license_is_paid, 'Paid' %>
         <%= f.check_box :license_is_paid %>
     </div>
+    </fieldset>
 
+    <fieldset>
     <div class="form-field">
         <%= f.label :license_is_recharge, 'Recharge' %>
         <%= f.check_box :license_is_recharge %>
     </div>
+    </fieldset>
 
+  <fieldset>
     <div class="form-field">
         <%= f.label :license_is_by_seat, 'By Seat' %>
         <%= f.check_box :license_is_by_seat %>
     </div>
+  </fieldset>
 
+    <fieldset>
     <div class="form-field">
         <%= f.label :license_is_subscription, 'Subscription' %>
         <%= f.check_box :license_is_subscription %>
     </div>
+    </fieldset>
 
+  <fieldset>
     <div class="form-field">
         <%= f.label :license_is_ad_supported, 'Ad Supported' %>
         <%= f.check_box :license_is_ad_supported %>
     </div>
+  </fieldset>
 
+  <fieldset>
     <div class="form-field">
         <%= f.label :license_is_other, 'Other' %>
         <%= f.check_box :license_is_other %>
     </div>
+  </fieldset>
   </fieldset>
 
   <fieldset>
@@ -545,22 +559,27 @@
               <%= f.label :security_uses_https, 'Uses HTTPS for Network Encryption', data: { help: 'Check this box if an SSL certificate is used to secure network traffic to and from the app.' }%>
               <%= f.check_box :security_uses_https %>
           </div>
+        </fieldset>
 
+        <fieldset>
           <div class="form-field">
               <%= f.label :security_uses_additional_encryption, 'Uses Additional Methods of Encryption', data: { help: 'Check this box if additional methods of encryption are used, for example, if data is encrypted at rest.' }%>
               <%= f.check_box :security_uses_additional_encryption %>
           </div>
+        </fieldset>
 
+        <fieldset>
           <div class="form-field">
               <%= f.label :security_requires_cookies, 'Requires Cookies', data: { help: 'Check this box if the app requires cookies in order to function.' } %>
               <%= f.check_box :security_requires_cookies %>
           </div>
+        </fieldset>
 
+        <fieldset>
           <div class="form-field">
               <%= f.label :security_requires_third_party_cookies, 'Requires Third-Party Cookies', data: { help: 'Check this box if the app requires third-party cookies in order to function.' } %>
               <%= f.check_box :security_requires_third_party_cookies %>
           </div>
-
         </fieldset>
 
         <fieldset>
