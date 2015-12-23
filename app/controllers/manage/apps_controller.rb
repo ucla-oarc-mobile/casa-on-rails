@@ -63,6 +63,54 @@ module Manage
         @app.app_features << AppFeature.new(feature_name: t)
       end
 
+      params[:wcag_text_alternatives].each do |t|
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
+      end if params[:wcag_text_alternatives]
+
+      params[:wcag_time_based_media].each do |t|
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
+      end if params[:wcag_time_based_media]
+
+      params[:wcag_adaptable].each do |t|
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
+      end if params[:wcag_adaptable]
+
+      params[:wcag_distinguishable].each do |t|
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
+      end if params[:wcag_distinguishable]
+
+      params[:wcag_keyboard_accessible].each do |t|
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
+      end if params[:wcag_keyboard_accessible]
+
+      params[:wcag_enough_time].each do |t|
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
+      end if params[:wcag_enough_time]
+
+      params[:wcag_seizures].each do |t|
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
+      end if params[:wcag_seizures]
+
+      params[:wcag_navigable].each do |t|
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
+      end if params[:wcag_navigable]
+
+      params[:wcag_readable].each do |t|
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
+      end if params[:wcag_readable]
+
+      params[:wcag_predictable].each do |t|
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
+      end if params[:wcag_predictable]
+
+      params[:wcag_input_assistance].each do |t|
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
+      end if params[:wcag_input_assistance]
+
+      params[:wcag_compatible].each do |t|
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
+      end if params[:wcag_compatible]
+
       @app.created_by = session_user.id
 
       if @app.save
@@ -138,7 +186,8 @@ module Manage
         :student_data_has_opt_in_for_data_collection,
         :student_data_shows_eula,
         :student_data_is_app_externally_hosted,
-        :student_data_stores_pii
+        :student_data_stores_pii,
+        :wcag_url
       ])
 
     end

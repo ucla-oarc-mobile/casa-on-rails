@@ -70,6 +70,54 @@ module Admin
         end
       end
 
+      params[:wcag_text_alternatives].each do |t|
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
+      end if params[:wcag_text_alternatives]
+
+      params[:wcag_time_based_media].each do |t|
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
+      end if params[:wcag_time_based_media]
+
+      params[:wcag_adaptable].each do |t|
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
+      end if params[:wcag_adaptable]
+
+      params[:wcag_distinguishable].each do |t|
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
+      end if params[:wcag_distinguishable]
+
+      params[:wcag_keyboard_accessible].each do |t|
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
+      end if params[:wcag_keyboard_accessible]
+
+      params[:wcag_enough_time].each do |t|
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
+      end if params[:wcag_enough_time]
+
+      params[:wcag_seizures].each do |t|
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
+      end if params[:wcag_seizures]
+
+      params[:wcag_navigable].each do |t|
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
+      end if params[:wcag_navigable]
+
+      params[:wcag_readable].each do |t|
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
+      end if params[:wcag_readable]
+
+      params[:wcag_predictable].each do |t|
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
+      end if params[:wcag_predictable]
+
+      params[:wcag_input_assistance].each do |t|
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
+      end if params[:wcag_input_assistance]
+
+      params[:wcag_compatible].each do |t|
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
+      end if params[:wcag_compatible]
+
       if @app.save
         redirect_to @app
       else
@@ -192,6 +240,67 @@ module Admin
         @app.app_features << AppFeature.new(feature_name: t)
       end
 
+      current_wcag_guidelines = @app.app_wcag_guidelines.map(){ |t| t.guideline }
+
+      new_wcag_guidelines = []
+
+      params[:wcag_text_alternatives].each do |t|
+        new_wcag_guidelines << t
+      end if params[:wcag_text_alternatives]
+
+      params[:wcag_time_based_media].each do |t|
+        new_wcag_guidelines << t
+      end if params[:wcag_time_based_media]
+
+      params[:wcag_adaptable].each do |t|
+        new_wcag_guidelines << t
+      end if params[:wcag_adaptable]
+
+      params[:wcag_distinguishable].each do |t|
+        new_wcag_guidelines << t
+      end if params[:wcag_distinguishable]
+
+      params[:wcag_keyboard_accessible].each do |t|
+        new_wcag_guidelines << t
+      end if params[:wcag_keyboard_accessible]
+
+      params[:wcag_enough_time].each do |t|
+        new_wcag_guidelines << t
+      end if params[:wcag_enough_time]
+
+      params[:wcag_seizures].each do |t|
+        new_wcag_guidelines << t
+      end if params[:wcag_seizures]
+
+      params[:wcag_navigable].each do |t|
+        new_wcag_guidelines << t
+      end if params[:wcag_navigable]
+
+      params[:wcag_readable].each do |t|
+        new_wcag_guidelines << t
+      end if params[:wcag_readable]
+
+      params[:wcag_predictable].each do |t|
+        new_wcag_guidelines << t
+      end if params[:wcag_predictable]
+
+      params[:wcag_input_assistance].each do |t|
+        new_wcag_guidelines << t
+      end if params[:wcag_input_assistance]
+
+      params[:wcag_compatible].each do |t|
+        new_wcag_guidelines << t
+      end if params[:wcag_compatible]
+
+      (current_wcag_guidelines - new_wcag_guidelines).each do |g|
+        @app.app_wcag_guidelines.where(guideline: g).each { |g| g.delete }
+      end
+
+      (new_wcag_guidelines - current_wcag_guidelines).each do |g|
+        Rails.logger.info 'G: ' + g.to_s
+        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: g)
+      end
+
       if params[:app][:restrict_launch]
         current_methods = @app.app_launch_methods.map(){ |t| t.method }
         new_methods = params[:app][:app_launch_methods].keep_if(){ |m| m != '' }
@@ -289,7 +398,8 @@ module Admin
         :student_data_has_opt_in_for_data_collection,
         :student_data_shows_eula,
         :student_data_is_app_externally_hosted,
-        :student_data_stores_pii
+        :student_data_stores_pii,
+        :wcag_url
       ])
 
     end

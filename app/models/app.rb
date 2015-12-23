@@ -32,6 +32,7 @@ class App < ActiveRecord::Base
   has_many :app_out_peer_permissions, :dependent => :destroy
   has_many :app_launch_methods, :dependent => :destroy
   has_many :app_ratings, :dependent => :destroy
+  has_many :app_wcag_guidelines, :dependent => :destroy
 
   scope :available_to_launch_method, lambda { |m|
     if m

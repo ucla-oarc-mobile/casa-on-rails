@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151222204143) do
+ActiveRecord::Schema.define(version: 20151223190221) do
 
   create_table "app_authors", force: true do |t|
     t.integer "app_id"
@@ -199,6 +199,13 @@ ActiveRecord::Schema.define(version: 20151222204143) do
     t.datetime "updated_at"
   end
 
+  create_table "app_wcag_guidelines", force: true do |t|
+    t.integer  "app_id"
+    t.string   "guideline"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "apps", force: true do |t|
     t.string   "title"
     t.text     "uri"
@@ -272,6 +279,7 @@ ActiveRecord::Schema.define(version: 20151222204143) do
     t.boolean  "student_data_shows_eula"
     t.boolean  "student_data_is_app_externally_hosted"
     t.boolean  "student_data_stores_pii"
+    t.string   "wcag_url"
   end
 
   create_table "apps_categories", force: true do |t|
