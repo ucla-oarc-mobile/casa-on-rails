@@ -239,16 +239,17 @@
     <section>
       <h3>LTI Support</h3>
       <p><strong>Enabled:</strong> <%= @app.lti ? 'Yes' : 'No' %></p>
-      <% if @app.lti_launch_url %>
-        <p><strong>Launch URL:</strong> <a href="<%= @app.lti_launch_url %>"><%= @app.lti_launch_url %></a></p>
-      <% end %>
-      <% if @app.lti_configuration_url %>
-        <p><strong>Configuration URL:</strong> <a href="<%= @app.lti_configuration_url %>"><%= @app.lti_configuration_url %></a></p>
-      <% end %>
-      <% if @app.lti_registration_url %>
-        <p><strong>Registration URL:</strong> <a href="<%= @app.lti_registration_url %>"><%= @app.lti_registration_url %></a></p>
-      <% end %>
-      <p><strong>Outcomes:</strong> <%= @app.lti_outcomes ? @app.lti_outcomes.capitalize : 'No' %></p>
+
+      <!--<%# if @app.lti_launch_url %>-->
+        <!--<p><strong>Launch URL:</strong> <a href="<#%= @app.lti_launch_url %>"><%#= @app.lti_launch_url %></a></p>-->
+      <!--<%# end %>-->
+      <!--<%# if @app.lti_configuration_url %>-->
+        <!--<p><strong>Configuration URL:</strong> <a href="<%#= @app.lti_configuration_url %>"><%#= @app.lti_configuration_url %></a></p>-->
+      <!--<%# end %>-->
+      <!--<%# if @app.lti_registration_url %>-->
+        <!--<p><strong>Registration URL:</strong> <a href="<%#= @app.lti_registration_url %>"><%#= @app.lti_registration_url %></a></p>-->
+      <!--<%# end %>-->
+      <!--<p><strong>Outcomes:</strong> <%#= @app.lti_outcomes ? @app.lti_outcomes.capitalize : 'No' %></p>-->
     </section>
     <% end %>
 

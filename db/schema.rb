@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151223190221) do
+ActiveRecord::Schema.define(version: 20160104210311) do
 
   create_table "app_authors", force: true do |t|
     t.integer "app_id"
@@ -50,12 +50,21 @@ ActiveRecord::Schema.define(version: 20151223190221) do
     t.datetime "updated_at"
   end
 
-  create_table "app_lti_versions", force: true do |t|
-    t.integer "app_id"
-    t.string  "version"
+  create_table "app_lti_configs", force: true do |t|
+    t.integer  "app_id"
+    t.string   "lti_launch_url"
+    t.text     "lti_launch_params"
+    t.string   "lti_registration_url"
+    t.string   "lti_configuration_url"
+    t.text     "lti_content_item_message"
+    t.string   "lti_lis_outcomes"
+    t.string   "lti_version"
+    t.string   "lti_ims_global_registration_number"
+    t.string   "lti_ims_global_conformance_date"
+    t.string   "lti_ims_global_registration_link"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
-
-  add_index "app_lti_versions", ["version"], name: "index_app_lti_versions_on_version", using: :btree
 
   create_table "app_media_requirements", force: true do |t|
     t.integer "app_id"
@@ -225,9 +234,6 @@ ActiveRecord::Schema.define(version: 20151223190221) do
     t.text     "accessibility_url"
     t.text     "vpat_url"
     t.text     "acceptable"
-    t.text     "lti_configuration_url"
-    t.text     "lti_registration_url"
-    t.string   "lti_outcomes"
     t.text     "ios_app_id"
     t.text     "ios_app_scheme"
     t.text     "ios_app_path"
@@ -238,7 +244,6 @@ ActiveRecord::Schema.define(version: 20151223190221) do
     t.text     "android_app_category"
     t.text     "android_app_component"
     t.boolean  "lti",                                          default: false
-    t.text     "lti_launch_url"
     t.boolean  "restrict",                                     default: false
     t.boolean  "mobile_support",                               default: false
     t.boolean  "restrict_launch",                              default: false

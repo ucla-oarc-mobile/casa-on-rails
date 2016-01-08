@@ -301,37 +301,10 @@
         <%= f.check_box :lti %>
       </div>
 
-      <div class="form-field">
-        <%= f.label :lti_launch_url, 'Launch URL' %>
-        <%= f.text_field :lti_launch_url %>
-      </div>
-
-      <div class="form-field">
-        <%= f.label :lti_configuration_url, 'Configuration URL' %>
-        <%= f.text_field :lti_configuration_url %>
-      </div>
-
-      <div class="form-field">
-        <%= f.label :lti_registration_url, 'Registration URL' %>
-        <%= f.text_field :lti_registration_url %>
-      </div>
-
-      <div class="form-field">
-        <%= label_tag :app_lti_versions, 'Versions Supported' %>
-        <%= select_tag :app_lti_versions,
-                       options_for_select(['1.0','1.1','1.2','2.0'], @app.app_lti_versions.map(){ |v| v.version }),
-                       multiple: true %>
-      </div>
-
-      <div class="form-field">
-        <%= f.label :lti_outcomes, 'Outcomes' %>
-        <%= f.select :lti_outcomes,
-                     options_for_select([
-                                            ['No', nil],
-                                            ['Optional', 'optional'],
-                                            ['Required', 'required']
-                                        ]) %>
-      </div>
+      <fieldset class="form-field" id="app_lti_configs">
+        <ul style="list-style:none;padding: 0 10px;"></ul>
+        <button type="button" class="secondary">Add LTI Configuration</button>
+      </fieldset>
 
     </fieldset>
 
@@ -910,5 +883,89 @@
         })
 
     })();
+
+  //////////////////////
+
+  (function(){
+
+      var createLtiFields = function(data){
+
+          var $li = $(document.createElement('li'))
+                  .addClass('form-field')
+                  .attr('style', 'border-left:3px solid #eee;padding-left:10px;margin-bottom:10px;')
+                  .append('<label>Launch URL</label><input type="text" class="input-lti_launch_url"'+(data&&data.lti_launch_url?(' value="'+data.lti_launch_url+'"'):'')+'>' +
+                  '<label>Configuration URL</label><input type="text" class="input-lti_configuration_url"'+(data&&data.lti_configuration_url?(' value="'+data.lti_configuration_url+'"'):'')+'>' +
+                  '<label>Registration URL</label><input type="text" class="input-lti_registration_url"'+(data&&data.lti_registration_url?(' value="'+data.lti_registration_url+'"'):'')+'>' +
+
+                  '<label>Version</label>' +
+                  '<select id="select-lti_version">' +
+                  '<option value="1.0"' +  ((data && data.lti_version && data.lti_version == '1.0') ? ' selected' : '') + '>1.0</option>' +
+                  '<option value="1.1"' +  ((data && data.lti_version && data.lti_version == '1.1') ?  ' selected' : '') + '>1.1</option>' +
+                  '<option value="1.1.1"' +  ((data && data.lti_version && data.lti_version == '1.1.1') ?  ' selected' : '') + '>1.1.1</option>' +
+                  '<option value="1.2"' +  ((data && data.lti_version && data.lti_version == '1.2') ?  ' selected' : '') + '>1.2</option>' +
+                  '<option value="2.0"' +  ((data && data.lti_version && data.lti_version == '2.0') ?  ' selected' : '') + '>2.0</option>' +
+                  '</select>' +
+
+                  '<label>LIS Outcomes</label>' +
+                  '<select id="select-lti_lis_outcomes">' +
+                  '<option value="no"' +  ((data && data.lti_lis_outcomes && data.lti_lis_outcomes == 'no') ? ' selected' : '') + '>No</option>' +
+                  '<option value="optional"' +  ((data && data.lti_lis_outcomes && data.lti_lis_outcomes == 'optional') ?  ' selected' : '') + '>Optional</option>' +
+                  '<option value="required"' +  ((data && data.lti_lis_outcomes && data.lti_lis_outcomes == 'required') ?  ' selected' : '') + '>Required</option>' +
+                  '</select>' +
+
+                  '<label>Launch Params</label><textarea style="height: 30em;" class="input-lti_launch_params">'+ (data && data.lti_launch_params ? data.lti_launch_params : '') +'</textarea>' +
+                  '<label>Content Item Message</label><textarea style="height: 30em;" class="input-lti_content_item_message">'+(data&&data.lti_content_item_message? data.lti_content_item_message :'') +'</textarea>' +
+                  '<label>IMS Global Registration Number</label><input type="text" class="input-lti_ims_global_registration_number"'+(data&&data.lti_ims_global_registration_number?(' value="'+data.lti_ims_global_registration_number+'"'):'')+'>'  +
+                  '<label>IMS Global Conformance Date</label><input type="text" class="input-lti_ims_global_conformance_date"'+(data&&data.lti_ims_global_conformance_date?(' value="'+data.lti_ims_global_conformance_date+'"'):'')+'>'  +
+                  '<label>IMS Global Registration Link</label><input type="text" class="input-lti_ims_global_registration_link"'+(data&&data.lti_ims_global_registration_link?(' value="'+data.lti_ims_global_registration_link+'"'):'')+'>');
+
+          $(document.createElement('button')).text('Remove').addClass('danger').click(function(){$(this).closest('li').remove()}).appendTo($li);
+
+          $('#app_lti_configs > ul').append($li);
+      }
+
+      $.each(<%= raw @app.app_lti_configs.to_json %>, function(idx, lti_config){
+          console.log(lti_config)
+          createLtiFields(lti_config)
+      })
+
+      $('#app_lti_configs > button').click(function(e){
+          createLtiFields();
+      })
+
+      $('#app-form').submit(function(e){
+          var data = [];
+          $('#app_lti_configs li').each(function(){
+              var lti_launch_url = $(this).find('.input-lti_launch_url').val(),
+                  lti_configuration_url = $(this).find('.input-lti_configuration_url').val(),
+                  lti_registration_url = $(this).find('.input-lti_registration_url').val(),
+                  lti_version = $('#select-lti_version').val(),
+                  lti_lis_outcomes = $('#select-lti_lis_outcomes').val(),
+                  lti_launch_params = $(this).find('.input-lti_launch_params').val(),
+                  lti_content_item_message = $(this).find('.input-lti_content_item_message').val(),
+                  lti_ims_global_registration_number = $(this).find('.input-lti_ims_global_registration_number').val(),
+                  lti_ims_global_conformance_date = $(this).find('.input-lti_ims_global_conformance_date').val(),
+                  lti_ims_global_registration_link = $(this).find('.input-lti_ims_global_registration_link').val(),
+                  dataElement = {};
+              if(lti_launch_url && lti_launch_url.length) dataElement['lti_launch_url'] = lti_launch_url;
+              if(lti_configuration_url && lti_configuration_url.length) dataElement['lti_configuration_url'] = lti_configuration_url;
+              if(lti_registration_url && lti_registration_url.length) dataElement['lti_registration_url'] = lti_registration_url;
+              if(lti_version && lti_version.length) dataElement['lti_version'] = lti_version;
+              if(lti_lis_outcomes && lti_lis_outcomes.length) dataElement['lti_lis_outcomes'] = lti_lis_outcomes;
+              if(lti_launch_params && lti_launch_params.length) dataElement['lti_launch_params'] = lti_launch_params;
+              if(lti_content_item_message && lti_content_item_message.length) dataElement['lti_content_item_message'] = lti_content_item_message;
+              if(lti_ims_global_registration_number && lti_ims_global_registration_number.length) dataElement['lti_ims_global_registration_number'] = lti_ims_global_registration_number;
+              if(lti_ims_global_conformance_date && lti_ims_global_conformance_date.length) dataElement['lti_ims_global_conformance_date'] = lti_ims_global_conformance_date;
+              if(lti_ims_global_registration_link && lti_ims_global_registration_link.length) dataElement['lti_ims_global_registration_link'] = lti_ims_global_registration_link;
+              data.push(dataElement);
+          })
+
+          $(this).append($(document.createElement('textarea'))
+                  .attr('name', 'app_lti_configs')
+                  .attr('style', 'display:none')
+                  .val(JSON.stringify(data)));
+      })
+
+  })();
 
 </script>

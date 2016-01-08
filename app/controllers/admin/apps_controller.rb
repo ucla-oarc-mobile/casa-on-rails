@@ -24,9 +24,9 @@ module Admin
       @app = App.new app_params
       @app.category_ids = params[:app][:categories]
 
-      params[:app_lti_versions].each { |version| @app.app_lti_versions << AppLtiVersion.new(version: version) } if params[:app_lti_versions]
       JSON.parse(params[:app_authors]).each { |app_author_params| @app.app_authors << AppAuthor.new(app_author_params) }
       JSON.parse(params[:app_organizations]).each { |app_organization_params| @app.app_organizations << AppOrganization.new(app_organization_params) }
+      JSON.parse(params[:app_lti_configs]).each{|app_lti_config | @app.app_lti_configs << AppLtiConfig.new(app_lti_config) }
 
       if params[:app][:default_app_order]
         @app.default_app_order = params[:app][:default_app_order]
@@ -139,14 +139,7 @@ module Admin
       @app = App.find params[:id]
       @app.category_ids = params[:app][:categories]
 
-      if params[:app_lti_versions]
-        vs = {}
-        @app.app_lti_versions.each { |r| vs[r.version] = r }
-        params[:app_lti_versions].each { |version| @app.app_lti_versions << AppLtiVersion.new(version: version) unless vs.has_key?(version) }
-        @app.app_lti_versions.each { |r| r.delete unless params[:app_lti_versions].include?(r.version) }
-      else
-        @app.app_lti_versions.each { |r| r.delete }
-      end
+      Rails.logger.info params.to_json
 
       if params[:app_browser_features]
         fs = {}
@@ -198,6 +191,25 @@ module Admin
         JSON.parse(params[:app_organizations]).each do |app_organization_params|
           @app.app_organizations << AppOrganization.new(app_organization_params)
         end
+      end
+
+      if params[:app][:lti] == '1'
+        if params[:app_lti_configs]
+
+          @app.app_lti_configs.each { |c| c.delete }
+          # The other properties that follow this same delete-and-recreate pattern probably also need this added.
+          # The real fix is to perform actual updates / upserts instead, but that is a large refactoring.
+          @app.app_lti_configs.clear
+
+          JSON.parse(params[:app_lti_configs]).each do |app_lti_config|
+            @app.app_lti_configs << AppLtiConfig.new(app_lti_config)
+          end
+        end
+      else
+        params[:app_lti_configs] = nil
+        @app.lti = '0'
+        @app.app_lti_configs.each { |c| c.delete }
+        @app.app_lti_configs.clear
       end
 
       if params[:app][:app_out_peer_permissions]
@@ -353,14 +365,10 @@ module Admin
         :android_app_action,
         :android_app_category,
         :android_app_component,
-        :lti_configuration_url,
-        :lti_registration_url,
-        :lti_outcomes,
+        :lti,
         :accessibility_url,
         :vpat_url,
         :privacy_url,
-        :lti,
-        :lti_launch_url,
         :restrict,
         :mobile_support,
         :restrict_launch,

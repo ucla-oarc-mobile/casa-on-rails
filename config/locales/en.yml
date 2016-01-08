@@ -20,4 +20,13 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  activerecord:
+    attributes:
+      app:
+        app_lti_configs: "Interoperability - "
+    errors:
+      models:
+        app:
+          attributes:
+            app_lti_configs:
+              invalid: "Launch URL is a required property for every LTI configuration. "

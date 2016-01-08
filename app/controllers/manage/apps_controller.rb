@@ -32,9 +32,9 @@ module Manage
       @app = App.new data
       @app.category_ids = params[:app][:categories]
 
-      params[:app_lti_versions].each { |version| @app.app_lti_versions << AppLtiVersion.new(version: version) } if params[:app_lti_versions]
       JSON.parse(params[:app_authors]).each { |app_author_params| @app.app_authors << AppAuthor.new(app_author_params) }
       JSON.parse(params[:app_organizations]).each { |app_organization_params| @app.app_organizations << AppOrganization.new(app_organization_params) }
+      JSON.parse(params[:app_lti_configs]).each{|app_lti_config | @app.app_lti_configs << AppLtiConfig.new(app_lti_config) }
 
       if params[:privacy][:enable] == '1'
         @app.app_privacy_policy = AppPrivacyPolicy.new(params[:app_privacy_policy].permit!) if params[:app_privacy_policy]
@@ -143,14 +143,10 @@ module Manage
         :android_app_action,
         :android_app_category,
         :android_app_component,
-        :lti_configuration_url,
-        :lti_registration_url,
-        :lti_outcomes,
         :accessibility_url,
         :vpat_url,
         :privacy_url,
         :lti,
-        :lti_launch_url,
         :mobile_support,
         :primary_contact_name,
         :primary_contact_email,

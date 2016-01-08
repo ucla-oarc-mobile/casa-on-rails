@@ -5,8 +5,12 @@ class App < ActiveRecord::Base
           ActionView::Helpers::SanitizeHelper,
           ActionView::Helpers::TextHelper
 
-  NULL_IF_BLANK_ATTRS = %w( icon description short_description privacy_url accessibility_url vpat_url acceptable lti_configuration_url lti_registration_url lti_outcomes ios_app_id ios_app_scheme ios_app_path ios_app_affiliate_data android_app_package android_app_scheme android_app_action android_app_category android_app_component lti_launch_url )
+  NULL_IF_BLANK_ATTRS = %w( icon description short_description privacy_url accessibility_url vpat_url acceptable ios_app_id ios_app_scheme ios_app_path ios_app_affiliate_data android_app_package android_app_scheme android_app_action android_app_category android_app_component )
 
+  # TODO
+  # These validations should use standard Rails idioms (presence, numericality, etc )and
+  # the humanized error messages present in config/locales/en.yml
+  #
   class VarChar255Validator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       record.errors[attribute] << 'must contain 255 characters or fewer.' unless (value.to_s.size <= 255)
@@ -19,6 +23,14 @@ class App < ActiveRecord::Base
     end
   end
 
+  class LTIExistenceValidator < ActiveModel::Validator
+    def validate(record)
+      if record.lti && record.app_lti_configs.empty?
+        record.errors[:base] << 'Interoperability - At least one LTI Configuration is required if "Supports LTI" is checked.'
+      end
+    end
+  end
+
   has_and_belongs_to_many :categories
   has_many :app_tags, :dependent => :destroy
   has_many :app_competencies, :dependent => :destroy
@@ -27,7 +39,7 @@ class App < ActiveRecord::Base
   has_many :app_organizations, :dependent => :destroy
   belongs_to :app_privacy_policy, :dependent => :destroy
   has_many :app_media_requirements, :dependent => :destroy
-  has_many :app_lti_versions, :dependent => :destroy
+  has_many :app_lti_configs, :dependent => :destroy
   has_many :app_browser_features, :dependent => :destroy
   has_many :app_out_peer_permissions, :dependent => :destroy
   has_many :app_launch_methods, :dependent => :destroy
@@ -39,6 +51,8 @@ class App < ActiveRecord::Base
       joins('LEFT OUTER JOIN `app_launch_methods` ON `apps`.`id` = `app_launch_methods`.`app_id`').where('restrict_launch = 0 OR `app_launch_methods`.`method` = :method', { method: m })
     end
   }
+
+  validates_with LTIExistenceValidator
 
   validate :caliper_attribute_is_valid
 
