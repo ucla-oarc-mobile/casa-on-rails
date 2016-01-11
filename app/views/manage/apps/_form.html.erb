@@ -12,19 +12,21 @@
   </div>
   <% end %>
 
-  <div class="tabs" role="tablist">
-    <ul>
-      <li><a href="#" data-target="#general">General</a></li>
-      <li><a href="#" data-target="#browser">Browser Features</a></li>
-      <li><a href="#" data-target="#native">Native Installs</a></li>
-      <li><a href="#" data-target="#interoperability">Interoperability</a></li>
-      <li><a href="#" data-target="#privacy">Privacy</a></li>
-      <li><a href="#" data-target="#accessibility">Accessibility</a></li>
-      <li><a href="#" data-target="#licensing">Licensing</a></li>
-      <li><a href="#" data-target="#security">Security</a></li>
-      <li><a href="#" data-target="#student-data">Student Data</a></li>
-    </ul>
-  </div>
+    <div class="tabs" role="tablist">
+      <ul>
+        <li><a href="#" data-target="#general">General</a></li>
+        <li><a href="#" data-target="#contacts">Contacts</a></li>
+        <li><a href="#" data-target="#display">Display</a></li>
+        <li><a href="#" data-target="#licensing">Licensing</a></li>
+        <li><a href="#" data-target="#privacy">Privacy</a></li>
+        <li><a href="#" data-target="#security">Security</a></li>
+        <li><a href="#" data-target="#native">Native Apps</a></li>
+        <li><a href="#" data-target="#student-data">Student Data</a></li>
+        <li><a href="#" data-target="#interoperability">Interoperability</a></li>
+        <li><a href="#" data-target="#accessibility">Accessibility</a></li>
+        <li><a href="#" data-target="#browser">Advanced Web</a></li>
+      </ul>
+    </div>
 
   <fieldset role="tab" id="general">
 
@@ -38,28 +40,17 @@
       <%= f.text_field :uri, required: true %>
     </div>
 
-    <% if @categories %>
-      <div class="form-field">
-        <%= f.label :categories %>
-        <%= f.select :categories, @categories.map(){ |c|
-                                  [c.name, c.id, {:selected => @app.categories.include?(c)}]
-                                }, {}, {:multiple => true} %>
-      </div>
-    <% end %>
-
     <div class="form-field">
-      <%= f.label :mobile_support, 'App Supports Mobile' %>
-      <%= f.check_box :mobile_support %>
+      <%= f.label :short_description, 'Short Description', data: { help: 'This short text is used as a sub-title for the app in the storefront.' } %>
+      <%= f.text_area :short_description,
+                      :maxlength => 255 %>
     </div>
 
     <div class="form-field">
-      <%= f.label :sharing_preference, 'Sharing Preference' %>
-      <%= f.select :sharing_preference,
-                    options_for_select([
-                                         'Only in This App Store',
-                                         'Share with Affiliated App Stores',
-                                         'Propagate throughout the App Store Network'
-                                       ])  %>
+      <%= f.label :description, raw('Description <span class="required">(required)</span>'), data: { help: 'The description of an app may be specified either as simple text or with basic HTML tags including p, ul, ol, li, strong, em and h1-6.' } %>
+      <%= f.text_area :description,
+                      :class => 'long',
+                      :required => true %>
     </div>
 
     <div class="form-field">
@@ -77,42 +68,21 @@
       <%= f.text_area :app_features, value: @app.app_features.map(){ |t| t.feature_name }.join("\n") %>
     </div>
 
-    <div class="form-field">
-      <%= f.label :short_description, 'Short Description', data: { help: 'This short text is used as a sub-title for the app in the storefront.' } %>
-      <%= f.text_area :short_description,
-                      :maxlength => 255 %>
-    </div>
+      <div class="form-field">
+        <%= f.label :download_size, 'Download Size', data: { help: 'Free-form text that describes the size requirements for downloading and installing the app. E.g., "500KB", "10 Megabytes", "an e-book that requires downloads of large images".' } %>
+        <%= f.text_field :download_size %>
+      </div>
 
-    <div class="form-field">
-      <%= f.label :description, raw('Description <span class="required">(required)</span>'), data: { help: 'The description of an app may be specified either as simple text or with basic HTML tags including p, ul, ol, li, strong, em and h1-6.' } %>
-      <%= f.text_area :description,
-                      :class => 'long',
-                      :required => true %>
-    </div>
+      <div class="form-field">
+        <%= f.label :supported_languages, 'Supported Languages', data: { help: 'The languages supported by the app.' } %>
+        <%= f.text_field :supported_languages %>
+      </div>
 
-    <div class="form-field">
-      <%= f.label :icon, 'Icon', for: 'app_icon-selector' %>
-      <select id="app_icon-selector">
-        <option value="upload">Upload</option>
-        <option value="url">URL</option>
-      </select>
-      <img src="" id="app_icon-upload-preview" style="margin: 10px 0;">
-      <input type="file" id="app_icon-upload">
-      <input type="text" id="app_icon-url">
-      <%= f.text_area :icon, style: 'display:none' %>
-    </div>
+  </fieldset>
 
-    <fieldset class="form-fields" id="app_authors">
-      <legend style="border:0;font-size:1em;font-weight:bold;">Author(s)</legend>
-      <ul style="list-style:none;padding: 0 10px;"></ul>
-      <button type="button" class="secondary">Add Author</button>
-    </fieldset>
+  <fieldset role="tab" id="contacts">
 
-    <fieldset class="form-fields" id="app_organizations">
-      <legend style="border:0;font-size:1em;font-weight:bold;">Organization(s)</legend>
-      <ul style="list-style:none;padding: 0 10px;"></ul>
-      <button type="button" class="secondary">Add Organization</button>
-    </fieldset>
+    <legend>Contacts</legend>
 
     <fieldset class="form-fields">
 
@@ -146,21 +116,78 @@
 
     </fieldset>
 
-      <div class="form-field">
-        <%= f.label :download_size, 'Download Size', data: { help: 'The size requirements for installing the app, e.g., 500KB, 10 Megabytes, an e-book that requires downloads of large images.' } %>
-        <%= f.text_field :download_size %>
-      </div>
+    <fieldset class="form-fields" id="app_authors">
+      <legend style="border:0;font-size:1em;font-weight:bold;">Author(s)</legend>
+      <ul style="list-style:none;padding: 0 10px;"></ul>
+      <button type="button" class="secondary">Add Author</button>
+    </fieldset>
 
-      <div class="form-field">
-        <%= f.label :supported_languages, 'Supported Languages', data: { help: 'The languages supported by the app.' } %>
-        <%= f.text_field :supported_languages %>
-      </div>
+    <fieldset class="form-fields" id="app_organizations">
+      <legend style="border:0;font-size:1em;font-weight:bold;">Organization(s)</legend>
+      <ul style="list-style:none;padding: 0 10px;"></ul>
+      <button type="button" class="secondary">Add Organization</button>
+    </fieldset>
+
 
   </fieldset>
 
-  <fieldset role="tab" id="browser">
+  <fieldset role="tab" id="display">
 
-    <legend>Browser Features</legend>
+    <legend>Display</legend>
+
+    <fieldset>
+        <div class="form-checkbox">
+          <%= f.check_box :mobile_support %>
+          <%= f.label :mobile_support, 'App Supports Mobile' %>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <div class="form-field">
+          <%= f.label :icon, 'Icon', for: 'app_icon-selector' %>
+          <select id="app_icon-selector">
+            <option value="upload">Upload</option>
+            <option value="url">URL</option>
+          </select>
+          <img src="" id="app_icon-upload-preview" style="margin: 10px 0;">
+          <input type="file" id="app_icon-upload">
+          <input type="text" id="app_icon-url">
+          <%= f.text_area :icon, style: 'display:none' %>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <% if @categories %>
+            <div class="form-field">
+              <%= f.label :categories %>
+              <%= f.select :categories, @categories.map(){ |c|
+                                        [c.name, c.id, {:selected => @app.categories.include?(c)}]
+                                      }, {}, {:multiple => true} %>
+            </div>
+        <% end %>
+    </fieldset>
+
+  </fieldset>
+
+    <fieldset role="tab" id="Sharing">
+
+      <legend>Sharing</legend>
+
+      <div class="form-field">
+        <%= f.label :sharing_preference, 'Sharing Preference' %>
+        <%= f.select :sharing_preference,
+                     options_for_select([
+                                                'Only in This App Store',
+                                                'Share with Affiliated App Stores',
+                                                'Propagate throughout the App Store Network'
+                                        ])  %>
+      </div>
+
+    </fieldset>
+
+    <fieldset role="tab" id="browser">
+
+    <legend>Advanced Web</legend>
 
     <p>This metadata can be used to determine if a user's browser is capable of supporting the app. A feature may use the settings &quot;Required&quot; if the application cannot be used without the feature, as well as &quot;Optional&quot; in the event that the app works best with it but will degrade gracefully if the browser does not support it.</p>
 
