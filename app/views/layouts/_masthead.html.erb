@@ -1,4 +1,9 @@
 <header role="banner">
+  <% unless Rails.env.production? %>
+    <div class="env-banner">
+      <p>Fear not: You're currently on the <b><%= Rails.env %></b> server!</p>
+    </div>
+  <% end %>
   <div class="stripe container"></div>
   <nav class="site container">
     <button class="menu-toggle">
