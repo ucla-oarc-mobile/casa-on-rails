@@ -121,6 +121,18 @@ class App < ActiveRecord::Base
     (self.casa_originator_id ? self.casa_originator_id : Rails.application.config.casa[:engine][:uuid]).to_s
   end
 
+  def has_security_properties_set?
+    (security_uses_https.present? or
+      security_uses_additional_encryption.present? or
+      security_requires_cookies.present? or
+      security_requires_third_party_cookies.present? or
+      security_session_lifetime.present? or
+      security_cloud_vendor.present? or
+      security_policy_url.present? or
+      security_sla_url.present? or
+      security_text.present?)
+  end
+
   def to_transit_payload
 
     if originated?

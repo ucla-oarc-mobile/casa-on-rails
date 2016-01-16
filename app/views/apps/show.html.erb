@@ -1,27 +1,42 @@
 <article class="app panels">
-  
-  <header>
-    <h1><%= @app.title %></h1>
-  </header>
+<main>
+  <section>
 
-  <footer>
+    <section style="vertical-align: top;">
+        <figure>
+          <%= @app.icon_tag %>
+        </figure>
 
-    <figure>
-      <%= @app.icon_tag %>
-    </figure>
+      <nav>
+        <a href="<%= @button[:url] %>" class="button"><%= @button[:text] %></a>
+      </nav>
 
-    <nav>
-      <a href="<%= @button[:url] %>" class="button"><%= @button[:text] %></a>
-    </nav>
+      <section>
+        <% if session_user and session_user.admin %>
+            <nav>
+              <%= link_to 'Edit', edit_admin_app_url(@app), class: 'button warning' %>
+              <%= link_to 'Destroy', admin_app_path(@app),
+                          method: :delete,
+                          data: { confirm: "Are you sure you want to delete this app?" },
+                          class: 'button danger' %>
+            </nav>
+        <% end %>
+      </section>
 
-    <div class="attribute">
-      <h4>URL</h4>
-      <p class="one-line"><%= @app.uri %></p>
-    </div>
+    </section>
 
-    <% if @app.categories.count > 0 %>
+    <section>
+
+      <h1 style="margin: 0;"><%= @app.title %></h1>
+
+      <section class="badges">
+      <% if @app.official %><section style="vertical-align: top; padding-right: 0px;"><%= image_tag "official-app.png" %></section><% end %>
+      <% if @app.mobile_support %><span class="badge mobile-support"></span><% end %>
+      </section>
+
+      <% if @app.categories.count > 0 %>
       <div class="attribute">
-        <h4>Categories</h4>
+        <h4>Store Categories</h4>
         <p><%= raw @app.categories.map(){ |c| link_to c.name, c }.join(', ') %></p>
       </div>
     <% end %>
@@ -33,63 +48,78 @@
       </div>
     <% end %>
 
-    <% if session_user and session_user.admin %>
-      <% if @app.created_by %>
-        <div class="attribute">
-          <h4>Submitter</h4>
-          <p><%= user = User.find(@app.created_by); raw "#{user.first_name} #{user.last_name}<br><small>#{link_to user.email, "mailto:#{user.email}"}</small>" %></p>
-        </div>
+      <% if @app.app_competencies.count > 0 %>
+          <div class="attribute">
+            <h4>Competencies</h4>
+            <p><%= raw @app.app_competencies.map(){ |c| c.name }.join(', ') %></p>
+          </div>
       <% end %>
-      <% if @app.primary_contact_name %>
-        <div class="attribute">
-          <h4>Primary Contact</h4>
-          <p>
-            <%= @app.primary_contact_name %>
-            <% if @app.primary_contact_email %>
-            <br><small><%= link_to @app.primary_contact_email, "mailto:#{@app.primary_contact_email}" %></small>
-            <% end %>
-        </div>
+
+      <% if @app.app_features.count > 0 %>
+          <div class="attribute">
+            <h4>Features</h4>
+            <p><%= raw @app.app_features.map(){ |f| f.feature_name }.join(', ') %></p>
+          </div>
       <% end %>
+
+    </section>
+
+  <section class="ratings" style="vertical-align: top; float: right;">
+    <% if @app.app_ratings.count > 0 %>
+
+        <div class="average">
+          <% average_rating = @app.average_rating.round(1).to_i %>
+          <span class="stars">
+            <span class="filled"><%= raw (1..average_rating).map { '&#9733;' }.join ' ' %></span>
+            <span class="unfilled"><%= raw (average_rating+1..5).map { '&#9734;' }.join ' ' %></span>
+          </span>
+          <div style="text-align: left;">
+              <span style="font-size: 12px;">
+              <%= image_tag 'users.png', size: "10x10"%>
+                <%= @app.app_ratings.count %> total
+              </span>
+          </div>
+        </div>
+
     <% end %>
-
-    <% if @app.app_authors.count > 0 %>
-    <div class="attribute">
-      <h4>Author<%= @app.app_authors.count > 1 ? 's' : '' %></h4>
-      <p><%= raw @app.app_authors.map(){ |c|
-                  name = c.name ? c.name : 'Anonymous'
-                  c.email ? "<a href='mailto:#{c.email}'>#{name}</a>" : "<span class='text-muted'>#{name}</span>"
-                }.join(', ') %></p>
-    </div>
-    <% end %>
+  </section>
 
 
-    <% if @app.app_organizations.count > 0 %>
-    <div class="attribute">
-      <h4>Organization<%= @app.app_organizations.count > 1 ? 's' : '' %></h4>
-      <p><%= raw @app.app_organizations.map(){ |c|
-                  name = c.name ? c.name : 'Anonymous'
-                  c.website ? "<a href='#{c.website}' target='_blank'>#{name}</a>" : "<span class='text-muted'>#{name}</span>"
-                }.join(', ') %></p>
-    </div>
-    <% end %>
+  </section>
 
-    <% if session_user and session_user.admin %>
-    <nav>
-      <%= link_to 'Edit', edit_admin_app_url(@app), class: 'button success' %>
-      <%= link_to 'Destroy', admin_app_path(@app),
-                      method: :delete,
-                      data: { confirm: "Are you sure you want to delete this app?" },
-                      class: 'button danger' %>
-    </nav>
-    <% end %>
+  <div class="infobar">
 
-  </footer>
+    <table style="width:100%">
+      <tbody>
+          <tr>
+            <th>Support</th>
+            <th>Accessibility</th>
+            <th>Privacy</th>
+            <th>Security</th>
+            <th>Mobile Friendly</th>
+            <th>Supports LTI®</th>
+            <th style="border-right: 0px;">Supports Caliper™</th>
+          </tr>
 
-  <main>
+          <tr>
+            <td><% if @app.support_contact_name or @app.support_contact_email %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
+            <td><% if @app.vpat_url or @app.accessibility_url or @app.wcag_url or @app.app_wcag_guidelines.count > 0 %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
+            <td><% if @app.privacy_url or @app.app_privacy_policy_id %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
+            <td><% if @app.has_security_properties_set? %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
+            <td><% if @app.mobile_support %><%= image_tag "web.png" %><% end %><% if @app.ios_app_id %><%= image_tag "apple.png" %><% end %><% if @app.android_app_package %><%= image_tag "android.png" %><% end %>
+              <% if ! @app.android_app_package and ! @app.ios_app_id and ! @app.mobile_support %><%= image_tag "dash.png" %><% end %></td>
+            <td><% if @app.lti %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
+            <td style="border-right: 0px;"><% if @app.caliper %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
+          </tr>
 
-    <header>
-      <h1><%= @app.title %></h1>
-    </header>
+      </tbody>
+    </table>
+
+  </div>
+
+  <section>
+    <h3 style="border-top: 1px solid #ddd; margin-bottom: 5px;"></h3>
+
 
     <% if @app.description %>
       <%= @app.formatted_description %>
@@ -97,16 +127,20 @@
       <%= simple_format @app.short_description %>
     <% end %>
 
-    <div class="badges">
-      <% if @app.official %><span class="badge official"></span><% end %>
-      <% if @app.mobile_support %><span class="badge mobile-support"></span><% end %>
-    </div>
+      <div class="badges">
+        <% if @app.official %><span class="badge official"></span><% end %>
+        <% if @app.mobile_support %><span class="badge mobile-support"></span><% end %>
+      </div>
+
+    </section>
 
     <div class="details">
 
       <% if session_user or @app.app_ratings.count > 0 %>
 
       <section class="ratings">
+
+        <h3 style="border-top: 1px solid #ddd; margin-bottom: 5px;"></h3>
 
         <h3>Reviews</h3>
 
@@ -234,6 +268,47 @@
       <% end %>
     </section>
     <% end %>
+
+      <% if session_user and session_user.admin %>
+          <% if @app.created_by %>
+              <div class="attribute">
+                <h4>Submitter</h4>
+                <p><%= user = User.find(@app.created_by); raw "#{user.first_name} #{user.last_name}<br><small>#{link_to user.email, "mailto:#{user.email}"}</small>" %></p>
+              </div>
+          <% end %>
+          <% if @app.primary_contact_name %>
+              <div class="attribute">
+                <h4>Primary Contact</h4>
+                <p>
+                  <%= @app.primary_contact_name %>
+                  <% if @app.primary_contact_email %>
+                      <br><small><%= link_to @app.primary_contact_email, "mailto:#{@app.primary_contact_email}" %></small>
+                  <% end %>
+                  </div>
+          <% end %>
+      <% end %>
+
+
+      <% if @app.app_authors.count > 0 %>
+          <div class="attribute">
+            <h4>Author<%= @app.app_authors.count > 1 ? 's' : '' %></h4>
+            <p><%= raw @app.app_authors.map(){ |c|
+                         name = c.name ? c.name : 'Anonymous'
+                         c.email ? "<a href='mailto:#{c.email}'>#{name}</a>" : "<span class='text-muted'>#{name}</span>"
+                       }.join(', ') %></p>
+          </div>
+      <% end %>
+
+
+      <% if @app.app_organizations.count > 0 %>
+          <div class="attribute">
+            <h4>Organization<%= @app.app_organizations.count > 1 ? 's' : '' %></h4>
+            <p><%= raw @app.app_organizations.map(){ |c|
+                         name = c.name ? c.name : 'Anonymous'
+                         c.website ? "<a href='#{c.website}' target='_blank'>#{name}</a>" : "<span class='text-muted'>#{name}</span>"
+                       }.join(', ') %></p>
+          </div>
+      <% end %>
 
     <% if @app.lti %>
     <section>

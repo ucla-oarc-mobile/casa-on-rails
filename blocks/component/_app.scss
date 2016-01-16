@@ -4,9 +4,11 @@
     margin: 0;
   }
 
-  footer {
+  section {
+    display: inline-block;
+    padding-right: 30px;
     figure, nav, .attribute {
-      margin-bottom: 12px;
+      margin-bottom: 4px;
     }
     .attribute {
       h4 {
@@ -28,6 +30,57 @@
   }
 
   main {
+
+    .infobar {
+      background : #EEEEEE;
+      //background : rgba(238, 238, 238, 1);
+      border-style : Solid;
+      border-color : #666666;
+      //border-color : rgba(102, 102, 102, 1);
+      border-width : 1px;
+      text-align: center;
+      margin: 40px auto;
+      width: 95%;
+
+      img {
+        max-height: 52px;
+        padding: 5px;
+      }
+
+      table {
+        border-spacing: 0px;
+        border-collapse: collapse;
+        width: 100%;
+        display: table;
+
+      }
+
+      tbody {
+        display: table-row-group;
+        vertical-align: middle;
+        border-color: inherit;
+      }
+
+      tr {
+        display: table-row;
+        vertical-align: inherit;
+        border-color: inherit;
+      }
+
+      th {
+        font-weight: 500;
+        font-size: 18px;
+        border-right: 1px solid #666666;
+        border-bottom: 1px solid #666666;
+      }
+
+
+      td {
+        border-right: 1px solid #666666;
+        padding: 7px;
+      }
+    }
+
     .details {
       section {
         margin: 36px 0 0;
@@ -40,12 +93,13 @@
 
     .badges {
       .badge:before {
-        display: inline;
+        display: inline-block;
         font-size: 12px;
         background-color: #ddd;
         border-radius: 5px;
         padding: 4px 9px;
         color: #333;
+        margin: 0px;
       }
       .badge.official:before {
         content: 'Official';
@@ -59,9 +113,17 @@
 
     .ratings {
       .average {
-        float: left;
-        font-size: 36px;
+        // float: left;
+        font-size: 16px;
         padding: 12px 20px 12px 0;
+        .stars {
+          .filled {
+            color: $color-primary;
+          }
+          .unfilled {
+            color: $color-primary;
+          }
+        }
       }
       .scores {
         list-style: none;
@@ -171,6 +233,70 @@
         display: none;
       }
     }
+    .infobar {
+      width: 70%;
+      margin: 20px auto;
+
+      /* Force table to not be like tables anymore */
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      /* Hide table headers (but not display: none;, for accessibility) */
+      th {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+
+      table {
+        border: 1px solid #666666;
+        border-collapse: collapse;
+      }
+
+      tr {
+
+      }
+
+      td {
+        /* Behave like a "row" */
+        border-bottom: 1px solid #666666;
+        text-align: center;
+        vertical-align: middle;
+        padding: 10px;
+        font-weight: bold;
+      } 
+
+      td:before {
+        display: block;
+        vertical-align: middle;
+        padding-right: 10px;
+        //border-right: thick double #ff0000;
+      }
+
+      /*labels*/
+      td:nth-of-type(1):before {
+        content: "Support";
+      }
+      td:nth-of-type(2):before {
+        content: "Accessibility";
+      }
+      td:nth-of-type(3):before {
+        content: "Privacy";
+      }
+      td:nth-of-type(4):before {
+        content: "Security";
+      }
+      td:nth-of-type(5):before {
+        content: "Mobile Friendly";
+      }
+      td:nth-of-type(6):before {
+        content: "Supports LTI®";
+      }
+      td:nth-of-type(7):before {
+        content: "Supports Caliper™";
+      }
+    }
   }
 
   @media (min-width: 600px) {
@@ -179,11 +305,15 @@
         display: none;
       }
       > footer {
-        position: absolute;
-        width: 200px;
+        // position: absolute;
+        width: auto;
+      }
+      > section {
+        // position: absolute;
+        width: auto;
       }
       > main {
-        margin-left: 216px;
+        // margin-left: 216px;
         width: auto;
       }
     }
