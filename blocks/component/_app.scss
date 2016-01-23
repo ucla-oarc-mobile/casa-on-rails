@@ -1,35 +1,173 @@
 .app {
 
+  box-shadow: 1px 1px 4px rgba(0,0,0,0.065);
+  background-color: #fff;
+  width: 95%;
+  margin: 10px auto;
+  border-radius: 5px;
+  -moz-border-radius : 5px;
+  -webkit-border-radius : 5px;
+  padding-top: 30px;
+  overflow: auto;
+
+  .read-more-state {
+    display: none;
+  }
+
+  .read-more-target {
+    opacity: 0;
+    max-height: 0;
+    font-size: 0;
+    transition: .25s ease;
+  }
+
+  .read-more-state:checked ~ .read-more-wrap .read-more-target {
+    opacity: 1;
+    font-size: inherit;
+    max-height: 999em;
+  }
+
+  .read-more-state ~ .read-more-trigger:before {
+    content: 'Show more';
+  }
+
+  .read-more-state:checked ~ .read-more-trigger:before {
+    content: 'Show less';
+  }
+
+  .read-more-trigger {
+    cursor: pointer;
+    display: inline-block;
+    padding: 0 .5em;
+    color: #666;
+    font-size: .9em;
+    line-height: 2;
+    border: 1px solid #ddd;
+    border-radius: .25em;
+  }
+
+  .line {
+    padding-bottom: 5px;
+    width: 100%;
+    border-top: 1px solid #666666;
+    margin: auto;
+  }
+
   figure {
     margin: 0;
   }
 
-  section {
-    display: inline-block;
-    padding-right: 30px;
-    figure, nav, .attribute {
-      margin-bottom: 4px;
+  .description {
+    padding: 0px;
+    margin: 30px auto;
+    width: 95%;
+
+    h1 {
+      text-align: left;
+      text-transform: uppercase;
+      font-size: 18px;
+      font-weight: normal;
+      padding-bottom: 15px;
     }
-    .attribute {
-      h4 {
-      }
-      p {
-        font-size: 13px;
-        color: #666;
-        &.one-line {
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          padding-right: 10px;
-        }
-      }
-      h4, p {
-        margin: 0;
-      }
+
+    p {
+      text-transform: none;
+      //padding-bottom: 2px;
     }
   }
 
+  .score-container {
+    display: inline-block;
+    float: left;
+    min-width: 180px;
+  }
+
+  .score {
+    display: block;
+    padding-right: 10px;
+    padding-top: 5px;
+    width: 95%;
+    margin: 0px auto;
+  }
+
+  /*.score*/ h5 {
+    font-size: 35px;
+    font-weight: 400;
+    margin: auto;
+    padding-bottom: 0px;
+  }
+
+  .rating-histogram {
+    display: inline-block;
+    padding-left: 10px;
+    width: 50%;
+  }
+
+  .score-bar {
+    display: block;
+    padding: 0px 5px 5px 0px;
+    vertical-align: middle;
+  }
+
+  .bar {
+    padding: 0px 10px;
+    display: inline-block;
+    text-align: left;
+    line-height: 18px;
+    font-size: 12px;
+    background-color: #9b5500;
+    color: #ffffff;
+  }
+
+  .barNone {
+    padding: 0px 10px;
+    display: inline-block;
+    width: 1%;
+    text-align: left;
+    line-height: 18px;
+    font-size: 12px;
+    background-color: #9b5500;
+    color: #ffffff;
+  }
+
   main {
+
+    section {
+      display: inline-block;
+
+      figure, nav, .attribute {
+        margin-bottom: 4px;
+      }
+      .group-padding {
+        padding: 0px 25px 0px 25px;
+        p {
+          padding-left: 25px;
+        }
+      }
+      .app-top {
+        margin: 0px auto;
+        vertical-align: top;
+      }
+
+      .attribute {
+        h4 {
+        }
+        p {
+          font-size: 13px;
+          color: #666;
+          &.one-line {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            padding-left: 10px;
+            padding-right: 10px;
+          }
+        }
+        h4, p {
+          margin: 0;
+        }
+      }
+    }
 
     .infobar {
       background : #EEEEEE;
@@ -81,19 +219,19 @@
       }
     }
 
-    .details {
-      section {
-        margin: 36px 0 0;
-      }
-      h3 {
-        border-bottom: 1px solid #ccc;
-        padding-bottom: 10px;
-      }
-    }
+    //.details {
+    //  section {
+    //    margin: 36px 0 0;
+    //  }
+    //  h3 {
+    //    border-bottom: 1px solid #ccc;
+    //    padding-bottom: 10px;
+    //  }
+    //}
 
     .badges {
+      display: block;
       .badge:before {
-        display: inline-block;
         font-size: 12px;
         background-color: #ddd;
         border-radius: 5px;
@@ -115,7 +253,8 @@
       .average {
         // float: left;
         font-size: 16px;
-        padding: 12px 20px 12px 0;
+        display: inline-block;
+        //padding: 12px 20px 12px 0;
         .stars {
           .filled {
             color: $color-primary;
@@ -177,27 +316,24 @@
           font-size: 12px;
         }
         .stars {
-          font-size: 12px;
-          margin-bottom: 8px;
-          padding: 10px;
+          font-size: 16px;
+          margin-bottom: 20px;
+          padding: 5px;
           input[type="radio"] {
-            height: 1px;
-            width: 1px;
+            display: none;
           }
           label {
             margin-right: 10px;
             float: left;
           }
           label {
-            z-index: 10;
-            &, &:before {
-              color: transparent;
-              background-color: $color-primary;
+             &, &:before {
+              content: '\2605';
             }
           }
           input[type="radio"]:checked + label ~ label {
             &, &:before {
-              background-color: #aaa;
+              content: '\2606';
             }
           }
           label {
@@ -205,22 +341,14 @@
             height: 16px;
             position: relative;
             text-align: center;
-            -webkit-transform: rotate(20deg);
-            -moz-transform: rotate(20deg);
-            -ms-transform: rotate(20deg);
-            -o-transform: rotate(20deg);
+            color: $color-primary;
           }
           label:before {
-            content: "";
             position: absolute;
             top: 0;
             left: 0;
             height: 16px;
             width: 16px;
-            -webkit-transform: rotate(135deg);
-            -moz-transform: rotate(135deg);
-            -ms-transform: rotate(135deg);
-            -o-transform: rotate(135deg);
           }
         }
       }
@@ -233,6 +361,7 @@
         display: none;
       }
     }
+
     .infobar {
       width: 70%;
       margin: 20px auto;
