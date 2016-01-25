@@ -153,20 +153,19 @@
        %>
 
         <%
-           # a simple insert does not work here because Rails auto-inserts the closing span tag
-           # right after opening tag :O
-           part1 = '<div><input type="checkbox" class="read-more-state" id="post-1" /><div class="read-more-wrap">' + description[3..positions[1]-1] + '</p><span class="read-more-target">'
+           # The string manipulation below relies on the use of the Rails formatted_description method
+           # 1. Wrap the first two paragraphs in a div with an expandable span.
+           part1 = '<div><input type="checkbox" class="read-more-state" id="post-1" /><div class="read-more-wrap">' + description[0..positions[1]-1] + '</p><span class="read-more-target">'
+           # 2. Include any additional paragraphs from the description.
            part2 = description[positions[1]..-5]
-
+           # 3. Finish up with the HTML controls.
+           part3 = '</span></div><label for="post-1" class="read-more-trigger"></label></div>'
         %>
 
         <%= part1.html_safe %>
-            <%= part2.html_safe %>
-        <%
-     end
-  %>
-            </span></div><label for="post-1" class="read-more-trigger"></label></div>
-
+        <%= part2.html_safe %>
+        <%= part3.html_safe %>
+        <% end %>
 
 
     <% elsif @app.short_description %>
@@ -211,15 +210,12 @@
         </div>
 
         <div class="rating-histogram">
-          <div class="score-bar">&#9733; 5 <div class="bar" style="width: <%= scores[0] == 0 ? 1 : ((scores[0].to_f / number_of_ratings.to_f) * 100) %>%"><%= scores[0] %></div></div>
-          <div class="score-bar">&#9733; 4 <div class="bar "style="width: <%= scores[1] == 0 ? 1 : ((scores[1].to_f / number_of_ratings.to_f) * 100) %>%"><%= scores[1] %></div></div>
-          <div class="score-bar">&#9733; 3 <div class="bar" style="width: <%= scores[2] == 0 ? 1 : ((scores[2].to_f / number_of_ratings.to_f) * 100) %>%"><%= scores[2] %></div></div>
-          <div class="score-bar">&#9733; 2 <div class="bar" style="width: <%= scores[3] == 0 ? 1 : ((scores[3].to_f / number_of_ratings.to_f) * 100) %>%"><%= scores[3] %></div></div>
-          <div class="score-bar">&#9733; 1 <div class="bar" style="width: <%= scores[4] == 0 ? 1 : ((scores[4].to_f / number_of_ratings.to_f) * 100) %>%"><%= scores[4] %></div></div>
+          <% scores.each { |score| %>
+          <div class="score-bar">&#9733; 5 <div class="bar" style="width: <%= score == 0 ? 1 : ((score.to_f / number_of_ratings.to_f) * 100) %>%"><%= score %></div></div>
+          <% } %>
         </div>
 
       </section>
-
 
       <ul class="latest reviews">
         <% @app.app_ratings.where.not(user_id: session_user ? session_user : 0).where.not(review: nil).order(created_at: :desc).take(5).each do |rating| %>
