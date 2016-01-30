@@ -1,5 +1,6 @@
 .app {
 
+  font-family: 'Roboto', "Lucida Sans Unicode", "Lucida Grande", Arial, sans-serif;
   box-shadow: 1px 1px 4px rgba(0,0,0,0.065);
   background-color: #fff;
   width: 95%;
@@ -57,9 +58,9 @@
     margin: 0;
   }
 
-  .description {
+  .content {
     padding: 0px;
-    margin: 30px auto;
+    margin: 30px;
     width: 95%;
 
     h1 {
@@ -72,7 +73,6 @@
 
     p {
       text-transform: none;
-      //padding-bottom: 2px;
     }
   }
 
@@ -87,7 +87,7 @@
     padding-right: 10px;
     padding-top: 5px;
     width: 95%;
-    margin: 0px auto;
+    margin: 0 0 0 5px;
   }
 
   /*.score*/ h5 {
@@ -130,7 +130,77 @@
     color: #ffffff;
   }
 
+  .additional-info-inline-block   {
+    display: inline-block;
+    padding-right: 30px;
+
+    h4 {
+      font-weight: bold;
+      font-size: 16px;
+      padding-bottom: 0px;
+      margin-bottom: 0px;
+    }
+
+    p, ul {
+      text-transform: none;
+      padding-bottom: 15px;
+      margin-top: 0px;
+    }
+
+    ul {
+      padding-left: 25px;
+    }
+
+    .interop {
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  .additional-info-block {
+    display: block;
+    h4 {
+      font-weight: bold;
+      font-size: 16px;
+      padding-bottom: 0px;
+      margin-bottom: 0px;
+    }
+    p, ul {
+      text-transform: none;
+      padding-bottom: 15px;
+      margin-top: 0px;
+    }
+
+    ul {
+      padding-left: 25px;
+    }
+  }
+
   main {
+
+    .top-details {
+      padding: 0px;
+      margin: 0 30px 0 30px;
+      width: 95%;
+      p {
+        padding-left: 20px;
+      }
+    }
+
+    .icon-group {
+      //margin: 0 auto;
+      vertical-align: top;
+      padding: 0 50px 0 0;
+    }
+
+    .middle-details-group {
+      padding: 0 50px 0 0;
+    }
+
+    .ratings-launch-group {
+      float: right;
+      margin-top: -20px;
+    }
 
     section {
       display: inline-block;
@@ -138,20 +208,8 @@
       figure, nav, .attribute {
         margin-bottom: 4px;
       }
-      .group-padding {
-        padding: 0px 25px 0px 25px;
-        p {
-          padding-left: 25px;
-        }
-      }
-      .app-top {
-        margin: 0px auto;
-        vertical-align: top;
-      }
 
       .attribute {
-        h4 {
-        }
         p {
           font-size: 13px;
           color: #666;
@@ -190,7 +248,6 @@
         border-collapse: collapse;
         width: 100%;
         display: table;
-
       }
 
       tbody {
@@ -219,16 +276,6 @@
       }
     }
 
-    //.details {
-    //  section {
-    //    margin: 36px 0 0;
-    //  }
-    //  h3 {
-    //    border-bottom: 1px solid #ccc;
-    //    padding-bottom: 10px;
-    //  }
-    //}
-
     .badges {
       display: block;
       .badge:before {
@@ -254,7 +301,8 @@
         // float: left;
         font-size: 16px;
         display: inline-block;
-        //padding: 12px 20px 12px 0;
+        padding: 12px 20px 12px 0;
+        //padding: 0px 50px 0px 10px;
         .stars {
           .filled {
             color: $color-primary;
@@ -362,6 +410,10 @@
       }
     }
 
+    main .ratings-launch-group {
+      float: none;
+    }
+
     .infobar {
       width: 70%;
       margin: 20px auto;
@@ -400,29 +452,31 @@
         display: block;
         vertical-align: middle;
         padding-right: 10px;
-        //border-right: thick double #ff0000;
       }
 
       /*labels*/
       td:nth-of-type(1):before {
-        content: "Support";
+        content: "Official";
       }
       td:nth-of-type(2):before {
-        content: "Accessibility";
+        content: "Support";
       }
       td:nth-of-type(3):before {
-        content: "Privacy";
+        content: "Accessibility";
       }
       td:nth-of-type(4):before {
-        content: "Security";
+        content: "Privacy";
       }
       td:nth-of-type(5):before {
-        content: "Mobile Friendly";
+        content: "Security";
       }
       td:nth-of-type(6):before {
-        content: "Supports LTI®";
+        content: "Mobile Friendly";
       }
       td:nth-of-type(7):before {
+        content: "Supports LTI®";
+      }
+      td:nth-of-type(8):before {
         content: "Supports Caliper™";
       }
     }

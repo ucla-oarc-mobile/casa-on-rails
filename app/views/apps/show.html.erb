@@ -1,8 +1,8 @@
 <article class="app panels">
 <main>
-  <section>
+  <section class="top-details">
 
-    <section class="group-padding app-top">
+    <section class="icon-group">
         <figure>
           <%= @app.icon_tag %>
         </figure>
@@ -21,7 +21,7 @@
 
     </section>
 
-    <section class="group-padding">
+    <section class="middle-details-group">
 
       <h1 style="margin: 0;"><%= @app.title %></h1>
 
@@ -53,14 +53,10 @@
           </div>
       <% end %>
       </section>
-      <section class="badges">
-        <% if @app.official %><section style="vertical-align: top; padding-right: 0px;"><%= image_tag "official-app.png" %></section><% end %>
-        <% if @app.mobile_support %><span class="badge mobile-support"></span><% end %>
-      </section>
 
     </section>
 
-  <section class="ratings" style="vertical-align: top;">
+  <section class="ratings-launch-group ratings">
     <% if @app.app_ratings.count > 0 %>
         <section class="average">
           <h5><%= @app.average_rating.round(1) %></h5>
@@ -102,6 +98,7 @@
     <table style="width:100%">
       <tbody>
           <tr>
+            <th>Official</th>
             <th>Support</th>
             <th>Accessibility</th>
             <th>Privacy</th>
@@ -112,11 +109,12 @@
           </tr>
 
           <tr>
+            <td> <% if @app.official %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
             <td><% if @app.support_contact_name or @app.support_contact_email %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
             <td><% if @app.vpat_url or @app.accessibility_url or @app.wcag_url or @app.app_wcag_guidelines.count > 0 %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
             <td><% if @app.privacy_url or @app.app_privacy_policy_id %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
             <td><% if @app.has_security_properties_set? %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
-            <td><% if @app.mobile_support %><%= image_tag "web.png" %><% end %><% if @app.ios_app_id %><%= image_tag "apple.png" %><% end %><% if @app.android_app_package %><%= image_tag "android.png" %><% end %>
+            <td><% if @app.mobile_support %><%= image_tag "web.png" %><% end %><% if @app.has_ios_properties_set? %><%= image_tag "apple.png" %><% end %><% if @app.has_android_properties_set? %><%= image_tag "android.png" %><% end %>
               <% if ! @app.android_app_package and ! @app.ios_app_id and ! @app.mobile_support %><%= image_tag "dash.png" %><% end %></td>
             <td><% if @app.lti %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
             <td style="border-right: 0px;"><% if @app.caliper %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
@@ -127,7 +125,7 @@
 
   </div>
 
-  <div class="description">
+  <div class="content">
     <div class="line"></div>
     <h1>Description</h1>
 
@@ -176,7 +174,7 @@
 
   <% if session_user or @app.app_ratings.count > 0 %>
 
-  <div class="description ratings">
+  <div class="content ratings">
 
     <div class="line"></div>
 
@@ -210,8 +208,8 @@
         </div>
 
         <div class="rating-histogram">
-          <% scores.each { |score| %>
-          <div class="score-bar">&#9733; 5 <div class="bar" style="width: <%= score == 0 ? 1 : ((score.to_f / number_of_ratings.to_f) * 100) %>%"><%= score %></div></div>
+          <% scores.to_enum.with_index.reverse_each { |score, index| %>
+          <div class="score-bar">&#9733; <%= index + 1 %> <div class="bar" style="width: <%= score == 0 ? 1 : ((score.to_f / number_of_ratings.to_f) * 100) %>%"><%= score %></div></div>
           <% } %>
         </div>
 
@@ -272,16 +270,15 @@
 
       <% end %>
 
-  <div class="description">
+  <% if @app.app_privacy_policy or @app.privacy_url %>
+
+  <div class="content">
 
     <div class="line"></div>
 
-    <h1>Additional Information</h1>
+    <h1>Privacy Policy</h1>
 
-
-    <% if @app.app_privacy_policy or @app.privacy_url %>
       <section>
-        <h3>Privacy Policy</h3>
         <% if @app.app_privacy_policy %>
           <div style="overflow:auto;width:100%">
           <table class="privacy-nutrition-label">
@@ -321,42 +318,204 @@
         <p><a href="<%= @app.privacy_url %>" target="_blank">View Privacy Policy</a></p>
         <% end %>
       </section>
-    <% end %>
 
-    <% if @app.accessibility_url or @app.vpat_url %>
-    <section>
-      <h3>Accessibility Policy</h3>
-      <% if @app.accessibility_url %>
-        <p><a href="<%= @app.accessibility_url %>">View Accessibility Policy</a></p>
-      <% end %>
-      <% if @app.vpat_url %>
-        <p><a href="<%= @app.vpat_url %>">View VPAT</a></p>
-      <% end %>
-    </section>
-    <% end %>
+    </div>
+  <% end %>
 
-      <% if session_user and session_user.admin %>
-          <% if @app.created_by %>
-              <div class="attribute">
-                <h4>Submitter</h4>
-                <p><%= user = User.find(@app.created_by); raw "#{user.first_name} #{user.last_name}<br><small>#{link_to user.email, "mailto:#{user.email}"}</small>" %></p>
-              </div>
+  <% if @app.has_student_data_properties_set? %>
+      <div class="content">
+        <div class="line"></div>
+
+        <h1>Student Data Declarations</h1>
+
+        <div class="additional-info-inline-block">
+          <h4>Stores Local Data</h4>
+          <p><%= @app.student_data_stores_local_data ? (@app.student_data_stores_local_data ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Requires Account</h4>
+          <p><%= @app.student_data_requires_account ? (@app.student_data_requires_account ? 'Yes' : 'No') :  '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Has Opt-Out for Data Collection</h4>
+          <p><%= @app.student_data_has_opt_out_for_data_collection ? (@app.student_data_has_opt_out_for_data_collection ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Has Opt-In for Data Collection</h4>
+          <p><%= @app.student_data_has_opt_in_for_data_collection ? (@app.student_data_has_opt_in_for_data_collection ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Displays EULA</h4>
+          <p><%= @app.student_data_shows_eula ? (@app.student_data_shows_eula ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Hosted Externally to the Institution</h4>
+          <p><%= @app.student_data_is_app_externally_hosted ? (@app.student_data_is_app_externally_hosted ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block" style="vertical-align: top;">
+          <h4>Stores Personally Identifying Information (PII)</h4>
+          <p><%= @app.student_data_stores_pii ? (@app.student_data_stores_pii ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <!-- Add General Student Data Information -->
+
+      </div>
+  <% end %>
+
+  <% if @app.has_security_properties_set? %>
+      <div class="content">
+        <div class="line"></div>
+
+        <h1>Security Declarations</h1>
+
+        <div class="additional-info-inline-block">
+          <h4>Uses HTTPS</h4>
+          <p><%= @app.security_uses_https ? (@app.security_uses_https ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Uses Additional Methods of Encryption</h4>
+          <p><%= @app.security_uses_additional_encryption ? (@app.security_uses_additional_encryption ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Requires Cookies</h4>
+          <p><%= @app.security_requires_cookies ? (@app.security_requires_cookies ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Requires Third-Party Cookies</h4>
+          <p><%= @app.security_requires_third_party_cookies ? (@app.security_requires_third_party_cookies ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Session Lifetime</h4>
+          <p><%= @app.security_session_lifetime ?  @app.security_session_lifetime : '-' %></p>
+        </div>
+        <div class="additional-info-inline-block">
+          <h4>Cloud Vendor</h4>
+          <p><%= @app.security_cloud_vendor ? @app.security_cloud_vendor : '-'  %>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Security Policy</h4>
+          <% if @app.security_policy_url.present? %>
+            <p><a href="<%= @app.security_policy_url %>">View Policy</a></p>
+          <% else %>
+              <p>-</p>
           <% end %>
-          <% if @app.primary_contact_name %>
-              <div class="attribute">
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Service Level Agreement (SLA)</h4>
+          <% if @app.security_sla_url %>
+              <p><a href="<%= @app.security_sla_url %>">View Policy</a></p>
+          <% else %>
+              <p>-</p>
+          <% end %>
+        </div>
+
+        <div class="additional-info-block">
+          <h4>General Security Information</h4>
+          <% if @app.security_text %>
+            <%= simple_format(@app.security_text) %>
+          <% else %>
+              <p>-</p>
+          <% end %>
+        </div>
+
+      </div>
+  <% end %>
+
+  <% if @app.accessibility_url or @app.vpat_url %>
+      <div class="content">
+        <div class="line"></div>
+        <h1>Accessibility Information</h1>
+
+        <div class="additional-info-inline-block" style="vertical-align: top;">
+          <h4>Accessibility Policy</h4>
+          <% if @app.accessibility_url %>
+            <p><a href="<%= @app.accessibility_url %>">View</a></p>
+          <% else %>
+            <p>-</p>
+          <% end %>
+        </div>
+
+        <div class="additional-info-inline-block" style="vertical-align: top;">
+          <h4>VPAT Policy</h4>
+          <% if @app.vpat_url %>
+            <p><a href="<%= @app.vpat_url %>">View</a></p>
+          <% else %>
+            <p>-</p>
+          <% end %>
+        </div>
+
+        <div class="additional-info-inline-block" style="vertical-align: top;">
+          <h4>WCAG Policy</h4>
+          <% if @app.wcag_url %>
+            <p><a href="<%= @app.wcag_url %>">View</a></p>
+          <% else %>
+            <p>-</p>
+          <% end %>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Supported WCAG Guidelines</h4>
+          <% if @app.app_wcag_guidelines %>
+              <ul>
+                <% @app.app_wcag_guidelines.each(){ |g| %>
+                <li><a href="<%= @app.url_for_wcag(g.guideline) %> " target="_blank"><%= g.guideline %></a></li>
+                <% } %>
+              </ul>
+          <% else %>
+              <p>-</p>
+          <% end %>
+        </div>
+
+      </div>
+    <% end %>
+
+  <% if (session_user and session_user.admin) or @app.app_authors.count > 0 or @app.app_organizations.count > 0 %>
+
+  <div class="content">
+
+    <div class="line"></div>
+
+    <h1>Contact Information</h1>
+
+    <% if session_user and session_user.admin %>
+              <div class="additional-info-inline-block">
+                <h4>Submitter</h4>
+                <% if @app.created_by %>
+                    <p><%= user = User.find(@app.created_by); raw "#{user.first_name} #{user.last_name}<br><small>#{link_to user.email, "mailto:#{user.email}"}</small>" %></p>
+                <% else %>
+                <p>-</p>
+              </div>
+
+              <div class="additional-info-inline-block">
                 <h4>Primary Contact</h4>
-                <p>
-                  <%= @app.primary_contact_name %>
-                  <% if @app.primary_contact_email %>
-                      <br><small><%= link_to @app.primary_contact_email, "mailto:#{@app.primary_contact_email}" %></small>
+                  <% if @app.primary_contact_name %>
+                    <p>
+                      <%= @app.primary_contact_name %>
+                      <% if @app.primary_contact_email %>
+                          <br><small><%= link_to @app.primary_contact_email, "mailto:#{@app.primary_contact_email}" %></small></p>
+                      <% end
+                  else %>
+                  <p>-</p>
                   <% end %>
-                  </div>
+              </div>
           <% end %>
       <% end %>
 
 
       <% if @app.app_authors.count > 0 %>
-          <div class="attribute">
+          <div class="additional-info-inline-block">
             <h4>Author<%= @app.app_authors.count > 1 ? 's' : '' %></h4>
             <p><%= raw @app.app_authors.map(){ |c|
                          name = c.name ? c.name : 'Anonymous'
@@ -367,7 +526,7 @@
 
 
       <% if @app.app_organizations.count > 0 %>
-          <div class="attribute">
+          <div class="additional-info-inline-block">
             <h4>Organization<%= @app.app_organizations.count > 1 ? 's' : '' %></h4>
             <p><%= raw @app.app_organizations.map(){ |c|
                          name = c.name ? c.name : 'Anonymous'
@@ -376,56 +535,174 @@
           </div>
       <% end %>
 
-    <% if @app.lti %>
-    <section>
-      <h3>LTI Support</h3>
-      <p><strong>Enabled:</strong> <%= @app.lti ? 'Yes' : 'No' %></p>
+    </div>
+  <% end %>
 
-      <!--<%# if @app.lti_launch_url %>-->
-        <!--<p><strong>Launch URL:</strong> <a href="<#%= @app.lti_launch_url %>"><%#= @app.lti_launch_url %></a></p>-->
-      <!--<%# end %>-->
-      <!--<%# if @app.lti_configuration_url %>-->
-        <!--<p><strong>Configuration URL:</strong> <a href="<%#= @app.lti_configuration_url %>"><%#= @app.lti_configuration_url %></a></p>-->
-      <!--<%# end %>-->
-      <!--<%# if @app.lti_registration_url %>-->
-        <!--<p><strong>Registration URL:</strong> <a href="<%#= @app.lti_registration_url %>"><%#= @app.lti_registration_url %></a></p>-->
-      <!--<%# end %>-->
-      <!--<p><strong>Outcomes:</strong> <%#= @app.lti_outcomes ? @app.lti_outcomes.capitalize : 'No' %></p>-->
-    </section>
+
+    <% if @app.lti or @app.caliper %>
+
+      <div class="content">
+
+        <div class="line"></div>
+
+        <h1>Interoperability Information</h1>
+
+        <div class="additional-info-inline-block">
+            <h4>LTI Support</h4>
+            <% if @app.lti %>
+              <div class="additional-info-inline-block">
+                <p class="interop">LTI Versions Supported:<%= @app.lti_versions_supported %></p>
+                <p class="interop">LIS Outcomes Supported: <%= @app.lis_outcomes_supported ? 'Yes' : 'No' %></p>
+
+                <h4>IMS Global Conformance Data for LTI</h4>
+                <% if @app.has_lti_conformance_info
+                    @app.app_lti_configs.each { |config | %>
+
+                        <p class="interop">Registration Number: <%= config.lti_ims_global_registration_number ? config.lti_ims_global_registration_number : '-' %></p>
+                        <p class="interop">Date: <%= config.lti_ims_global_conformance_date ? config.lti_ims_global_conformance_date : '-' %></p>
+                        <% if config.lti_ims_global_registration_link %>
+                            <p class="interop"><a href=<%= config.lti_ims_global_registration_link %> target="_blank">Full Registration Info</a></p>
+                        <% end %>
+                <%  } %>
+                <% else %>
+                    <p class="interop">-</p>
+                <% end %>
+              </div>
+
+          <% else %>
+            <p>No</p>
+          <% end %>
+        </div>
+
+
+        <% if @app.caliper %>
+            <div class="additional-info-block">
+                <h4>Caliper Support</h4>
+                <p><strong>Yes</strong></p>
+            </div>
+        <% end %>
+
+      </div>
     <% end %>
 
-    <% if @app.ios_app_id or @app.ios_app_scheme %>
-    <section>
-      <h3>iOS App</h3>
-      <% if @app.ios_app_id %>
-        <p><strong>App Store:</strong> <a href="https://itunes.apple.com/us/app/apple-store/id<%= @app.ios_app_id %>">https://itunes.apple.com/us/app/apple-store/id<%= @app.ios_app_id %></a></p>
+  <% if @app.has_licensing_properties_set? %>
+
+      <div class="content">
+
+        <div class="line"></div>
+
+        <h1>Licensing Information</h1>
+
+        <div class="additional-info-inline-block">
+          <h4>Free App</h4>
+          <p><%= @app.license_is_free.present? ?  (@app.license_is_free ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Paid App</h4>
+          <p><%= @app.license_is_paid.present? ?  (@app.license_is_paid ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>By Recharge Agreement</h4>
+          <p><%= @app.license_is_recharge.present? ?  (@app.license_is_recharge ? 'Yes' : 'No') : '-' %></p>
+        </div>
+        <div class="additional-info-inline-block">
+          <h4>By Seat</h4>
+          <p><%= @app.license_is_by_seat.present? ?  (@app.license_is_by_seat ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Subscription</h4>
+          <p><%= @app.license_is_subscription.present? ?  (@app.license_is_subscription ? 'Yes' : 'No') : '-' %></p>
+        </div>
+        <div class="additional-info-inline-block">
+          <h4>Ad-Supported</h4>
+          <p><%= @app.license_is_ad_supported.present? ?  (@app.license_is_ad_supported ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block" style="vertical-align: top;">
+          <h4>Other</h4>
+          <p><%= @app.license_is_other.present? ?  (@app.license_is_other ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-block">
+          <h4>Additional Licensing Information</h4>
+          <p><%= @app.license_text.present? ?  @app.license_text : '-' %></p>
+        </div>
+
+      </div>
+  <% end %>
+
+  <% if @app.ios_app_id or @app.ios_app_scheme or @app.android_app_package %>
+      <div class="content">
+        <div class="line"></div>
+        <h1>Mobile Apps</h1>
+
+        <% if @app.ios_app_id or @app.ios_app_scheme %>
+        <section>
+          <h3>iOS</h3>
+          <% if @app.ios_app_id %>
+            <p><strong>App Store:</strong> <a href="https://itunes.apple.com/us/app/apple-store/id<%= @app.ios_app_id %>">https://itunes.apple.com/us/app/apple-store/id<%= @app.ios_app_id %></a></p>
+          <% end %>
+          <% if @app.ios_app_scheme %>
+            <p><strong>Launch URL:</strong> <a href="<%= @app.ios_app_scheme %>://<%= @app.ios_app_path %>"><%= @app.ios_app_scheme %>://<%= @app.ios_app_path %></a></p>
+          <% end %>
+        </section>
+        <% end %>
+
+        <% if @app.android_app_package %>
+        <section>
+          <h3>Android</h3>
+          <p><strong>Play Store From Browser:</strong> <a href="http://play.google.com/store/apps/details?id=<%= @app.android_app_package %>">http://play.google.com/store/apps/details?id=<%= @app.android_app_package %></a></p>
+          <p><strong>Play Store From App:</strong> <a href="market://details?id=<%= @app.android_app_package %>">market://details?id=<%= @app.android_app_package %></a></p>
+          <p><strong>Launch Intent:</strong>
+              <%
+                 android_intent = "intent://scan/#Intent"
+                 android_intent << ";scheme=#{@app.android_app_scheme}" if @app.android_app_scheme
+                 android_intent << ";package=#{@app.android_app_package}" if @app.android_app_package
+                 android_intent << ";package=#{@app.android_app_action}" if @app.android_app_action
+                 android_intent << ";package=#{@app.android_app_category}" if @app.android_app_category
+                 android_intent << ";package=#{@app.android_app_component}" if @app.android_app_component %>
+            <a href="<%= android_intent %>"><%= android_intent %></a>
+          </p>
+        </section>
+        <% end %>
+
+      </div>
+  <% end %>
+
+  <div class="content">
+
+    <div class="line"></div>
+
+    <h1>Additional Information</h1>
+
+    <div class="additional-info-inline-block">
+      <h4>Updated</h4>
+      <p><%= @app.updated_at.strftime('%B %d, %Y') %></p>
+
+      <% if @app.mobile_support or @app.has_ios_properties_set? or @app.has_android_properties_set? %>
+          <h4>Supported Mobile Platforms</h4>
+          <ul>
+            <% if @app.mobile_support %><li>Mobile Web</li><% end %>
+            <% if @app.has_ios_properties_set? %><li>iOS</li><% end %>
+            <% if @app.has_android_properties_set? %><li>Android</li><% end %>
+          </ul>
       <% end %>
-      <% if @app.ios_app_scheme %>
-        <p><strong>Launch URL:</strong> <a href="<%= @app.ios_app_scheme %>://<%= @app.ios_app_path %>"><%= @app.ios_app_scheme %>://<%= @app.ios_app_path %></a></p>
-      <% end %>
-    </section>
-    <% end %>
+    </div>
 
-    <% if @app.android_app_package %>
-    <section>
-      <h3>Android App</h3>
-      <p><strong>Play Store From Browser:</strong> <a href="http://play.google.com/store/apps/details?id=<%= @app.android_app_package %>">http://play.google.com/store/apps/details?id=<%= @app.android_app_package %></a></p>
-      <p><strong>Play Store From App:</strong> <a href="market://details?id=<%= @app.android_app_package %>">market://details?id=<%= @app.android_app_package %></a></p>
-      <p><strong>Launch Intent:</strong>
-          <%
-             android_intent = "intent://scan/#Intent"
-             android_intent << ";scheme=#{@app.android_app_scheme}" if @app.android_app_scheme
-             android_intent << ";package=#{@app.android_app_package}" if @app.android_app_package
-             android_intent << ";package=#{@app.android_app_action}" if @app.android_app_action
-             android_intent << ";package=#{@app.android_app_category}" if @app.android_app_category
-             android_intent << ";package=#{@app.android_app_component}" if @app.android_app_component %>
-        <a href="<%= android_intent %>"><%= android_intent %></a>
-      </p>
-    </section>
-    <% end %>
+    <div class="additional-info-inline-block" style="vertical-align: top;">
+      <h4>Download Size</h4>
+      <p><%= @app.download_size ? @app.download_size : '-' %></p>
+      <h4>Supported Languages</h4>
+      <p><%= @app.supported_languages ? @app.supported_languages : '-' %></p>
+    </div>
 
-   </div>
+  </div>
 
-  </main>
+
+</main>
 
 </article>
+
