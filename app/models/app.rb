@@ -211,6 +211,29 @@ class App < ActiveRecord::Base
     return false
   end
 
+  def caliper_supported_metric_profiles
+    if caliper_metric_profiles.present?
+      profiles = Array.new
+      JSON.parse(caliper_metric_profiles)['metric_profiles'].each{ | profile_object |
+        profiles << profile_object['profile']
+      }
+      profiles
+    else
+      nil
+    end
+  end
+
+  def actions_for_supported_metric_profile(profile)
+    if caliper_metric_profiles.present?
+      actions = Array.new
+      JSON.parse(caliper_metric_profiles)['metric_profiles'].each{ | profile_object |
+        return profile_object['actions'].join(', ') if profile_object['profile'] == profile
+      }
+    else
+      nil
+    end
+  end
+
   def to_transit_payload
 
     if originated?

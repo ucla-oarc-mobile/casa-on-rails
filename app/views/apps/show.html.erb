@@ -539,51 +539,88 @@
   <% end %>
 
 
-    <% if @app.lti or @app.caliper %>
+    <% if @app.lti %>
 
       <div class="content">
 
         <div class="line"></div>
 
-        <h1>Interoperability Information</h1>
+        <h1>LTI Information</h1>
 
-        <div class="additional-info-inline-block">
+          <div class="additional-info-inline-block" style="vertical-align: top;">
             <h4>LTI Support</h4>
-            <% if @app.lti %>
-              <div class="additional-info-inline-block">
-                <p class="interop">LTI Versions Supported:<%= @app.lti_versions_supported %></p>
-                <p class="interop">LIS Outcomes Supported: <%= @app.lis_outcomes_supported ? 'Yes' : 'No' %></p>
+            <p class="interop">LTI Versions:<%= @app.lti_versions_supported %></p>
+            <p class="interop">LIS 1.0 Outcomes: <%= @app.lis_outcomes_supported ? 'Yes' : 'No' %></p>
+          </div>
 
-                <h4>IMS Global Conformance Data for LTI</h4>
-                <% if @app.has_lti_conformance_info
-                    @app.app_lti_configs.each { |config | %>
-
+          <div class="additional-info-inline-block" style="vertical-align: top;">
+            <h4>IMS Global Conformance</h4>
+            <% if @app.has_lti_conformance_info
+                @app.app_lti_configs.each { |config | %>
+                    <div class="additional-info-inline-block">
+                        <p class="interop">LTI Version: <%= config.lti_version ? config.lti_version : '-' %></p>
                         <p class="interop">Registration Number: <%= config.lti_ims_global_registration_number ? config.lti_ims_global_registration_number : '-' %></p>
-                        <p class="interop">Date: <%= config.lti_ims_global_conformance_date ? config.lti_ims_global_conformance_date : '-' %></p>
+                        <p class="interop">Conformance Date: <%= config.lti_ims_global_conformance_date ? config.lti_ims_global_conformance_date : '-' %></p>
                         <% if config.lti_ims_global_registration_link %>
                             <p class="interop"><a href=<%= config.lti_ims_global_registration_link %> target="_blank">Full Registration Info</a></p>
                         <% end %>
-                <%  } %>
-                <% else %>
-                    <p class="interop">-</p>
-                <% end %>
-              </div>
+                    </div>
+            <%  } %>
+            <% else %>
+                <p class="interop">-</p>
+            <% end %>
+          </div>
 
-          <% else %>
-            <p>No</p>
-          <% end %>
         </div>
 
-
-        <% if @app.caliper %>
-            <div class="additional-info-block">
-                <h4>Caliper Support</h4>
-                <p><strong>Yes</strong></p>
-            </div>
-        <% end %>
-
-      </div>
     <% end %>
+
+  <% if @app.caliper %>
+
+    <div class="content">
+
+        <div class="line"></div>
+
+        <h1>Caliper Information</h1>
+
+        <div class="additional-info-inline-block" style="vertical-align: top;">
+
+          <h4>Metric Profiles Support</h4>
+
+          <% @app.caliper_supported_metric_profiles.each { |profile_name | %>
+
+              <div class="additional-info-inline-block">
+                  <p class="interop">Metric Profile: <%= profile_name %></p>
+                  <% actions = @app.actions_for_supported_metric_profile(profile_name) %>
+                  <% if actions %>
+                    <p class="interop">Action(s): <%= actions %> </p>
+              <% end %>
+              </div>
+          <% } %>
+        </div>
+
+          <div class="additional-info-inline-block">
+              <h4>IMS Global Conformance</h4>
+              <% if @app.caliper_ims_global_certifications
+                   JSON.parse(@app.caliper_ims_global_certifications)['ims_global_certifications'].each { | cert | %>
+                      <div class="additional-info-inline-block">
+                        <p class="interop">Status: <%= cert['status'] ? cert['status'] : '-' %></p>
+                        <p class="interop">Metric Profiles: <%= cert['metric_profiles'] ? cert['metric_profiles'].join(', ') : '-' %></p>
+                        <p class="interop">Registration Number: <%= cert['registration_number'] ? cert['registration_number'] : '-' %></p>
+                        <p class="interop">Conformance Date: <%= cert['conformance_date'] ? cert['conformance_date'] : '-' %></p>
+                        <% if cert['link'] %>
+                            <p class="interop"><a href=<%= cert['link'] %> target="_blank">Full Registration Info</a></p>
+                        <% end %>
+                      </div>
+                  <%  } %>
+              <% else %>
+                  <p class="interop">-</p>
+              <% end %>
+        </div>
+
+    </div>
+
+  <% end %>
 
   <% if @app.has_licensing_properties_set? %>
 
