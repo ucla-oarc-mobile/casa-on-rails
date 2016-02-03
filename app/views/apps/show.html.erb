@@ -1,27 +1,33 @@
 <article class="app panels">
-  
-  <header>
-    <h1><%= @app.title %></h1>
-  </header>
+<main>
+  <section class="top-details">
 
-  <footer>
+    <section class="icon-group">
+        <figure>
+          <%= @app.icon_tag %>
+        </figure>
 
-    <figure>
-      <%= @app.icon_tag %>
-    </figure>
+      <section>
+        <% if session_user and session_user.admin %>
+            <nav>
+              <%= link_to 'Edit', edit_admin_app_url(@app), class: 'button warning' %>
+              <%= link_to 'Destroy', admin_app_path(@app),
+                          method: :delete,
+                          data: { confirm: "Are you sure you want to delete this app?" },
+                          class: 'button danger' %>
+            </nav>
+        <% end %>
+      </section>
 
-    <nav>
-      <a href="<%= @button[:url] %>" class="button"><%= @button[:text] %></a>
-    </nav>
+    </section>
 
-    <div class="attribute">
-      <h4>URL</h4>
-      <p class="one-line"><%= @app.uri %></p>
-    </div>
+    <section class="middle-details-group">
 
-    <% if @app.categories.count > 0 %>
+      <h1 style="margin: 0;"><%= @app.title %></h1>
+
+      <% if @app.categories.count > 0 %>
       <div class="attribute">
-        <h4>Categories</h4>
+        <h4>Store Categories</h4>
         <p><%= raw @app.categories.map(){ |c| link_to c.name, c }.join(', ') %></p>
       </div>
     <% end %>
@@ -32,134 +38,219 @@
         <p><%= raw @app.app_tags.map(){ |t| t.name }.join(', ') %></p>
       </div>
     <% end %>
-
-    <% if session_user and session_user.admin %>
-      <% if @app.created_by %>
-        <div class="attribute">
-          <h4>Submitter</h4>
-          <p><%= user = User.find(@app.created_by); raw "#{user.first_name} #{user.last_name}<br><small>#{link_to user.email, "mailto:#{user.email}"}</small>" %></p>
-        </div>
+      <section>
+      <% if @app.app_competencies.count > 0 %>
+          <div class="attribute">
+            <h4>Competencies</h4>
+            <p><%= raw @app.app_competencies.map(){ |c| c.name }.join(', ') %></p>
+          </div>
       <% end %>
-      <% if @app.primary_contact_name %>
-        <div class="attribute">
-          <h4>Primary Contact</h4>
-          <p>
-            <%= @app.primary_contact_name %>
-            <% if @app.primary_contact_email %>
-            <br><small><%= link_to @app.primary_contact_email, "mailto:#{@app.primary_contact_email}" %></small>
-            <% end %>
-        </div>
+
+      <% if @app.app_features.count > 0 %>
+          <div class="attribute">
+            <h4>Features</h4>
+            <p><%= raw @app.app_features.map(){ |f| f.feature_name }.join(', ') %></p>
+          </div>
       <% end %>
+      </section>
+
+    </section>
+
+  <section class="ratings-launch-group ratings">
+    <% if @app.app_ratings.count > 0 %>
+        <section class="average">
+          <h5><%= @app.average_rating.round(1) %></h5>
+          <% average_rating = @app.average_rating.round(0).to_i %>
+          <span class="stars">
+            <span class="filled"><%= raw (1..average_rating).map { '&#9733;' }.join ' ' %></span>
+            <span class="unfilled"><%= raw (average_rating+1..5).map { '&#9734;' }.join ' ' %></span>
+          </span>
+          <div>
+              <span style="font-size: 12px;">
+              <%= image_tag 'users.png', size: "10x10"%>
+                <%= @app.app_ratings.count %> total
+              </span>
+          </div>
+        </section>
+    <% else %>
+        <section class="average">
+          <span class="stars">
+            <span class="unfilled"><%= raw (1..5).map { '&#9734;' }.join ' ' %></span>
+          </span>
+          <div>
+              <span style="font-size: 12px;">
+              <%= image_tag 'users.png', size: "10x10"%>
+                0 total
+              </span>
+          </div>
+        </section>
     <% end %>
 
-    <% if @app.app_authors.count > 0 %>
-    <div class="attribute">
-      <h4>Author<%= @app.app_authors.count > 1 ? 's' : '' %></h4>
-      <p><%= raw @app.app_authors.map(){ |c|
-                  name = c.name ? c.name : 'Anonymous'
-                  c.email ? "<a href='mailto:#{c.email}'>#{name}</a>" : "<span class='text-muted'>#{name}</span>"
-                }.join(', ') %></p>
-    </div>
-    <% end %>
-
-
-    <% if @app.app_organizations.count > 0 %>
-    <div class="attribute">
-      <h4>Organization<%= @app.app_organizations.count > 1 ? 's' : '' %></h4>
-      <p><%= raw @app.app_organizations.map(){ |c|
-                  name = c.name ? c.name : 'Anonymous'
-                  c.website ? "<a href='#{c.website}' target='_blank'>#{name}</a>" : "<span class='text-muted'>#{name}</span>"
-                }.join(', ') %></p>
-    </div>
-    <% end %>
-
-    <% if session_user and session_user.admin %>
     <nav>
-      <%= link_to 'Edit', edit_admin_app_url(@app), class: 'button success' %>
-      <%= link_to 'Destroy', admin_app_path(@app),
-                      method: :delete,
-                      data: { confirm: "Are you sure you want to delete this app?" },
-                      class: 'button danger' %>
+      <a href="<%= @button[:url] %>" class="button"><%= @button[:text] %></a>
     </nav>
-    <% end %>
+  </section>
 
-  </footer>
+  </section>
 
-  <main>
+  <div class="infobar">
 
-    <header>
-      <h1><%= @app.title %></h1>
-    </header>
+    <table style="width:100%">
+      <tbody>
+          <tr>
+            <th>Official</th>
+            <th>Support</th>
+            <th>Accessibility</th>
+            <th>Privacy</th>
+            <th>Security</th>
+            <th>Mobile Friendly</th>
+            <th>Supports LTI&reg;</th>
+            <th style="border-right: 0px;">Supports Caliper&trade;</th>
+          </tr>
+
+          <tr>
+            <td> <% if @app.official %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
+            <td><% if @app.support_contact_name or @app.support_contact_email %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
+            <td><% if @app.vpat_url or @app.accessibility_url or @app.wcag_url or @app.app_wcag_guidelines.count > 0 %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
+            <td><% if @app.privacy_url or @app.app_privacy_policy_id %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
+            <td><% if @app.has_security_properties_set? %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
+            <td><% if @app.mobile_support %><%= image_tag "web.png" %><% end %><% if @app.has_ios_properties_set? %><%= image_tag "apple.png" %><% end %><% if @app.has_android_properties_set? %><%= image_tag "android.png" %><% end %>
+              <% if ! @app.android_app_package and ! @app.ios_app_id and ! @app.mobile_support %><%= image_tag "dash.png" %><% end %></td>
+            <td><% if @app.lti %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
+            <td style="border-right: 0px;"><% if @app.caliper %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
+          </tr>
+
+      </tbody>
+    </table>
+
+  </div>
+
+  <div class="content">
+    <div class="line"></div>
+    <h1>Description</h1>
 
     <% if @app.description %>
+
+      <%
+         description = @app.formatted_description.to_s
+         # Count the number of paragraphs.
+         # If there are fewer than two, do nothing.
+         # Else, insert the "read more" HTML.
+        number_of_paragraphs = description.scan('<p>').count
+        if(number_of_paragraphs <= 2)
+      %>
       <%= @app.formatted_description %>
+      <%
+         else
+           positions = []
+           pos = -1
+
+           while (pos = description.index('</p>', pos + 1))
+             positions << pos
+           end
+       %>
+
+        <%
+           # The string manipulation below relies on the use of the Rails formatted_description method
+           # 1. Wrap the first two paragraphs in a div with an expandable span.
+           part1 = '<div><input type="checkbox" class="read-more-state" id="post-1" /><div class="read-more-wrap">' + description[0..positions[1]-1] + '</p><span class="read-more-target">'
+           # 2. Include any additional paragraphs from the description.
+           part2 = description[positions[1]..-5]
+           # 3. Finish up with the HTML controls.
+           part3 = '</span></div><label for="post-1" class="read-more-trigger"></label></div>'
+        %>
+
+        <%= part1.html_safe %>
+        <%= part2.html_safe %>
+        <%= part3.html_safe %>
+        <% end %>
+
+
     <% elsif @app.short_description %>
       <%= simple_format @app.short_description %>
     <% end %>
 
-    <div class="badges">
-      <% if @app.official %><span class="badge official"></span><% end %>
-      <% if @app.mobile_support %><span class="badge mobile-support"></span><% end %>
     </div>
 
-    <div class="details">
+  <% if session_user or @app.app_ratings.count > 0 %>
 
-      <% if session_user or @app.app_ratings.count > 0 %>
+  <div class="content ratings">
 
-      <section class="ratings">
+    <div class="line"></div>
 
-        <h3>Reviews</h3>
+    <h1>Reviews</h1>
 
-        <% if @app.app_ratings.count > 0 %>
+    <% if @app.app_ratings.count > 0 %>
 
-          <%
-             scores = Array.new(5, 0)
-             @app.app_ratings.each { |rating| scores[rating.score - 1] = scores[rating.score - 1] + 1 }
-          %>
+      <%
+         scores = Array.new(5, 0)
+         @app.app_ratings.each { |rating| scores[rating.score - 1] = scores[rating.score - 1] + 1 }
+         number_of_ratings = @app.app_ratings.count
+      %>
 
+      <section class="score">
+
+        <div class="score-container">
+          <h5><%= @app.average_rating.round(1) %></h5>
           <div class="average">
-            <%= @app.average_rating.round(1) %>
+            <% average_rating = @app.average_rating.round(0).to_i %>
+            <span class="stars">
+            <span class="filled"><%= raw (1..average_rating).map { '&#9733;' }.join ' ' %></span>
+            <span class="unfilled"><%= raw (average_rating+1..5).map { '&#9734;' }.join ' ' %></span>
+          </span>
+            <div>
+              <span style="font-size: 12px;">
+              <%= image_tag 'users.png', size: "10x10"%>
+                <%= number_of_ratings %> total
+              </span>
+            </div>
           </div>
+        </div>
 
-          <ul class="scores">
-            <% scores.each.with_index do |value, index| %>
-              <li><%= index + 1 %> Stars: <%= value %></li>
-            <% end %>
-          </ul>
+        <div class="rating-histogram">
+          <% scores.to_enum.with_index.reverse_each { |score, index| %>
+          <div class="score-bar">&#9733; <%= index + 1 %> <div class="bar" style="width: <%= score == 0 ? 1 : ((score.to_f / number_of_ratings.to_f) * 100) %>%"><%= score %></div></div>
+          <% } %>
+        </div>
 
-          <ul class="latest reviews">
-            <% @app.app_ratings.where.not(user_id: session_user ? session_user : 0).where.not(review: nil).order(created_at: :desc).take(5).each do |rating| %>
-              <li>
-                <h4>
-                  <span class="stars">
-                    <span class="filled"><%= raw (1..rating.score).map { '&#9733;' }.join ' ' %></span>
-                    <span class="unfilled"><%= raw (rating.score+1..5).map { '&#9734;' }.join ' ' %></span>
-                  </span>
-                  by <%= rating.user.display_name %>
-                  on <%= rating.created_at.strftime('%a %b %d, %Y') %>
-                  <% if session_user and session_user.admin %>
-                    <%= link_to '(delete)', app_rating_url(@app, rating),
-                                method: :delete,
-                                data: { confirm: 'Are you sure?' } %>
-                  <% end %>
-                </h4>
-                <%= simple_format rating.review %>
-              </li>
-            <% end %>
-          </ul>
+      </section>
 
+      <ul class="latest reviews">
+        <% @app.app_ratings.where.not(user_id: session_user ? session_user : 0).where.not(review: nil).order(created_at: :desc).take(5).each do |rating| %>
+          <li>
+            <h4>
+              <span class="stars">
+                <span class="filled"><%= raw (1..rating.score).map { '&#9733;' }.join ' ' %></span>
+                <span class="unfilled"><%= raw (rating.score+1..5).map { '&#9734;' }.join ' ' %></span>
+              </span>
+              by <%= rating.user.display_name %>
+              on <%= rating.created_at.strftime('%a %b %d, %Y') %>
+              <% if session_user and session_user.admin %>
+                <%= link_to '(delete)', app_rating_url(@app, rating),
+                            method: :delete,
+                            data: { confirm: 'Are you sure?' } %>
+              <% end %>
+            </h4>
+            <%= simple_format rating.review %>
+          </li>
         <% end %>
+      </ul>
+
+    <% end %>
 
         <% if session_user %>
           <%= form_for AppRating.new(app_id: @app.id) do |f| %>
             <fieldset>
             <legend><%= @app_rating.new_record? ? 'Submit a Review' : 'Update Your Review' %></legend>
+
+
               <div class="stars">
                 <% (1..5).each do |i| %>
                   <%= f.radio_button :score, i, checked: (i == (@app_rating.new_record? ? 3 : @app_rating.score) ? true : false) %>
-                  <%= f.label "score_#{i}", i %>
+                  <label for="app_rating_<%="score_#{i}" %>">&#9734;</label>
                 <% end %>
               </div>
+
               <div class="form-field">
                 <%= f.text_area :review, style: 'width:100%;height:8rem;', value: @app_rating.review %>
               </div>
@@ -175,15 +266,22 @@
           <% end %>
         <% end %>
 
-      </section>
+      </div>
 
       <% end %>
 
-    <% if @app.app_privacy_policy or @app.privacy_url %>
+  <% if @app.app_privacy_policy or @app.privacy_url %>
+
+  <div class="content">
+
+    <div class="line"></div>
+
+    <h1>Privacy</h1>
+
       <section>
-        <h3>Privacy Policy</h3>
         <% if @app.app_privacy_policy %>
-          <div style="overflow:auto;width:100%">
+          <div class="additional-info-inline-block" style="vertical-align: top;">
+          <h4>Data Sharing</h4>
           <table class="privacy-nutrition-label">
             <thead>
             <tr>
@@ -196,7 +294,7 @@
             <tbody>
               <% AppPrivacyPolicy.classifications.each do |context, context_description| %>
                 <tr>
-                  <td class="row-heading"><%= context.capitalize %></td>
+                  <td class="row-heading" style="background-color: #F6F6F6;"><%= context.capitalize %></td>
                   <% AppPrivacyPolicy.types.each do |type, type_description| symbol = "#{context}_#{type}".to_sym %>
                   <%=
                       value = @app.app_privacy_policy.send(symbol)
@@ -217,74 +315,444 @@
           </table>
           </div>
         <% end %>
-        <% if @app.privacy_url %>
-        <p><a href="<%= @app.privacy_url %>" target="_blank">View Privacy Policy</a></p>
-        <% end %>
-      </section>
-    <% end %>
 
-    <% if @app.accessibility_url or @app.vpat_url %>
-    <section>
-      <h3>Accessibility Policy</h3>
-      <% if @app.accessibility_url %>
-        <p><a href="<%= @app.accessibility_url %>">View Accessibility Policy</a></p>
-      <% end %>
-      <% if @app.vpat_url %>
-        <p><a href="<%= @app.vpat_url %>">View VPAT</a></p>
-      <% end %>
-    </section>
+        <div class="additional-info-inline-block">
+          <h4>Privacy Policy</h4>
+          <% if @app.accessibility_url %>
+              <p><a href="<%= @app.privacy_url %>">View</a></p>
+          <% else %>
+              <p>-</p>
+          <% end %>
+        </div>
+
+      </section>
+
+    </div>
+  <% end %>
+
+  <% if @app.has_student_data_properties_set? %>
+      <div class="content">
+        <div class="line"></div>
+
+        <h1>Student Data</h1>
+
+        <div class="additional-info-inline-block">
+          <h4>Stores Local Data</h4>
+          <p><%= @app.student_data_stores_local_data ? (@app.student_data_stores_local_data ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Requires Account</h4>
+          <p><%= @app.student_data_requires_account ? (@app.student_data_requires_account ? 'Yes' : 'No') :  '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Has Opt-Out for Data Collection</h4>
+          <p><%= @app.student_data_has_opt_out_for_data_collection ? (@app.student_data_has_opt_out_for_data_collection ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Has Opt-In for Data Collection</h4>
+          <p><%= @app.student_data_has_opt_in_for_data_collection ? (@app.student_data_has_opt_in_for_data_collection ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Displays EULA</h4>
+          <p><%= @app.student_data_shows_eula ? (@app.student_data_shows_eula ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Hosted Externally to the Institution</h4>
+          <p><%= @app.student_data_is_app_externally_hosted ? (@app.student_data_is_app_externally_hosted ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block" style="vertical-align: top;">
+          <h4>Stores Personally Identifying Information (PII)</h4>
+          <p><%= @app.student_data_stores_pii ? (@app.student_data_stores_pii ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <!-- Add General Student Data Information -->
+
+      </div>
+  <% end %>
+
+  <% if @app.has_security_properties_set? %>
+      <div class="content">
+        <div class="line"></div>
+
+        <h1>Security</h1>
+
+        <div class="additional-info-inline-block">
+          <h4>Uses HTTPS</h4>
+          <p><%= @app.security_uses_https ? (@app.security_uses_https ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Uses Additional Methods of Encryption</h4>
+          <p><%= @app.security_uses_additional_encryption ? (@app.security_uses_additional_encryption ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Requires Cookies</h4>
+          <p><%= @app.security_requires_cookies ? (@app.security_requires_cookies ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Requires Third-Party Cookies</h4>
+          <p><%= @app.security_requires_third_party_cookies ? (@app.security_requires_third_party_cookies ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Session Lifetime</h4>
+          <p><%= @app.security_session_lifetime ?  @app.security_session_lifetime : '-' %></p>
+        </div>
+        <div class="additional-info-inline-block">
+          <h4>Cloud Vendor</h4>
+          <p><%= @app.security_cloud_vendor ? @app.security_cloud_vendor : '-'  %>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Security Policy</h4>
+          <% if @app.security_policy_url.present? %>
+            <p><a href="<%= @app.security_policy_url %>">View Policy</a></p>
+          <% else %>
+              <p>-</p>
+          <% end %>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Service Level Agreement (SLA)</h4>
+          <% if @app.security_sla_url %>
+              <p><a href="<%= @app.security_sla_url %>">View Policy</a></p>
+          <% else %>
+              <p>-</p>
+          <% end %>
+        </div>
+
+        <div class="additional-info-block">
+          <h4>General Security Information</h4>
+          <% if @app.security_text %>
+            <%= simple_format(@app.security_text) %>
+          <% else %>
+              <p>-</p>
+          <% end %>
+        </div>
+
+      </div>
+  <% end %>
+
+  <% if @app.accessibility_url or @app.vpat_url %>
+      <div class="content">
+        <div class="line"></div>
+        <h1>Accessibility</h1>
+
+        <div class="additional-info-inline-block" style="vertical-align: top;">
+          <h4>Accessibility Policy</h4>
+          <% if @app.accessibility_url %>
+            <p><a href="<%= @app.accessibility_url %>">View</a></p>
+          <% else %>
+            <p>-</p>
+          <% end %>
+        </div>
+
+        <div class="additional-info-inline-block" style="vertical-align: top;">
+          <h4>VPAT Policy</h4>
+          <% if @app.vpat_url %>
+            <p><a href="<%= @app.vpat_url %>">View</a></p>
+          <% else %>
+            <p>-</p>
+          <% end %>
+        </div>
+
+        <div class="additional-info-inline-block" style="vertical-align: top;">
+          <h4>WCAG Policy</h4>
+          <% if @app.wcag_url %>
+            <p><a href="<%= @app.wcag_url %>">View</a></p>
+          <% else %>
+            <p>-</p>
+          <% end %>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Supported WCAG Guidelines</h4>
+          <% if @app.app_wcag_guidelines %>
+              <ul>
+                <% @app.app_wcag_guidelines.each(){ |g| %>
+                <li><a href="<%= @app.url_for_wcag(g.guideline) %> " target="_blank"><%= g.guideline %></a></li>
+                <% } %>
+              </ul>
+          <% else %>
+              <p>-</p>
+          <% end %>
+        </div>
+
+      </div>
     <% end %>
 
     <% if @app.lti %>
-    <section>
-      <h3>LTI Support</h3>
-      <p><strong>Enabled:</strong> <%= @app.lti ? 'Yes' : 'No' %></p>
 
-      <!--<%# if @app.lti_launch_url %>-->
-        <!--<p><strong>Launch URL:</strong> <a href="<#%= @app.lti_launch_url %>"><%#= @app.lti_launch_url %></a></p>-->
-      <!--<%# end %>-->
-      <!--<%# if @app.lti_configuration_url %>-->
-        <!--<p><strong>Configuration URL:</strong> <a href="<%#= @app.lti_configuration_url %>"><%#= @app.lti_configuration_url %></a></p>-->
-      <!--<%# end %>-->
-      <!--<%# if @app.lti_registration_url %>-->
-        <!--<p><strong>Registration URL:</strong> <a href="<%#= @app.lti_registration_url %>"><%#= @app.lti_registration_url %></a></p>-->
-      <!--<%# end %>-->
-      <!--<p><strong>Outcomes:</strong> <%#= @app.lti_outcomes ? @app.lti_outcomes.capitalize : 'No' %></p>-->
-    </section>
+      <div class="content">
+
+        <div class="line"></div>
+
+        <h1>LTI&reg;</h1>
+
+          <div class="additional-info-inline-block" style="vertical-align: top;">
+            <h4>LTI Support</h4>
+            <p class="interop">LTI Versions:<%= @app.lti_versions_supported %></p>
+            <p class="interop">LIS 1.0 Outcomes: <%= @app.lis_outcomes_supported ? 'Yes' : 'No' %></p>
+          </div>
+
+          <div class="additional-info-inline-block" style="vertical-align: top;">
+            <h4>IMS Global Conformance</h4>
+            <% if @app.has_lti_conformance_info
+                @app.app_lti_configs.each { |config | %>
+                    <div class="additional-info-inline-block">
+                        <p class="interop">LTI Version: <%= config.lti_version ? config.lti_version : '-' %></p>
+                        <p class="interop">Registration Number: <%= config.lti_ims_global_registration_number ? config.lti_ims_global_registration_number : '-' %></p>
+                        <p class="interop">Conformance Date: <%= config.lti_ims_global_conformance_date ? config.lti_ims_global_conformance_date : '-' %></p>
+                        <% if config.lti_ims_global_registration_link %>
+                            <p class="interop"><a href=<%= config.lti_ims_global_registration_link %> target="_blank">Full Registration Info</a></p>
+                        <% end %>
+                    </div>
+            <%  } %>
+            <% else %>
+                <p class="interop">-</p>
+            <% end %>
+          </div>
+
+        </div>
+
     <% end %>
 
-    <% if @app.ios_app_id or @app.ios_app_scheme %>
-    <section>
-      <h3>iOS App</h3>
-      <% if @app.ios_app_id %>
-        <p><strong>App Store:</strong> <a href="https://itunes.apple.com/us/app/apple-store/id<%= @app.ios_app_id %>">https://itunes.apple.com/us/app/apple-store/id<%= @app.ios_app_id %></a></p>
-      <% end %>
-      <% if @app.ios_app_scheme %>
-        <p><strong>Launch URL:</strong> <a href="<%= @app.ios_app_scheme %>://<%= @app.ios_app_path %>"><%= @app.ios_app_scheme %>://<%= @app.ios_app_path %></a></p>
-      <% end %>
-    </section>
-    <% end %>
+  <% if @app.caliper %>
 
-    <% if @app.android_app_package %>
-    <section>
-      <h3>Android App</h3>
-      <p><strong>Play Store From Browser:</strong> <a href="http://play.google.com/store/apps/details?id=<%= @app.android_app_package %>">http://play.google.com/store/apps/details?id=<%= @app.android_app_package %></a></p>
-      <p><strong>Play Store From App:</strong> <a href="market://details?id=<%= @app.android_app_package %>">market://details?id=<%= @app.android_app_package %></a></p>
-      <p><strong>Launch Intent:</strong>
-          <%
-             android_intent = "intent://scan/#Intent"
-             android_intent << ";scheme=#{@app.android_app_scheme}" if @app.android_app_scheme
-             android_intent << ";package=#{@app.android_app_package}" if @app.android_app_package
-             android_intent << ";package=#{@app.android_app_action}" if @app.android_app_action
-             android_intent << ";package=#{@app.android_app_category}" if @app.android_app_category
-             android_intent << ";package=#{@app.android_app_component}" if @app.android_app_component %>
-        <a href="<%= android_intent %>"><%= android_intent %></a>
-      </p>
-    </section>
-    <% end %>
+    <div class="content">
 
+        <div class="line"></div>
+
+        <h1>Caliper&trade;</h1>
+
+        <div class="additional-info-inline-block" style="vertical-align: top;">
+
+          <h4>Metric Profiles</h4>
+
+          <% @app.caliper_supported_metric_profiles.each { |profile_name | %>
+
+              <div class="additional-info-inline-block">
+                  <p class="interop">Metric Profile: <%= profile_name %></p>
+                  <% actions = @app.actions_for_supported_metric_profile(profile_name) %>
+                  <% if actions %>
+                    <p class="interop">
+                    Action<%= actions.split(',').count > 1 ? 's' : '' %>:
+                    <%= actions %> </p>
+              <% end %>
+              </div>
+          <% } %>
+        </div>
+
+      <div class="additional-info-inline-block">
+          <h4>IMS Global Conformance</h4>
+          <% if @app.caliper_ims_global_certifications
+               JSON.parse(@app.caliper_ims_global_certifications)['ims_global_certifications'].each { | cert | %>
+                  <div class="additional-info-inline-block">
+                    <p class="interop">Status: <%= cert['status'] ? cert['status'] : '-' %></p>
+                    <p class="interop">Metric Profile<%=  cert['metric_profiles'].count > 1 ? 's' : '' %>:
+                      <%= cert['metric_profiles'] ? cert['metric_profiles'].join(', ') : '-' %></p>
+                    <p class="interop">Registration Number: <%= cert['registration_number'] ? cert['registration_number'] : '-' %></p>
+                    <p class="interop">Conformance Date: <%= cert['conformance_date'] ? cert['conformance_date'] : '-' %></p>
+                    <% if cert['link'] %>
+                        <p class="interop"><a href=<%= cert['link'] %> target="_blank">Full Registration Info</a></p>
+                    <% end %>
+                  </div>
+              <%  } %>
+          <% else %>
+              <p class="interop">-</p>
+          <% end %>
+        </div>
     </div>
 
-  </main>
+  <% end %>
+
+  <% if @app.has_licensing_properties_set? %>
+
+      <div class="content">
+
+        <div class="line"></div>
+
+        <h1>Licensing</h1>
+
+        <div class="additional-info-inline-block">
+          <h4>Free App</h4>
+          <p><%= @app.license_is_free.present? ?  (@app.license_is_free ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Paid App</h4>
+          <p><%= @app.license_is_paid.present? ?  (@app.license_is_paid ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>By Recharge Agreement</h4>
+          <p><%= @app.license_is_recharge.present? ?  (@app.license_is_recharge ? 'Yes' : 'No') : '-' %></p>
+        </div>
+        <div class="additional-info-inline-block">
+          <h4>By Seat</h4>
+          <p><%= @app.license_is_by_seat.present? ?  (@app.license_is_by_seat ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Subscription</h4>
+          <p><%= @app.license_is_subscription.present? ?  (@app.license_is_subscription ? 'Yes' : 'No') : '-' %></p>
+        </div>
+        <div class="additional-info-inline-block">
+          <h4>Ad-Supported</h4>
+          <p><%= @app.license_is_ad_supported.present? ?  (@app.license_is_ad_supported ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-inline-block" style="vertical-align: top;">
+          <h4>Other</h4>
+          <p><%= @app.license_is_other.present? ?  (@app.license_is_other ? 'Yes' : 'No') : '-' %></p>
+        </div>
+
+        <div class="additional-info-block">
+          <h4>Additional Licensing Information</h4>
+          <p><%= @app.license_text.present? ?  @app.license_text : '-' %></p>
+        </div>
+
+      </div>
+  <% end %>
+
+  <% if @app.ios_app_id or @app.ios_app_scheme or @app.android_app_package %>
+      <div class="content">
+        <div class="line"></div>
+        <h1>Mobile Apps</h1>
+
+        <% if @app.ios_app_id or @app.ios_app_scheme %>
+        <section>
+          <h3>iOS</h3>
+          <% if @app.ios_app_id %>
+            <p><strong>App Store:</strong> <a href="https://itunes.apple.com/us/app/apple-store/id<%= @app.ios_app_id %>">https://itunes.apple.com/us/app/apple-store/id<%= @app.ios_app_id %></a></p>
+          <% end %>
+          <% if @app.ios_app_scheme %>
+            <p><strong>Launch URL:</strong> <a href="<%= @app.ios_app_scheme %>://<%= @app.ios_app_path %>"><%= @app.ios_app_scheme %>://<%= @app.ios_app_path %></a></p>
+          <% end %>
+        </section>
+        <% end %>
+
+        <% if @app.android_app_package %>
+        <section>
+          <h3>Android</h3>
+          <p><strong>Play Store From Browser:</strong> <a href="http://play.google.com/store/apps/details?id=<%= @app.android_app_package %>">http://play.google.com/store/apps/details?id=<%= @app.android_app_package %></a></p>
+          <p><strong>Play Store From App:</strong> <a href="market://details?id=<%= @app.android_app_package %>">market://details?id=<%= @app.android_app_package %></a></p>
+          <p><strong>Launch Intent:</strong>
+              <%
+                 android_intent = "intent://scan/#Intent"
+                 android_intent << ";scheme=#{@app.android_app_scheme}" if @app.android_app_scheme
+                 android_intent << ";package=#{@app.android_app_package}" if @app.android_app_package
+                 android_intent << ";package=#{@app.android_app_action}" if @app.android_app_action
+                 android_intent << ";package=#{@app.android_app_category}" if @app.android_app_category
+                 android_intent << ";package=#{@app.android_app_component}" if @app.android_app_component %>
+            <a href="<%= android_intent %>"><%= android_intent %></a>
+          </p>
+        </section>
+        <% end %>
+
+      </div>
+  <% end %>
+
+  <% if (((session_user and session_user.admin) and (@app.primary_contact_name or @app.primary_contact_name)) or @app.app_authors.count > 0 or @app.app_organizations.count > 0) %>
+      <div class="content">
+
+        <div class="line"></div>
+
+        <h1>Contact Information</h1>
+
+        <% if session_user and session_user.admin %>
+            <div class="additional-info-inline-block">
+              <h4>Submitter</h4>
+              <% if @app.created_by %>
+                  <p><%= user = User.find(@app.created_by); raw "#{user.first_name} #{user.last_name}<br><small>#{link_to user.email, "mailto:#{user.email}"}</small>" %></p>
+              <% else %>
+                  <p>-</p>
+                  </div>
+
+                  <div class="additional-info-inline-block">
+                    <h4>Primary Contact</h4>
+                    <% if @app.primary_contact_name %>
+                        <p>
+                          <%= @app.primary_contact_name %>
+                          <% if @app.primary_contact_email %>
+                              <br><small><%= link_to @app.primary_contact_email, "mailto:#{@app.primary_contact_email}" %></small></p>
+                        <% end
+                           else %>
+                        <p>-</p>
+                    <% end %>
+                  </div>
+              <% end %>
+        <% end %>
+
+            <div class="additional-info-inline-block">
+              <h4>Author<%= @app.app_authors.count > 1 ? 's' : '' %></h4>
+              <% if @app.app_authors.count > 0 %>
+              <p><%= raw @app.app_authors.map(){ |c|
+                           name = c.name ? c.name : 'Anonymous'
+                           c.email ? "<a href='mailto:#{c.email}'>#{name}</a>" : "<span class='text-muted'>#{name}</span>"
+                         }.join(', ') %></p>
+              <% else %>
+                <p>-</p>
+              <% end %>
+            </div>
+
+            <div class="additional-info-inline-block">
+              <h4>Organization<%= @app.app_organizations.count > 1 ? 's' : '' %></h4>
+              <% if @app.app_organizations.count > 0 %>
+              <p><%= raw @app.app_organizations.map(){ |c|
+                           name = c.name ? c.name : 'Anonymous'
+                           c.website ? "<a href='#{c.website}' target='_blank'>#{name}</a>" : "<span class='text-muted'>#{name}</span>"
+                         }.join(', ') %></p>
+              <% else %>
+                  <p>-</p>
+              <% end %>
+            </div>
+
+      </div>
+
+<% end %>
+
+  <div class="content">
+
+    <div class="line"></div>
+
+    <h1>Additional Information</h1>
+
+    <div class="additional-info-inline-block">
+      <h4>Updated</h4>
+      <p><%= @app.updated_at.strftime('%B %d, %Y') %></p>
+
+          <h4>Supported Mobile Platforms</h4>
+        <% if @app.mobile_support or @app.has_ios_properties_set? or @app.has_android_properties_set? %>
+          <ul>
+            <% if @app.mobile_support %><li>Mobile Web</li><% end %>
+            <% if @app.has_ios_properties_set? %><li>iOS</li><% end %>
+            <% if @app.has_android_properties_set? %><li>Android</li><% end %>
+          </ul>
+          <% else %>
+            <p>-</p>
+      <% end %>
+    </div>
+
+    <div class="additional-info-inline-block" style="vertical-align: top;">
+      <h4>Download Size</h4>
+      <p><%= @app.download_size ? @app.download_size : '-' %></p>
+      <h4>Supported Languages</h4>
+      <p><%= @app.supported_languages ? @app.supported_languages : '-' %></p>
+    </div>
+
+  </div>
+
+
+</main>
 
 </article>
+

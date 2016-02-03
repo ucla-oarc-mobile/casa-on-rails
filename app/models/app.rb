@@ -5,7 +5,7 @@ class App < ActiveRecord::Base
           ActionView::Helpers::SanitizeHelper,
           ActionView::Helpers::TextHelper
 
-  NULL_IF_BLANK_ATTRS = %w( icon description short_description privacy_url accessibility_url vpat_url acceptable ios_app_id ios_app_scheme ios_app_path ios_app_affiliate_data android_app_package android_app_scheme android_app_action android_app_category android_app_component )
+  NULL_IF_BLANK_ATTRS = %w( icon description short_description privacy_url accessibility_url vpat_url wcag_url acceptable ios_app_id ios_app_scheme ios_app_path ios_app_affiliate_data android_app_package android_app_scheme android_app_action android_app_category android_app_component download_size supported_languages security_session_lifetime security_cloud_vendor security_policy_url security_sla_url security_text license_text support_contact_name support_contact_email primary_contact_name primary_contact_email )
 
   # TODO
   # These validations should use standard Rails idioms (presence, numericality, etc )and
@@ -119,6 +119,118 @@ class App < ActiveRecord::Base
 
   def payload_originator_id
     (self.casa_originator_id ? self.casa_originator_id : Rails.application.config.casa[:engine][:uuid]).to_s
+  end
+
+  def has_security_properties_set?
+    (security_uses_https.present? or
+      security_uses_additional_encryption.present? or
+      security_requires_cookies.present? or
+      security_requires_third_party_cookies.present? or
+      security_session_lifetime.present? or
+      security_cloud_vendor.present? or
+      security_policy_url.present? or
+      security_sla_url.present? or
+      security_text.present?)
+  end
+
+  def has_android_properties_set?
+    (android_app_package.present? or
+        android_app_scheme.present? or
+        android_app_action.present? or
+        android_app_category.present? or
+        android_app_component.present?)
+  end
+
+  def has_ios_properties_set?
+    (ios_app_id.present? or
+      ios_app_scheme.present? or
+      ios_app_path.present? or
+      ios_app_affiliate_data.present?)
+  end
+
+  def has_licensing_properties_set?
+    (license_is_free.present? or
+      license_is_paid.present? or
+      license_is_recharge.present? or
+      license_is_by_seat.present? or
+      license_is_subscription.present? or
+      license_is_ad_supported.present? or
+      license_is_other.present? or
+      license_text.present? )
+  end
+
+  def has_security_properties_set?
+    (security_uses_https.present? or
+      security_uses_additional_encryption.present? or
+      security_requires_cookies.present? or
+      security_requires_third_party_cookies.present? or
+      security_session_lifetime.present? or
+      security_cloud_vendor.present? or
+      security_policy_url.present? or
+      security_sla_url.present? or
+      security_text.present? )
+  end
+
+  def has_student_data_properties_set?
+    (student_data_stores_local_data.present? or
+      student_data_requires_account.present? or
+      student_data_has_opt_in_for_data_collection.present? or
+      student_data_has_opt_out_for_data_collection.present? or
+      student_data_shows_eula.present? or
+      student_data_is_app_externally_hosted.present? or
+      student_data_stores_pii.present? )
+  end
+
+  def url_for_wcag(wcag)
+    Rails.application.config.wcag_urls[wcag]
+  end
+
+  def lti_versions_supported
+    versions = Array.new
+    app_lti_configs.each { | config |
+      versions << config.lti_version unless config.lti_version.blank?
+    }
+    versions.join(',')
+  end
+
+  def lis_outcomes_supported
+    app_lti_configs.each { | config |
+      if config.lti_lis_outcomes
+        return true
+      end
+    }
+    false
+  end
+
+  def has_lti_conformance_info
+    app_lti_configs.each { | config |
+      if config.lti_ims_global_registration_number or config.lti_ims_global_conformance_date or config.lti_ims_global_registration_link
+        return true
+      end
+    }
+    return false
+  end
+
+  def caliper_supported_metric_profiles
+    if caliper_metric_profiles.present?
+      profiles = Array.new
+      JSON.parse(caliper_metric_profiles)['metric_profiles'].each{ | profile_object |
+        profiles << profile_object['profile']
+      }
+      profiles
+    else
+      nil
+    end
+  end
+
+  def actions_for_supported_metric_profile(profile)
+    if caliper_metric_profiles.present?
+      JSON.parse(caliper_metric_profiles)['metric_profiles'].each{ | profile_object |
+        return profile_object['actions'].join(', ') if profile_object['profile'] == profile
+      }
+    else
+      nil
+    end
   end
 
   def to_transit_payload
