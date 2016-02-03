@@ -104,8 +104,8 @@
             <th>Privacy</th>
             <th>Security</th>
             <th>Mobile Friendly</th>
-            <th>Supports LTI®</th>
-            <th style="border-right: 0px;">Supports Caliper™</th>
+            <th>Supports LTI&reg;</th>
+            <th style="border-right: 0px;">Supports Caliper&trade;</th>
           </tr>
 
           <tr>
@@ -276,11 +276,12 @@
 
     <div class="line"></div>
 
-    <h1>Privacy Policy</h1>
+    <h1>Privacy</h1>
 
       <section>
         <% if @app.app_privacy_policy %>
-          <div style="overflow:auto;width:100%">
+          <div class="additional-info-inline-block" style="vertical-align: top;">
+          <h4>Data Sharing</h4>
           <table class="privacy-nutrition-label">
             <thead>
             <tr>
@@ -293,7 +294,7 @@
             <tbody>
               <% AppPrivacyPolicy.classifications.each do |context, context_description| %>
                 <tr>
-                  <td class="row-heading"><%= context.capitalize %></td>
+                  <td class="row-heading" style="background-color: #F6F6F6;"><%= context.capitalize %></td>
                   <% AppPrivacyPolicy.types.each do |type, type_description| symbol = "#{context}_#{type}".to_sym %>
                   <%=
                       value = @app.app_privacy_policy.send(symbol)
@@ -314,9 +315,16 @@
           </table>
           </div>
         <% end %>
-        <% if @app.privacy_url %>
-        <p><a href="<%= @app.privacy_url %>" target="_blank">View Privacy Policy</a></p>
-        <% end %>
+
+        <div class="additional-info-inline-block">
+          <h4>Privacy Policy</h4>
+          <% if @app.accessibility_url %>
+              <p><a href="<%= @app.privacy_url %>">View</a></p>
+          <% else %>
+              <p>-</p>
+          <% end %>
+        </div>
+
       </section>
 
     </div>
@@ -326,7 +334,7 @@
       <div class="content">
         <div class="line"></div>
 
-        <h1>Student Data Declarations</h1>
+        <h1>Student Data</h1>
 
         <div class="additional-info-inline-block">
           <h4>Stores Local Data</h4>
@@ -372,7 +380,7 @@
       <div class="content">
         <div class="line"></div>
 
-        <h1>Security Declarations</h1>
+        <h1>Security</h1>
 
         <div class="additional-info-inline-block">
           <h4>Uses HTTPS</h4>
@@ -436,7 +444,7 @@
   <% if @app.accessibility_url or @app.vpat_url %>
       <div class="content">
         <div class="line"></div>
-        <h1>Accessibility Information</h1>
+        <h1>Accessibility</h1>
 
         <div class="additional-info-inline-block" style="vertical-align: top;">
           <h4>Accessibility Policy</h4>
@@ -481,71 +489,13 @@
       </div>
     <% end %>
 
-  <% if (session_user and session_user.admin) or @app.app_authors.count > 0 or @app.app_organizations.count > 0 %>
-
-  <div class="content">
-
-    <div class="line"></div>
-
-    <h1>Contact Information</h1>
-
-    <% if session_user and session_user.admin %>
-              <div class="additional-info-inline-block">
-                <h4>Submitter</h4>
-                <% if @app.created_by %>
-                    <p><%= user = User.find(@app.created_by); raw "#{user.first_name} #{user.last_name}<br><small>#{link_to user.email, "mailto:#{user.email}"}</small>" %></p>
-                <% else %>
-                <p>-</p>
-              </div>
-
-              <div class="additional-info-inline-block">
-                <h4>Primary Contact</h4>
-                  <% if @app.primary_contact_name %>
-                    <p>
-                      <%= @app.primary_contact_name %>
-                      <% if @app.primary_contact_email %>
-                          <br><small><%= link_to @app.primary_contact_email, "mailto:#{@app.primary_contact_email}" %></small></p>
-                      <% end
-                  else %>
-                  <p>-</p>
-                  <% end %>
-              </div>
-          <% end %>
-      <% end %>
-
-
-      <% if @app.app_authors.count > 0 %>
-          <div class="additional-info-inline-block">
-            <h4>Author<%= @app.app_authors.count > 1 ? 's' : '' %></h4>
-            <p><%= raw @app.app_authors.map(){ |c|
-                         name = c.name ? c.name : 'Anonymous'
-                         c.email ? "<a href='mailto:#{c.email}'>#{name}</a>" : "<span class='text-muted'>#{name}</span>"
-                       }.join(', ') %></p>
-          </div>
-      <% end %>
-
-
-      <% if @app.app_organizations.count > 0 %>
-          <div class="additional-info-inline-block">
-            <h4>Organization<%= @app.app_organizations.count > 1 ? 's' : '' %></h4>
-            <p><%= raw @app.app_organizations.map(){ |c|
-                         name = c.name ? c.name : 'Anonymous'
-                         c.website ? "<a href='#{c.website}' target='_blank'>#{name}</a>" : "<span class='text-muted'>#{name}</span>"
-                       }.join(', ') %></p>
-          </div>
-      <% end %>
-
-    </div>
-  <% end %>
-
-
     <% if @app.lti %>
 
       <div class="content">
 
         <div class="line"></div>
 
-        <h1>LTI Information</h1>
+        <h1>LTI&reg;</h1>
 
           <div class="additional-info-inline-block" style="vertical-align: top;">
             <h4>LTI Support</h4>
@@ -581,11 +531,11 @@
 
         <div class="line"></div>
 
-        <h1>Caliper Information</h1>
+        <h1>Caliper&trade;</h1>
 
         <div class="additional-info-inline-block" style="vertical-align: top;">
 
-          <h4>Metric Profiles Support</h4>
+          <h4>Metric Profiles</h4>
 
           <% @app.caliper_supported_metric_profiles.each { |profile_name | %>
 
@@ -593,31 +543,33 @@
                   <p class="interop">Metric Profile: <%= profile_name %></p>
                   <% actions = @app.actions_for_supported_metric_profile(profile_name) %>
                   <% if actions %>
-                    <p class="interop">Action(s): <%= actions %> </p>
+                    <p class="interop">
+                    Action<%= actions.split(',').count > 1 ? 's' : '' %>:
+                    <%= actions %> </p>
               <% end %>
               </div>
           <% } %>
         </div>
 
-          <div class="additional-info-inline-block">
-              <h4>IMS Global Conformance</h4>
-              <% if @app.caliper_ims_global_certifications
-                   JSON.parse(@app.caliper_ims_global_certifications)['ims_global_certifications'].each { | cert | %>
-                      <div class="additional-info-inline-block">
-                        <p class="interop">Status: <%= cert['status'] ? cert['status'] : '-' %></p>
-                        <p class="interop">Metric Profiles: <%= cert['metric_profiles'] ? cert['metric_profiles'].join(', ') : '-' %></p>
-                        <p class="interop">Registration Number: <%= cert['registration_number'] ? cert['registration_number'] : '-' %></p>
-                        <p class="interop">Conformance Date: <%= cert['conformance_date'] ? cert['conformance_date'] : '-' %></p>
-                        <% if cert['link'] %>
-                            <p class="interop"><a href=<%= cert['link'] %> target="_blank">Full Registration Info</a></p>
-                        <% end %>
-                      </div>
-                  <%  } %>
-              <% else %>
-                  <p class="interop">-</p>
-              <% end %>
+      <div class="additional-info-inline-block">
+          <h4>IMS Global Conformance</h4>
+          <% if @app.caliper_ims_global_certifications
+               JSON.parse(@app.caliper_ims_global_certifications)['ims_global_certifications'].each { | cert | %>
+                  <div class="additional-info-inline-block">
+                    <p class="interop">Status: <%= cert['status'] ? cert['status'] : '-' %></p>
+                    <p class="interop">Metric Profile<%=  cert['metric_profiles'].count > 1 ? 's' : '' %>:
+                      <%= cert['metric_profiles'] ? cert['metric_profiles'].join(', ') : '-' %></p>
+                    <p class="interop">Registration Number: <%= cert['registration_number'] ? cert['registration_number'] : '-' %></p>
+                    <p class="interop">Conformance Date: <%= cert['conformance_date'] ? cert['conformance_date'] : '-' %></p>
+                    <% if cert['link'] %>
+                        <p class="interop"><a href=<%= cert['link'] %> target="_blank">Full Registration Info</a></p>
+                    <% end %>
+                  </div>
+              <%  } %>
+          <% else %>
+              <p class="interop">-</p>
+          <% end %>
         </div>
-
     </div>
 
   <% end %>
@@ -628,7 +580,7 @@
 
         <div class="line"></div>
 
-        <h1>Licensing Information</h1>
+        <h1>Licensing</h1>
 
         <div class="additional-info-inline-block">
           <h4>Free App</h4>
@@ -709,6 +661,65 @@
       </div>
   <% end %>
 
+  <% if (((session_user and session_user.admin) and (@app.primary_contact_name or @app.primary_contact_name)) or @app.app_authors.count > 0 or @app.app_organizations.count > 0) %>
+      <div class="content">
+
+        <div class="line"></div>
+
+        <h1>Contact Information</h1>
+
+        <% if session_user and session_user.admin %>
+            <div class="additional-info-inline-block">
+              <h4>Submitter</h4>
+              <% if @app.created_by %>
+                  <p><%= user = User.find(@app.created_by); raw "#{user.first_name} #{user.last_name}<br><small>#{link_to user.email, "mailto:#{user.email}"}</small>" %></p>
+              <% else %>
+                  <p>-</p>
+                  </div>
+
+                  <div class="additional-info-inline-block">
+                    <h4>Primary Contact</h4>
+                    <% if @app.primary_contact_name %>
+                        <p>
+                          <%= @app.primary_contact_name %>
+                          <% if @app.primary_contact_email %>
+                              <br><small><%= link_to @app.primary_contact_email, "mailto:#{@app.primary_contact_email}" %></small></p>
+                        <% end
+                           else %>
+                        <p>-</p>
+                    <% end %>
+                  </div>
+              <% end %>
+        <% end %>
+
+            <div class="additional-info-inline-block">
+              <h4>Author<%= @app.app_authors.count > 1 ? 's' : '' %></h4>
+              <% if @app.app_authors.count > 0 %>
+              <p><%= raw @app.app_authors.map(){ |c|
+                           name = c.name ? c.name : 'Anonymous'
+                           c.email ? "<a href='mailto:#{c.email}'>#{name}</a>" : "<span class='text-muted'>#{name}</span>"
+                         }.join(', ') %></p>
+              <% else %>
+                <p>-</p>
+              <% end %>
+            </div>
+
+            <div class="additional-info-inline-block">
+              <h4>Organization<%= @app.app_organizations.count > 1 ? 's' : '' %></h4>
+              <% if @app.app_organizations.count > 0 %>
+              <p><%= raw @app.app_organizations.map(){ |c|
+                           name = c.name ? c.name : 'Anonymous'
+                           c.website ? "<a href='#{c.website}' target='_blank'>#{name}</a>" : "<span class='text-muted'>#{name}</span>"
+                         }.join(', ') %></p>
+              <% else %>
+                  <p>-</p>
+              <% end %>
+            </div>
+
+      </div>
+
+<% end %>
+
   <div class="content">
 
     <div class="line"></div>
@@ -719,13 +730,15 @@
       <h4>Updated</h4>
       <p><%= @app.updated_at.strftime('%B %d, %Y') %></p>
 
-      <% if @app.mobile_support or @app.has_ios_properties_set? or @app.has_android_properties_set? %>
           <h4>Supported Mobile Platforms</h4>
+        <% if @app.mobile_support or @app.has_ios_properties_set? or @app.has_android_properties_set? %>
           <ul>
             <% if @app.mobile_support %><li>Mobile Web</li><% end %>
             <% if @app.has_ios_properties_set? %><li>iOS</li><% end %>
             <% if @app.has_android_properties_set? %><li>Android</li><% end %>
           </ul>
+          <% else %>
+            <p>-</p>
       <% end %>
     </div>
 

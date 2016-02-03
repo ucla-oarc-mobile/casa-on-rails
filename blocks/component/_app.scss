@@ -68,7 +68,9 @@
       text-transform: uppercase;
       font-size: 18px;
       font-weight: normal;
-      padding-bottom: 15px;
+      padding-top: 4px;
+      padding-bottom: 2px;
+      background-color: #F9F9F9;
     }
 
     p {
@@ -213,6 +215,9 @@
         p {
           font-size: 13px;
           color: #666;
+          overflow-wrap: break-word;
+          word-wrap: break-word;
+          word-break: break-all;
           &.one-line {
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -498,6 +503,9 @@
       > main {
         // margin-left: 216px;
         width: auto;
+      }
+      main .middle-details-group {
+        width: 33%;
       }
     }
   }

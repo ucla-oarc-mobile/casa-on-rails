@@ -225,7 +225,6 @@ class App < ActiveRecord::Base
 
   def actions_for_supported_metric_profile(profile)
     if caliper_metric_profiles.present?
-      actions = Array.new
       JSON.parse(caliper_metric_profiles)['metric_profiles'].each{ | profile_object |
         return profile_object['actions'].join(', ') if profile_object['profile'] == profile
       }
