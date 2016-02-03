@@ -35,34 +35,4 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  # Local development configuration of the Shibboleth OAuth2 provider.
-  # config.oauth2 = {
-  #     :provider => {
-  #         :shibboleth => {
-  #             :enabled => true,
-  #             :key => 'casa',
-  #             :secret => 'asac',
-  #             :properties => {
-  #                 :site => 'http://localhost',
-  #                 :authorize_url => '/shib-oauth2-bridge/public/oauth2/test-authorize',
-  #                 :token_url => '/shib-oauth2-bridge/public/oauth2/access_token'
-  #             },
-  #             :routes => {
-  #                 :get_user => '/shib-oauth2-bridge/public/oauth2/user'
-  #             },
-  #             :restrict_to => {
-  #                 :eduPersonPrincipalName => [
-  #                   # users by eduPersonPrincipalName that are allowed to submit apps
-  #                 ],
-  #                 :eduPersonScopedAffiliation => [
-  #                   # eduPersonScopedAffiliations that are allowed to submit apps
-  #                   'employee@ucla.edu'
-  #                 ]
-  #             }
-  #         }
-  #     }
-  # }
-
-  # config.login_route = [:session_oauth2_launch_url, :shibboleth]
-
 end
