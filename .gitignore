@@ -30,3 +30,6 @@
 
 # Ignore CASA metadata config file
 config/casa.yml
+
+# Ignore auth config file
+config/auth.yml
