@@ -371,8 +371,6 @@
           <p><%= @app.student_data_stores_pii ? (@app.student_data_stores_pii ? 'Yes' : 'No') : '-' %></p>
         </div>
 
-        <!-- Add General Student Data Information -->
-
       </div>
   <% end %>
 
@@ -441,7 +439,7 @@
       </div>
   <% end %>
 
-  <% if @app.accessibility_url or @app.vpat_url or @app.wcag_url or @app.app_wcag_guidelines %>
+  <% if @app.accessibility_url or @app.vpat_url or @app.wcag_url or ! @app.app_wcag_guidelines.empty? %>
       <div class="content">
         <div class="line"></div>
         <h1>Accessibility</h1>
