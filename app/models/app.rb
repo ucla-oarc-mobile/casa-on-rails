@@ -195,7 +195,7 @@ class App < ActiveRecord::Base
 
   def lis_outcomes_supported
     app_lti_configs.each { | config |
-      if config.lti_lis_outcomes
+      if config.lti_lis_outcomes != 'no'
         return true
       end
     }
