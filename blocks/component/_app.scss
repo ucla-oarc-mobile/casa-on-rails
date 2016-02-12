@@ -134,6 +134,7 @@
 
   .additional-info-inline-block   {
     display: inline-block;
+    vertical-align: top;
     padding-right: 30px;
 
     h4 {
@@ -161,6 +162,8 @@
 
   .additional-info-block {
     display: block;
+    vertical-align: top;
+
     h4 {
       font-weight: bold;
       font-size: 16px;

@@ -280,7 +280,7 @@
 
       <section>
         <% if @app.app_privacy_policy %>
-          <div class="additional-info-inline-block" style="vertical-align: top;">
+          <div class="additional-info-inline-block">
           <h4>Data Sharing</h4>
           <table class="privacy-nutrition-label">
             <thead>
@@ -318,7 +318,7 @@
 
         <div class="additional-info-inline-block">
           <h4>Privacy Policy</h4>
-          <% if @app.accessibility_url %>
+          <% if @app.privacy_url %>
               <p><a href="<%= @app.privacy_url %>">View</a></p>
           <% else %>
               <p>-</p>
@@ -366,7 +366,7 @@
           <p><%= @app.student_data_is_app_externally_hosted ? (@app.student_data_is_app_externally_hosted ? 'Yes' : 'No') : '-' %></p>
         </div>
 
-        <div class="additional-info-inline-block" style="vertical-align: top;">
+        <div class="additional-info-inline-block">
           <h4>Stores Personally Identifying Information (PII)</h4>
           <p><%= @app.student_data_stores_pii ? (@app.student_data_stores_pii ? 'Yes' : 'No') : '-' %></p>
         </div>
@@ -441,12 +441,12 @@
       </div>
   <% end %>
 
-  <% if @app.accessibility_url or @app.vpat_url %>
+  <% if @app.accessibility_url or @app.vpat_url or @app.wcag_url or @app.app_wcag_guidelines %>
       <div class="content">
         <div class="line"></div>
         <h1>Accessibility</h1>
 
-        <div class="additional-info-inline-block" style="vertical-align: top;">
+        <div class="additional-info-inline-block">
           <h4>Accessibility Policy</h4>
           <% if @app.accessibility_url %>
             <p><a href="<%= @app.accessibility_url %>">View</a></p>
@@ -455,7 +455,7 @@
           <% end %>
         </div>
 
-        <div class="additional-info-inline-block" style="vertical-align: top;">
+        <div class="additional-info-inline-block">
           <h4>VPAT Policy</h4>
           <% if @app.vpat_url %>
             <p><a href="<%= @app.vpat_url %>">View</a></p>
@@ -464,7 +464,7 @@
           <% end %>
         </div>
 
-        <div class="additional-info-inline-block" style="vertical-align: top;">
+        <div class="additional-info-inline-block">
           <h4>WCAG Policy</h4>
           <% if @app.wcag_url %>
             <p><a href="<%= @app.wcag_url %>">View</a></p>
@@ -497,13 +497,13 @@
 
         <h1>LTI&reg;</h1>
 
-          <div class="additional-info-inline-block" style="vertical-align: top;">
+          <div class="additional-info-inline-block">
             <h4>LTI Support</h4>
             <p class="interop">LTI Versions:<%= @app.lti_versions_supported %></p>
             <p class="interop">LIS 1.0 Outcomes: <%= @app.lis_outcomes_supported ? 'Yes' : 'No' %></p>
           </div>
 
-          <div class="additional-info-inline-block" style="vertical-align: top;">
+          <div class="additional-info-inline-block">
             <h4>IMS Global Conformance</h4>
             <% if @app.has_lti_conformance_info
                 @app.app_lti_configs.each { |config | %>
@@ -533,7 +533,7 @@
 
         <h1>Caliper&trade;</h1>
 
-        <div class="additional-info-inline-block" style="vertical-align: top;">
+        <div class="additional-info-inline-block">
 
           <h4>Metric Profiles</h4>
 
@@ -675,7 +675,8 @@
                   <p><%= user = User.find(@app.created_by); raw "#{user.first_name} #{user.last_name}<br><small>#{link_to user.email, "mailto:#{user.email}"}</small>" %></p>
               <% else %>
                   <p>-</p>
-                  </div>
+              <% end %>
+            </div>
 
                   <div class="additional-info-inline-block">
                     <h4>Primary Contact</h4>
@@ -689,7 +690,7 @@
                         <p>-</p>
                     <% end %>
                   </div>
-              <% end %>
+
         <% end %>
 
             <div class="additional-info-inline-block">
@@ -729,7 +730,9 @@
     <div class="additional-info-inline-block">
       <h4>Updated</h4>
       <p><%= @app.updated_at.strftime('%B %d, %Y') %></p>
+    </div>
 
+    <div class="additional-info-inline-block">
           <h4>Supported Mobile Platforms</h4>
         <% if @app.mobile_support or @app.has_ios_properties_set? or @app.has_android_properties_set? %>
           <ul>
@@ -742,9 +745,11 @@
       <% end %>
     </div>
 
-    <div class="additional-info-inline-block" style="vertical-align: top;">
+    <div class="additional-info-inline-block">
       <h4>Download Size</h4>
       <p><%= @app.download_size ? @app.download_size : '-' %></p>
+    </div>
+    <div class="additional-info-inline-block">
       <h4>Supported Languages</h4>
       <p><%= @app.supported_languages ? @app.supported_languages : '-' %></p>
     </div>
