@@ -231,54 +231,6 @@ module Admin
 
       end
 
-      # params[:wcag_text_alternatives].each do |t|
-      #   new_wcag_guidelines << t
-      # end if params[:wcag_text_alternatives]
-      #
-      # params[:wcag_time_based_media].each do |t|
-      #   new_wcag_guidelines << t
-      # end if params[:wcag_time_based_media]
-      #
-      # params[:wcag_adaptable].each do |t|
-      #   new_wcag_guidelines << t
-      # end if params[:wcag_adaptable]
-      #
-      # params[:wcag_distinguishable].each do |t|
-      #   new_wcag_guidelines << t
-      # end if params[:wcag_distinguishable]
-      #
-      # params[:wcag_keyboard_accessible].each do |t|
-      #   new_wcag_guidelines << t
-      # end if params[:wcag_keyboard_accessible]
-      #
-      # params[:wcag_enough_time].each do |t|
-      #   new_wcag_guidelines << t
-      # end if params[:wcag_enough_time]
-      #
-      # params[:wcag_seizures].each do |t|
-      #   new_wcag_guidelines << t
-      # end if params[:wcag_seizures]
-      #
-      # params[:wcag_navigable].each do |t|
-      #   new_wcag_guidelines << t
-      # end if params[:wcag_navigable]
-      #
-      # params[:wcag_readable].each do |t|
-      #   new_wcag_guidelines << t
-      # end if params[:wcag_readable]
-      #
-      # params[:wcag_predictable].each do |t|
-      #   new_wcag_guidelines << t
-      # end if params[:wcag_predictable]
-      #
-      # params[:wcag_input_assistance].each do |t|
-      #   new_wcag_guidelines << t
-      # end if params[:wcag_input_assistance]
-      #
-      # params[:wcag_compatible].each do |t|
-      #   new_wcag_guidelines << t
-      # end if params[:wcag_compatible]
-
       (current_wcag_guidelines - new_wcag_guidelines).each do |g|
         @app.app_wcag_guidelines.where(guideline: g).each { |g| g.delete }
       end
