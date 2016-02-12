@@ -63,53 +63,15 @@ module Manage
         @app.app_features << AppFeature.new(feature_name: t)
       end
 
-      params[:wcag_text_alternatives].each do |t|
-        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
-      end if params[:wcag_text_alternatives]
+      [:wcag_text_alternatives, :wcag_time_based_media,:wcag_adaptable, :wcag_distinguishable,
+       :wcag_keyboard_accessible, :wcag_enough_time, :wcag_seizures, :wcag_navigable, :wcag_readable,
+       :wcag_predictable, :wcag_input_assistance, :wcag_compatible].each do |wcag_concept|
 
-      params[:wcag_time_based_media].each do |t|
-        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
-      end if params[:wcag_time_based_media]
+        params[wcag_concept].each do |guideline|
+          @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: guideline)
+        end if params[wcag_concept]
 
-      params[:wcag_adaptable].each do |t|
-        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
-      end if params[:wcag_adaptable]
-
-      params[:wcag_distinguishable].each do |t|
-        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
-      end if params[:wcag_distinguishable]
-
-      params[:wcag_keyboard_accessible].each do |t|
-        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
-      end if params[:wcag_keyboard_accessible]
-
-      params[:wcag_enough_time].each do |t|
-        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
-      end if params[:wcag_enough_time]
-
-      params[:wcag_seizures].each do |t|
-        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
-      end if params[:wcag_seizures]
-
-      params[:wcag_navigable].each do |t|
-        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
-      end if params[:wcag_navigable]
-
-      params[:wcag_readable].each do |t|
-        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
-      end if params[:wcag_readable]
-
-      params[:wcag_predictable].each do |t|
-        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
-      end if params[:wcag_predictable]
-
-      params[:wcag_input_assistance].each do |t|
-        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
-      end if params[:wcag_input_assistance]
-
-      params[:wcag_compatible].each do |t|
-        @app.app_wcag_guidelines << AppWcagGuideline.new(guideline: t)
-      end if params[:wcag_compatible]
+      end
 
       @app.created_by = session_user.id
 
