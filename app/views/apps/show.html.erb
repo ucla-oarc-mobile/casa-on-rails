@@ -209,7 +209,7 @@
 
         <div class="rating-histogram">
           <% scores.to_enum.with_index.reverse_each { |score, index| %>
-          <div class="score-bar">&#9733; <%= index + 1 %> <div class="bar" style="width: <%= score == 0 ? 1 : ((score.to_f / number_of_ratings.to_f) * 100) %>%"><%= score %></div></div>
+          <div class="score-bar">&#9733; <%= index + 1 %> <div class="bar" style="width: <%= score == 0 ? 1 : ((score.to_f / number_of_ratings.to_f) * 50) %>%"><%= score %></div></div>
           <% } %>
         </div>
 
@@ -243,10 +243,9 @@
             <fieldset>
             <legend><%= @app_rating.new_record? ? 'Submit a Review' : 'Update Your Review' %></legend>
 
-
               <div class="stars">
                 <% (1..5).each do |i| %>
-                  <%= f.radio_button :score, i, checked: (i == (@app_rating.new_record? ? 3 : @app_rating.score) ? true : false) %>
+                  <%= f.radio_button :score, i, checked: (i == (@app_rating.new_record? ? 1 : @app_rating.score) ? true : false) %>
                   <label for="app_rating_<%="score_#{i}" %>">&#9734;</label>
                 <% end %>
               </div>
@@ -254,6 +253,7 @@
               <div class="form-field">
                 <%= f.text_area :review, style: 'width:100%;height:8rem;', value: @app_rating.review %>
               </div>
+
               <p class="help-text">by <strong><%= session_user.display_name %></strong> on <strong><%= Time.now.strftime('%a %b %d, %Y') %></strong></p>
               <%= f.submit 'Submit Review', class: 'primary button' %>
               <% unless @app_rating.new_record? %>
