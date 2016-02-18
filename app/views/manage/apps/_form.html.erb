@@ -920,7 +920,8 @@
           var $li = $(document.createElement('li'))
                   .addClass('form-field')
                   .attr('style', 'border-left:3px solid #eee;padding-left:10px;margin-bottom:10px;')
-                  .append('<label>Launch URL</label><input type="text" class="input-lti_launch_url"'+(data&&data.lti_launch_url?(' value="'+data.lti_launch_url+'"'):'')+'>' +
+                  .append('<label style="color: black;">Set As Default Config</label><input type="checkbox" class="input-lti_default"'+(data&&data.lti_default?(' checked="'+(data.lti_default ? 'checked' : '')+'"'):'')+'>' +
+                  '<label>Launch URL</label><input type="text" class="input-lti_launch_url"'+(data&&data.lti_launch_url?(' value="'+data.lti_launch_url+'"'):'')+'>' +
                   '<label>Configuration URL</label><input type="text" class="input-lti_configuration_url"'+(data&&data.lti_configuration_url?(' value="'+data.lti_configuration_url+'"'):'')+'>' +
                   '<label>Registration URL</label><input type="text" class="input-lti_registration_url"'+(data&&data.lti_registration_url?(' value="'+data.lti_registration_url+'"'):'')+'>' +
 
@@ -963,7 +964,8 @@
       $('#app-form').submit(function(e){
           var data = [];
           $('#app_lti_configs li').each(function(){
-              var lti_launch_url = $(this).find('.input-lti_launch_url').val(),
+              var lti_default = $(this).find('.input-lti_default').is(':checked') ? 1 : 0,
+                  lti_launch_url = $(this).find('.input-lti_launch_url').val(),
                   lti_configuration_url = $(this).find('.input-lti_configuration_url').val(),
                   lti_registration_url = $(this).find('.input-lti_registration_url').val(),
                   lti_version = $('#select-lti_version').val(),
@@ -974,6 +976,8 @@
                   lti_ims_global_conformance_date = $(this).find('.input-lti_ims_global_conformance_date').val(),
                   lti_ims_global_registration_link = $(this).find('.input-lti_ims_global_registration_link').val(),
                   dataElement = {};
+
+              dataElement['lti_default'] = lti_default;
               if(lti_launch_url && lti_launch_url.length) dataElement['lti_launch_url'] = lti_launch_url;
               if(lti_configuration_url && lti_configuration_url.length) dataElement['lti_configuration_url'] = lti_configuration_url;
               if(lti_registration_url && lti_registration_url.length) dataElement['lti_registration_url'] = lti_registration_url;
