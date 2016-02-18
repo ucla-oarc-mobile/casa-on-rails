@@ -17,12 +17,12 @@ class App < ActiveRecord::Base
 
   class LTIDefaultValidator < ActiveModel::Validator
     def validate(record)
-      count = 0
-      record.app_lti_configs.each { |c|  count += 1 if c.lti_default } unless record.app_lti_configs.empty?
-      if count > 1
+      number_of_default_configs = 0
+      record.app_lti_configs.each { |c|  number_of_default_configs += 1 if c.lti_default } unless record.app_lti_configs.empty?
+      if number_of_default_configs > 1
         record.errors.add(:lti, 'Only one LTI configuration can be set as the default.')
       end
-      if record.app_lti_configs.count >= 1 && count == 0
+      if record.app_lti_configs.size >= 1 && number_of_default_configs == 0
         record.errors.add(:lti, 'When multiple LTI configurations are being created, one of them must be set as the default.')
       end
     end
