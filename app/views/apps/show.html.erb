@@ -498,12 +498,12 @@
           <div class="additional-info-inline-block">
             <h4>LTI Support</h4>
             <p class="interop">LTI Versions:<%= @app.lti_versions_supported %></p>
-            <p class="interop">LIS 1.0 Outcomes: <%= @app.lis_outcomes_supported ? 'Yes' : 'No' %></p>
+            <p class="interop">LIS 1.0 Outcomes: <%= @app.lis_outcomes_supported? ? 'Yes' : 'No' %></p>
           </div>
 
           <div class="additional-info-inline-block">
             <h4>IMS Global Conformance</h4>
-            <% if @app.has_lti_conformance_info
+            <% if @app.has_lti_conformance_info?
                 @app.app_lti_configs.each { |config | %>
                     <div class="additional-info-inline-block">
                         <p class="interop">LTI Version: <%= config.lti_version ? config.lti_version : '-' %></p>

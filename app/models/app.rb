@@ -191,16 +191,16 @@ class App < ActiveRecord::Base
     versions.join(',')
   end
 
-  def lis_outcomes_supported
+  def lis_outcomes_supported?
     app_lti_configs.each { | config |
       if config.lti_lis_outcomes != 'no'
         return true
       end
     }
-    false
+    return false
   end
 
-  def has_lti_conformance_info
+  def has_lti_conformance_info?
     app_lti_configs.each { | config |
       if config.lti_ims_global_registration_number or config.lti_ims_global_conformance_date or config.lti_ims_global_registration_link
         return true
@@ -215,9 +215,7 @@ class App < ActiveRecord::Base
       JSON.parse(caliper_metric_profiles)['metric_profiles'].each{ | profile_object |
         profiles << profile_object['profile']
       }
-      profiles
-    else
-      nil
+      return profiles
     end
   end
 
@@ -226,8 +224,6 @@ class App < ActiveRecord::Base
       JSON.parse(caliper_metric_profiles)['metric_profiles'].each{ | profile_object |
         return profile_object['actions'].join(', ') if profile_object['profile'] == profile
       }
-    else
-      nil
     end
   end
 
