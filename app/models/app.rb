@@ -31,6 +31,19 @@ class App < ActiveRecord::Base
     end
   end
 
+  class LTIDefaultValidator < ActiveModel::Validator
+    def validate(record)
+      count = 0
+      record.app_lti_configs.each { |c|  count += 1 if c.lti_default } unless record.app_lti_configs.empty?
+      if count > 1
+        record.errors[:base] << 'Interoperability - Only one LTI configuration can be set as the default.'
+      end
+      if record.app_lti_configs.count >= 1 && count == 0
+        record.errors[:base] << 'Interoperability - When multiple LTI configurations are being created, one of them must be set as the default.'
+      end
+    end
+  end
+
   has_and_belongs_to_many :categories
   has_many :app_tags, :dependent => :destroy
   has_many :app_competencies, :dependent => :destroy
@@ -53,6 +66,7 @@ class App < ActiveRecord::Base
   }
 
   validates_with LTIExistenceValidator
+  validates_with LTIDefaultValidator
 
   validate :caliper_attribute_is_valid
 
