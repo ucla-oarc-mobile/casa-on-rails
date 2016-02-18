@@ -186,7 +186,7 @@ class App < ActiveRecord::Base
   def lti_versions_supported
     versions = Array.new
     app_lti_configs.each { | config |
-      versions << config.lti_version unless config.lti_version.blank?
+      versions << config.lti_version unless config.lti_version.blank? or versions.include? config.lti_version
     }
     versions.join(',')
   end
