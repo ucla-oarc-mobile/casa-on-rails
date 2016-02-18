@@ -7,26 +7,10 @@ class App < ActiveRecord::Base
 
   NULL_IF_BLANK_ATTRS = %w( icon description short_description privacy_url accessibility_url vpat_url wcag_url acceptable ios_app_id ios_app_scheme ios_app_path ios_app_affiliate_data android_app_package android_app_scheme android_app_action android_app_category android_app_component download_size supported_languages security_session_lifetime security_cloud_vendor security_policy_url security_sla_url security_text license_text support_contact_name support_contact_email primary_contact_name primary_contact_email )
 
-  # TODO
-  # These validations should use standard Rails idioms (presence, numericality, etc )and
-  # the humanized error messages present in config/locales/en.yml
-  #
-  class VarChar255Validator < ActiveModel::EachValidator
-    def validate_each(record, attribute, value)
-      record.errors[attribute] << 'must contain 255 characters or fewer.' unless (value.to_s.size <= 255)
-    end
-  end
-
-  class TextBlobValidator < ActiveModel::EachValidator
-    def validate_each(record, attribute, value)
-      record.errors[attribute] << 'is too large and would be truncated if saved. Please reduce the size to less than 64KB and submit again.' unless (value.to_s.size <= 65535)
-    end
-  end
-
   class LTIExistenceValidator < ActiveModel::Validator
     def validate(record)
       if record.lti && record.app_lti_configs.empty?
-        record.errors[:base] << 'Interoperability - At least one LTI Configuration is required if "Supports LTI" is checked.'
+        record.errors.add(:lti, 'Interoperability - At least one LTI Configuration is required if "Supports LTI" is checked.')
       end
     end
   end
@@ -36,10 +20,10 @@ class App < ActiveRecord::Base
       count = 0
       record.app_lti_configs.each { |c|  count += 1 if c.lti_default } unless record.app_lti_configs.empty?
       if count > 1
-        record.errors[:base] << 'Interoperability - Only one LTI configuration can be set as the default.'
+        record.errors.add(:lti, 'Only one LTI configuration can be set as the default.')
       end
       if record.app_lti_configs.count >= 1 && count == 0
-        record.errors[:base] << 'Interoperability - When multiple LTI configurations are being created, one of them must be set as the default.'
+        record.errors.add(:lti, 'When multiple LTI configurations are being created, one of them must be set as the default.')
       end
     end
   end
@@ -74,17 +58,17 @@ class App < ActiveRecord::Base
     presence: true,
     length: { minimum: 1 }
 
-  validates :icon, :license_text, :security_text,
-    :textBlob => true
-
   validates :support_contact_email,
-    length: { minimum: 6, maximum: 255, message: ' -- Please provide a valid email address.'},
+    length: { minimum: 6, maximum: 255},
     allow_blank: true
 
   validates :download_size, :support_contact_name, :supported_languages,
             :security_session_lifetime, :security_cloud_vendor, :security_policy_url ,
             :security_sla_url,
-   :varChar255 => true
+    length: { maximum: 255 }
+
+  validates :icon, :license_text, :security_text,
+    length: { maximum: 65535 }
 
   before_save do
     ['icon'].each { |column| self[column].present? || self[column] = nil }
