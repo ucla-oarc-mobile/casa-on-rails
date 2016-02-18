@@ -34,7 +34,10 @@ module Manage
 
       JSON.parse(params[:app_authors]).each { |app_author_params| @app.app_authors << AppAuthor.new(app_author_params) }
       JSON.parse(params[:app_organizations]).each { |app_organization_params| @app.app_organizations << AppOrganization.new(app_organization_params) }
-      JSON.parse(params[:app_lti_configs]).each{|app_lti_config | @app.app_lti_configs << AppLtiConfig.new(app_lti_config) }
+
+      if params[:app][:lti] == '1'
+        JSON.parse(params[:app_lti_configs]).each{|app_lti_config |  @app.app_lti_configs << AppLtiConfig.new(app_lti_config) }
+      end
 
       if params[:privacy][:enable] == '1'
         @app.app_privacy_policy = AppPrivacyPolicy.new(params[:app_privacy_policy].permit!) if params[:app_privacy_policy]
