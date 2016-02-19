@@ -227,6 +227,11 @@ class App < ActiveRecord::Base
     end
   end
 
+  # Returns the Launch URL for the default LTI Config, if one exists
+  def default_lti_launch_url
+    app_lti_configs.try(:each){ |config| return config.lti_launch_url if config.lti_default }
+  end
+
   def to_transit_payload
 
     if originated?
@@ -306,7 +311,8 @@ class App < ActiveRecord::Base
 
     if self.lti
       content_item['mediaType'] = 'application/vnd.ims.lti.v1.ltilink'
-      content_item['url'] = self.lti_launch_url if self.lti_launch_url
+      url = default_lti_launch_url
+      content_item['url'] = url if url
     else
       content_item['mediaType'] = 'text/html'
     end
