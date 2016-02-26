@@ -19,6 +19,8 @@ module Admin
 
       @in_payload = InPayload.find params[:in_payload_id]
 
+      #TODO: add new attributes!
+
       attributes = @in_payload.content_data['attributes']
       attributes = attributes.merge(attributes['use']) if attributes.has_key?('use')
       attributes = attributes.merge(attributes['require']) if attributes.has_key?('require')
@@ -58,16 +60,25 @@ module Admin
       end
 
       if attributes.include? 'lti'
+        # TODO: allow payloads to include an array of LTI configs (fully support spec)
         @app.lti = true
-        @app.lti_launch_url = attributes['lti']['launch_url'] if attributes['lti'].has_key?('launch_url')
-        @app.lti_configuration_url = attributes['lti']['configuration_url'] if attributes['lti'].has_key?('configuration_url')
-        @app.lti_registration_url = attributes['lti']['registration_url'] if attributes['lti'].has_key?('registration_url')
-        @app.lti_outcomes = attributes['lti']['outcomes'] if attributes['lti'].has_key?('outcomes')
-        if attributes['lti'].include? 'versions_supported'
-          attributes['lti']['versions_supported'].each do |version|
-            @app.app_lti_versions << AppLtiVersion.new(version: version)
+        lti_config = AppLtiConfig.new do |c|
+          c.lti_default = true
+          c.lti_launch_url = attributes['lti']['launch_url'] if attributes['lti'].has_key?('launch_url')
+          c.lti_launch_params = attributes['lti']['launch_params'] if attributes['lti'].has_key?('launch_params')
+          c.lti_registration_url = attributes['lti']['registration_url'] if attributes['lti'].has_key?('registration_url')
+          c.lti_configuration_url = attributes['lti']['configuration_url'] if attributes['lti'].has_key?('configuration_url')
+          c.lti_content_item_message = attributes['lti']['content_item_response'] if attributes['lti'].has_key?('content_item_response')
+          c.lti_lis_outcomes = attributes['lti']['outcomes'] if attributes['lti'].has_key?('outcomes')
+          c.lti_version = attributes['lti']['version'] if attributes['lti'].has_key?('version')
+          if attributes['lti'].has_key?('ims_global_certification')
+            c.lti_ims_global_registration_number = attributes['lti']['ims_global_certification']['registration_number'] if attributes['lti']['ims_global_certification'].has_key?('registration_number')
+            c.lti_ims_global_conformance_date = attributes['lti']['ims_global_certification']['conformance_date'] if attributes['lti']['ims_global_certification'].has_key?('conformance_date')
+            c.lti_ims_global_registration_link = attributes['lti']['ims_global_certification']['link'] if attributes['lti']['ims_global_certification'].has_key?('link')
           end
         end
+        @app.app_lti_configs = []
+        @app.app_lti_configs << lti_config
       end
 
       if attributes.include? 'ios_app'
@@ -121,6 +132,8 @@ module Admin
           end
         end
       end
+
+      Rails.logger.info 'Creating a new app from an inbound payload.'
 
       @app.save
       @in_payload.update(app_id: @app.id)

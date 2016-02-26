@@ -19,7 +19,6 @@ module Casa
           # copy all properties from original into attributes
           ['use','require'].each do |type|
             if payload['original'].has_key?(type)
-              Rails.logger.info 'Processing type ' + type
               payload['attributes'][type] = {}
               payload['original'][type].each do |key, value|
                 if attributes_map[type].include?(key)

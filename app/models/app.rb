@@ -10,7 +10,7 @@ class App < ActiveRecord::Base
   class LTIExistenceValidator < ActiveModel::Validator
     def validate(record)
       if record.lti && record.app_lti_configs.empty?
-        record.errors.add(:lti, 'Interoperability - At least one LTI Configuration is required if "Supports LTI" is checked.')
+        record.errors.add(:lti, 'At least one LTI Configuration is required if "Supports LTI" is checked.')
       end
     end
   end
@@ -69,6 +69,12 @@ class App < ActiveRecord::Base
 
   validates :icon, :license_text, :security_text,
     length: { maximum: 65535 }
+
+  after_validation :log_errors, :if => Proc.new {|m| m.errors}
+
+  def log_errors
+    Rails.logger.info self.errors.full_messages.join("\n")
+  end
 
   before_save do
     ['icon'].each { |column| self[column].present? || self[column] = nil }

@@ -19,6 +19,8 @@ Rufus::Scheduler.singleton.every '30m' do
         # do not accept another client's interpretation of attributes
         payload.delete 'attributes' if payload.include? 'attributes'
 
+        # TODO: validate known attributes
+
         # must translate recognized attributes from machine-readable
         # UUIDs to human-readable names
         Casa::Payload.translate_in payload
