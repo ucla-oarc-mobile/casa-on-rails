@@ -18,11 +18,14 @@ module Casa
 
           # copy all properties from original into attributes
           ['use','require'].each do |type|
-            payload['attributes'][type] = {}
-            payload['original'][type].each do |key, value|
-              if attributes_map[type].include?(key)
-                attr = attributes_map[type][key]
-                payload['attributes'][type][attr.name] = value
+            if payload['original'].has_key?(type)
+              Rails.logger.info 'Processing type ' + type
+              payload['attributes'][type] = {}
+              payload['original'][type].each do |key, value|
+                if attributes_map[type].include?(key)
+                  attr = attributes_map[type][key]
+                  payload['attributes'][type][attr.name] = value
+                end
               end
             end
           end
@@ -32,10 +35,12 @@ module Casa
           if payload.include? 'journal'
             payload['journal'].each do |entry|
               ['use', 'require'].each do |type|
-                entry[type].each do |key, value|
-                  if attributes_map.include? key
-                    attr = attributes_map[type][key]
-                    payload['attributes'][type][attr.name] = value
+                if entry.has_key?(type)
+                  entry[type].each do |key, value|
+                    if attributes_map.include? key
+                      attr = attributes_map[type][key]
+                      payload['attributes'][type][attr.name] = value
+                    end
                   end
                 end
               end

@@ -13,17 +13,21 @@ module Casa
           end
 
           # filter out any payload with a `require` attribute we don't support
-          payload['attributes']['require'].each_key do |key|
-            unless Casa::Payload.attributes_map['require'].include?(key)
-              passing = false
-              return false
+          if payload['attributes'].has_key?('require')
+            payload['attributes']['require'].each_key do |key|
+              unless Casa::Payload.attributes_map['require'].include?(key)
+                passing = false
+                return false
+              end
             end
           end
 
           (peer.in_filter_rulesets | InFilterRuleset.global).each do |ruleset|
 
             rules = ruleset.rules_object
-            merged_attributes = payload['attributes'].merge(payload['attributes']['use']).merge(payload['attributes']['require'])
+            merged_attributes = payload['attributes']
+            merged_attributes.merge(payload['attributes']['use']) if(payload['attributes'].has_key?('use'))
+            merged_attributes.merge(payload['attributes']['require']) if(payload['attributes'].has_key?('require'))
 
             if rules.has_key? '_global'
               if rules['_global'].has_key? 'require'

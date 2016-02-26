@@ -20,7 +20,8 @@ module Admin
       @in_payload = InPayload.find params[:in_payload_id]
 
       attributes = @in_payload.content_data['attributes']
-      attributes = attributes.merge(attributes['use']).merge(attributes['require'])
+      attributes = attributes.merge(attributes['use']) if attributes.has_key?('use')
+      attributes = attributes.merge(attributes['require']) if attributes.has_key?('require')
 
       if @in_payload.related_app
         @app = @in_payload.related_app

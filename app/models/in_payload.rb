@@ -7,11 +7,19 @@ class InPayload < ActiveRecord::Base
   end
 
   def title
-    begin
-      content_data['attributes']['require']['title'] || content_data['attributes']['use']['title']
-    rescue
-      'Untitled'
+    title = nil
+    if content_data['attributes'].has_key?('require')
+      title = content_data['attributes']['require']['title']
     end
+    if title == nil
+      if content_data['attributes'].has_key?('use')
+        title = content_data['attributes']['use']['title']
+      end
+    end
+    if title == nil
+      title = 'Untitled'
+    end
+    title
   end
 
   def related_app
