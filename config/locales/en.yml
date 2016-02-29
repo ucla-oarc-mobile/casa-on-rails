@@ -36,6 +36,7 @@ en:
         license_text: "Licensing - "
         security_text: "Security - "
         lti: "Interoperability - "
+        caliper: "Interoperability - "
     errors:
       models:
         app:
