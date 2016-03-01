@@ -230,7 +230,7 @@ class App < ActiveRecord::Base
       JSON.parse(caliper_metric_profiles)['metric_profiles'].each{ | profile_object |
         profiles << profile_object['profile']
       }
-      return profiles
+      profiles
     end
   end
 
@@ -245,6 +245,83 @@ class App < ActiveRecord::Base
   # Returns the Launch URL for the default LTI Config, if one exists
   def default_lti_launch_url
     app_lti_configs.try(:each){ |config| return config.lti_launch_url if config.lti_default }
+  end
+
+  def caliper_attribute_is_valid
+
+    if self.caliper
+
+      if self.caliper_metric_profiles.nil? or self.caliper_metric_profiles.empty?
+        errors.add(:caliper, '- At least one Metric Profile should be configured if the Caliper checkbox is checked.')
+        return
+      end
+
+      unless self.caliper_metric_profiles.nil? or self.caliper_metric_profiles.empty?
+        error_text = fully_validate_against_json_schema('config/json-schema/caliper-schema.json', self.caliper_metric_profiles)
+
+        unless error_text.nil? or error_text.empty?
+          Rails.logger.info('caliper_metric_profile property failed schema validation: ' + error_text.map { |s| "'#{s}'" }.join(' '))
+
+          errors.add(:caliper, ' - The Caliper Metric Profiles JSON did not pass schema validation. The Caliper attribute' +
+                                 ' schema can be found here: http://imsglobal.github.io/casa-protocol/#Attributes/Interoperability:caliper')
+        else
+
+          json_as_map = JSON.parse(caliper_metric_profiles)
+
+          json_as_map['metric_profiles'].each do | p |
+            if p['profile'].blank?
+              errors.add(:caliper, ' - The Caliper Metric Profiles cannot contain empty profiles.')
+            end
+          end
+
+          if errors.empty?
+            # Remove any pretty printing from the JSON
+            self.caliper_metric_profiles = JSON.generate(json_as_map)
+          end
+        end
+      end
+
+      unless self.caliper_ims_global_certifications.nil? or self.caliper_ims_global_certifications.empty?
+        error_text = fully_validate_against_json_schema('config/json-schema/caliper-schema.json', self.caliper_ims_global_certifications)
+
+        unless error_text.nil? or error_text.empty?
+          Rails.logger.info('caliper_ims_global_certifications failed schema validation: ' + error_text.map { |s| "'#{s}'" }.join(' '))
+
+          errors.add(:caliper, ' - The Caliper IMS Global Certifications JSON did not pass schema validation. The Caliper attribute' +
+                                 ' schema can be found here: http://imsglobal.github.io/casa-protocol/#Attributes/Interoperability:caliper')
+        else
+          json_as_map = JSON.parse(caliper_ims_global_certifications)
+
+          json_as_map['ims_global_certifications'].each do | c |
+            c['metric_profiles'].each do | mp |
+              if mp.blank?
+                errors.add(:caliper, ' - The Caliper IMS Global Certifications cannot contain empty metric profiles')
+              end
+            end
+            if c['registration_number'].blank?
+              errors.add(:caliper, ' - The Caliper IMS Global Certifications cannot contain empty registration numbers.')
+            end
+            if c['conformance_date'].blank?
+              errors.add(:caliper, ' - The Caliper IMS Global Certifications cannot contain empty conformance dates.')
+            end
+          end
+
+          if errors.empty?
+            # Remove any pretty printing from the JSON
+            self.caliper_ims_global_certifications = JSON.generate(json_as_map)
+          end
+
+        end
+      end
+
+    else
+
+      # Reset the detailed properties
+      self.caliper_metric_profiles = nil
+      self.caliper_ims_global_certifications = nil
+
+    end
+
   end
 
   def to_transit_payload
@@ -347,83 +424,6 @@ class App < ActiveRecord::Base
                                 type: 'local',
                                 id: self.id,
                                 body: to_local_payload
-
-  end
-
-  def caliper_attribute_is_valid
-
-    if self.caliper
-
-      if self.caliper_metric_profiles.nil? or self.caliper_metric_profiles.empty?
-        errors.add(:caliper, '- At least one Metric Profile should be configured if the Caliper checkbox is checked.')
-        return
-      end
-
-      unless self.caliper_metric_profiles.nil? or self.caliper_metric_profiles.empty?
-        error_text = fully_validate_against_json_schema('config/json-schema/caliper-schema.json', self.caliper_metric_profiles)
-
-        unless error_text.nil? or error_text.empty?
-          Rails.logger.info('caliper_metric_profile property failed schema validation: ' + error_text.map { |s| "'#{s}'" }.join(' '))
-
-          errors.add(:caliper, ' - The Caliper Metric Profiles JSON did not pass schema validation. The Caliper attribute' +
-           ' schema can be found here: http://imsglobal.github.io/casa-protocol/#Attributes/Interoperability:caliper')
-        else
-
-          json_as_map = JSON.parse(caliper_metric_profiles)
-
-          json_as_map['metric_profiles'].each do | p |
-              if p['profile'].blank?
-                errors.add(:caliper, ' - The Caliper Metric Profiles cannot contain empty profiles.')
-              end
-           end
-
-          if errors.empty?
-             # Remove any pretty printing from the JSON
-            self.caliper_metric_profiles = JSON.generate(json_as_map)
-          end
-        end
-      end
-
-      unless self.caliper_ims_global_certifications.nil? or self.caliper_ims_global_certifications.empty?
-        error_text = fully_validate_against_json_schema('config/json-schema/caliper-schema.json', self.caliper_ims_global_certifications)
-
-        unless error_text.nil? or error_text.empty?
-          Rails.logger.info('caliper_ims_global_certifications failed schema validation: ' + error_text.map { |s| "'#{s}'" }.join(' '))
-
-          errors.add(:caliper, ' - The Caliper IMS Global Certifications JSON did not pass schema validation. The Caliper attribute' +
-                               ' schema can be found here: http://imsglobal.github.io/casa-protocol/#Attributes/Interoperability:caliper')
-        else
-          json_as_map = JSON.parse(caliper_ims_global_certifications)
-
-          json_as_map['ims_global_certifications'].each do | c |
-            c['metric_profiles'].each do | mp |
-              if mp.blank?
-                errors.add(:caliper, ' - The Caliper IMS Global Certifications cannot contain empty metric profiles')
-              end
-            end
-            if c['registration_number'].blank?
-              errors.add(:caliper, ' - The Caliper IMS Global Certifications cannot contain empty registration numbers.')
-            end
-            if c['conformance_date'].blank?
-              errors.add(:caliper, ' - The Caliper IMS Global Certifications cannot contain empty conformance dates.')
-            end
-          end
-
-          if errors.empty?
-            # Remove any pretty printing from the JSON
-            self.caliper_ims_global_certifications = JSON.generate(json_as_map)
-          end
-
-        end
-      end
-
-    else
-
-      # Reset the detailed properties
-      self.caliper_metric_profiles = nil
-      self.caliper_ims_global_certifications = nil
-
-    end
 
   end
 
