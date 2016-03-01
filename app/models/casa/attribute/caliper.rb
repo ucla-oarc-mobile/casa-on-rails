@@ -11,10 +11,8 @@ module Casa
 
         def make_for app
           if app.caliper
-            # Placeholder for serialization logic
-            nil
-          else
-            nil
+            data = JSON.parse(app.caliper_metric_profiles)
+            data.merge JSON.parse(app.caliper_ims_global_certifications) if app.caliper_ims_global_certifications
           end
         end
 

@@ -21,10 +21,17 @@ module Casa
             Casa::Attribute::Privacy.name => Casa::Attribute::Privacy,
             Casa::Attribute::PrivacyUrl.name => Casa::Attribute::PrivacyUrl,
             Casa::Attribute::AccessibilityUrl.name => Casa::Attribute::AccessibilityUrl,
-            Casa::Attribute::VpatUrl.name => Casa::Attribute::VpatUrl
+            Casa::Attribute::WcagUrl.name => Casa::Attribute::WcagUrl,
+            Casa::Attribute::WcagGuidelines.name => Casa::Attribute::WcagGuidelines,
+            Casa::Attribute::SupportContact.name => Casa::Attribute::SupportContact,
+            Casa::Attribute::AdminContact.name => Casa::Attribute::AdminContact,
+            Casa::Attribute::Competencies.name => Casa::Attribute::Competencies,
+            Casa::Attribute::Licensing.name => Casa::Attribute::Licensing,
+            Casa::Attribute::Security.name => Casa::Attribute::Security,
+            Casa::Attribute::StudentData.name => Casa::Attribute::StudentData,
+            Casa::Attribute::Features.name => Casa::Attribute::Features
         },
         'require' => {
-            # ..
         }
     }
 
