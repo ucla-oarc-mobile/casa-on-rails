@@ -5,7 +5,11 @@ class App < ActiveRecord::Base
           ActionView::Helpers::SanitizeHelper,
           ActionView::Helpers::TextHelper
 
-  NULL_IF_BLANK_ATTRS = %w( icon description short_description privacy_url accessibility_url vpat_url wcag_url acceptable ios_app_id ios_app_scheme ios_app_path ios_app_affiliate_data android_app_package android_app_scheme android_app_action android_app_category android_app_component download_size supported_languages security_session_lifetime security_cloud_vendor security_policy_url security_sla_url security_text license_text support_contact_name support_contact_email primary_contact_name primary_contact_email )
+  NULL_IF_BLANK_ATTRS = %w(icon description short_description privacy_url accessibility_url vpat_url wcag_url acceptable
+                           ios_app_id ios_app_scheme ios_app_path ios_app_affiliate_data android_app_package android_app_scheme
+                           android_app_action android_app_category android_app_component download_size supported_languages
+                           security_session_lifetime security_cloud_vendor security_policy_url security_sla_url security_text
+                           license_text support_contact_name support_contact_email primary_contact_name primary_contact_email )
 
   class LTIExistenceValidator < ActiveModel::Validator
     def validate(record)
@@ -18,7 +22,11 @@ class App < ActiveRecord::Base
   class LTIDefaultValidator < ActiveModel::Validator
     def validate(record)
       number_of_default_configs = 0
-      record.app_lti_configs.each { |c|  number_of_default_configs += 1 if c.lti_default } unless record.app_lti_configs.empty?
+
+      record.app_lti_configs.each {
+          |c|  number_of_default_configs += 1 if c.lti_default
+      } unless record.app_lti_configs.empty?
+
       if number_of_default_configs > 1
         record.errors.add(:lti, 'Only one LTI configuration can be set as the default.')
       end
@@ -45,7 +53,8 @@ class App < ActiveRecord::Base
 
   scope :available_to_launch_method, lambda { |m|
     if m
-      joins('LEFT OUTER JOIN `app_launch_methods` ON `apps`.`id` = `app_launch_methods`.`app_id`').where('restrict_launch = 0 OR `app_launch_methods`.`method` = :method', { method: m })
+      joins('LEFT OUTER JOIN `app_launch_methods` ON `apps`.`id` = `app_launch_methods`.`app_id`')
+          .where('restrict_launch = 0 OR `app_launch_methods`.`method` = :method', { method: m })
     end
   }
 
@@ -382,7 +391,7 @@ class App < ActiveRecord::Base
           Rails.logger.info('caliper_ims_global_certifications failed schema validation: ' + error_text.map { |s| "'#{s}'" }.join(' '))
 
           errors.add(:caliper, ' - The Caliper IMS Global Certifications JSON did not pass schema validation. The Caliper attribute' +
-                                          ' schema can be found here: http://imsglobal.github.io/casa-protocol/#Attributes/Interoperability:caliper')
+                               ' schema can be found here: http://imsglobal.github.io/casa-protocol/#Attributes/Interoperability:caliper')
         else
           json_as_map = JSON.parse(caliper_ims_global_certifications)
 
