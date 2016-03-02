@@ -36,4 +36,8 @@ class InPeer < ActiveRecord::Base
 
   end
 
+  after_save do
+    PayloadRetriever.get_payloads(self)
+  end
+
 end
