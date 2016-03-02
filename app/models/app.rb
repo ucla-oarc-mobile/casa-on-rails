@@ -90,12 +90,12 @@ class App < ActiveRecord::Base
     NULL_IF_BLANK_ATTRS.each { |attr| self[attr] = nil if self[attr].blank? }
   end
 
-  after_save do
+  after_commit do
     remove_from_index!
     add_to_index! if self.enabled
   end
 
-  before_destroy do
+  after_destroy do
     remove_from_index!
   end
 
@@ -435,11 +435,12 @@ class App < ActiveRecord::Base
       elasticsearch_client.delete index: Rails.application.config.elasticsearch_index,
                                   type: 'local',
                                   id: self.id
+
     rescue Elasticsearch::Transport::Transport::Errors::NotFound
-      # fail silently -- this is okay!
+      # ES throws this error even though it successfully marks the document for deletion
     rescue => e
-      puts e.class.name
-      puts e
+      Rails.logger.warn e.class.name
+      Rails.logger.warn e
     end
 
   end
