@@ -67,7 +67,9 @@ module Admin
       params.require(:lti_consumer).permit([
                                           :name,
                                           :key,
-                                          :secret
+                                          :secret,
+                                          :event_store_url,
+                                          :event_store_api_key
                                       ])
 
     end

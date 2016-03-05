@@ -30,7 +30,7 @@ class App < ActiveRecord::Base
       if number_of_default_configs > 1
         record.errors.add(:lti, 'Only one LTI configuration can be set as the default.')
       end
-      if record.app_lti_configs.size >= 1 && number_of_default_configs == 0
+      if record.app_lti_configs.size > 1 && number_of_default_configs == 0
         record.errors.add(:lti, 'When multiple LTI configurations are being created, one of them must be set as the default.')
       end
     end
@@ -98,6 +98,13 @@ class App < ActiveRecord::Base
   after_destroy do
     remove_from_index!
   end
+
+  # This runs validations in the context of the app. Without it, the validations in app_lti_config
+  # run, but the error message context gets overridden resulting in some error messages with bad UX.
+  # It means the app_lti_config validations run twice. This could probably be avoided if admin/apps_controller
+  # was modified to update app_lti_configs through the app (i.e., through ActiveRecord convention)
+  # instead of deleting and adding new rows in the controller.
+  accepts_nested_attributes_for :app_lti_configs
 
   def icon_tag
     if self.icon
@@ -246,6 +253,14 @@ class App < ActiveRecord::Base
   def default_lti_launch_url
     app_lti_configs.try(:each){ |config| return config.lti_launch_url if config.lti_default }
   end
+
+  # Returns the ContentItemResponse for the default LTI Config, if one exists
+  def default_lti_content_item
+    app_lti_configs.try(:each){ |config|
+      return (config.lti_content_item_message ? JSON.parse(config.lti_content_item_message) : nil) if config.lti_default
+    }
+  end
+
 
   def caliper_attribute_is_valid
 
@@ -396,21 +411,27 @@ class App < ActiveRecord::Base
 
   def to_content_item
 
-    content_item = {
-      'title' => self.title.length > 0 ? self.title : 'Untitled',
-      'url' => self.uri
-    }
+    content_item = default_lti_content_item
 
-    if self.lti
-      content_item['mediaType'] = 'application/vnd.ims.lti.v1.ltilink'
-      url = default_lti_launch_url
-      content_item['url'] = url if url
-    else
-      content_item['mediaType'] = 'text/html'
+    unless content_item
+      content_item = {
+        'title' => self.title.length > 0 ? self.title : 'Untitled',
+        'url' => self.uri
+      }
+
+      if self.lti
+        content_item['mediaType'] = 'application/vnd.ims.lti.v1.ltilink'
+        url = default_lti_launch_url
+        content_item['url'] = url if url
+      else
+        content_item['mediaType'] = 'text/html'
+      end
+
+      content_item['text'] = self.description if self.description.length > 0
+      content_item['icon'] = { '@id' => self.icon } if self.icon and self.icon.length > 0
     end
 
-    content_item['text'] = self.description if self.description.length > 0
-    content_item['icon'] = { '@id' => self.icon } if self.icon and self.icon.length > 0
+    content_item['custom'] = { 'official' => official }
 
     content_item
 
@@ -439,8 +460,7 @@ class App < ActiveRecord::Base
     rescue Elasticsearch::Transport::Transport::Errors::NotFound
       # ES throws this error even though it successfully marks the document for deletion
     rescue => e
-      Rails.logger.warn e.class.name
-      Rails.logger.warn e
+      Rails.logger.warn e.class.name + ' ' + e
     end
 
   end

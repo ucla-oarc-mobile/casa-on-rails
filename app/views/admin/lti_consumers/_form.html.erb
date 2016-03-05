@@ -27,7 +27,17 @@
     <%= f.text_field :secret %>
   </div>
 
-  <p class="text-center">
+  <div class="form-field">
+    <%= f.label :event_store_url %>
+    <%= f.text_field :event_store_url %>
+  </div>
+
+  <div class="form-field">
+    <%= f.label :event_store_api_key %>
+    <%= f.text_field :event_store_api_key %>
+  </div>
+
+    <p class="text-center">
     <%= f.submit 'Save Consumer' %>
     <%= link_to 'Back without Saving',
                 admin_lti_consumers_path,

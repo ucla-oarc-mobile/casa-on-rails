@@ -30,19 +30,23 @@ en:
         security_cloud_vendor: "Security - "
         security_policy_url: "Security - "
         security_sla_url: "Security - "
-        app_lti_configs: "Interoperability - "
         support_contact_email: "Contacts - "
         icon: "Display - "
         license_text: "Licensing - "
         security_text: "Security - "
         lti: "Interoperability - "
         caliper: "Interoperability - "
+      app_lti_configs:
+        lti_launch_url: "Interoperability - Launch URL"
+        lti_content_item_message: "Interoperability - Content Item Message"
+      lti_consumer:
+        event_store_url: "Event Store URL"
+        event_store_api_key: "Event Store API Key"
+
     errors:
       models:
         app:
           attributes:
-            app_lti_configs:
-              invalid: "Launch URL is a required property for every LTI configuration. "
             download_size:
                too_long: "The value for Download Size cannot be saved. Please use a value that is fewer than 256 characters."
             support_contact_name:
@@ -56,13 +60,13 @@ en:
             security_policy_url:
                too_long: "The value for Security Policy URL cannot be saved. Please use a value that is fewer than 256 characters."
             security_sla_url:
-               too_long: "The value for Security SLA URL cannot be saved. Please use a value that is fewer than 256 characters."
+              too_long: "The value for Security SLA URL cannot be saved. Please use a value that is fewer than 256 characters."
             support_contact_email:
-               too_short: "The value for Support Contact Email cannot be saved. Please use a value that is between 6 and 255 characters."
-               too_long: "The value for Support Contact Email cannot be saved. Please use a value that is between 6 and 255 characters."
+              too_short: "The value for Support Contact Email cannot be saved. Please use a value that is between 6 and 255 characters."
+              too_long: "The value for Support Contact Email cannot be saved. Please use a value that is between 6 and 255 characters."
             icon:
-               too_long: "The Icon image is too large and cannot be saved. The maximum file size allowed for icons is 64Kb."
+              too_long: "The Icon image is too large and cannot be saved. The maximum file size allowed for icons is 64Kb."
             license_text:
-               too_long: "The license text is too long and cannot be saved. Please use a value that is shorter than 65536 characters."
+              too_long: "The license text is too long and cannot be saved. Please use a value that is shorter than 65536 characters."
             security_text:
-               too_long: "The security text is too long and cannot be saved. Please use a value that is shorter than 65536 characters."
+              too_long: "The security text is too long and cannot be saved. Please use a value that is shorter than 65536 characters."

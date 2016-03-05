@@ -13,5 +13,16 @@
   <%= @lti_consumer.secret %>
 </p>
 
+<p>
+  <strong>Event Store URL:</strong>
+  <%= @lti_consumer.event_store_url %>
+</p>
+
+<p>
+  <strong>Event Store API Key:</strong>
+  <%= @lti_consumer.event_store_api_key %>
+</p>
+
+
 <%= link_to 'Back', admin_lti_consumers_path %>
 | <%= link_to 'Edit', edit_admin_lti_consumer_path(@lti_consumer) %>

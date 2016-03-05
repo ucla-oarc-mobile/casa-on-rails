@@ -169,6 +169,12 @@ module Admin
           JSON.parse(params[:app_lti_configs]).each do |app_lti_config|
             @app.app_lti_configs << AppLtiConfig.new(app_lti_config)
           end
+
+          # This makes the user's experience better if they forget to check the "default" checkbox and they are
+          # setting up only one LTI config. It means the app does not have to nag them for something silly.
+          if @app.app_lti_configs.size == 1
+            @app.app_lti_configs[0].lti_default = true
+          end
         end
       else
         params[:app_lti_configs] = nil

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160217231618) do
+ActiveRecord::Schema.define(version: 20160304161326) do
 
   create_table "app_authors", force: true do |t|
     t.integer "app_id"
@@ -347,7 +347,11 @@ ActiveRecord::Schema.define(version: 20160217231618) do
     t.string   "secret"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "event_store_url"
+    t.string   "event_store_api_key"
   end
+
+  add_index "lti_consumers", ["key"], name: "index_lti_consumers_on_key", unique: true, using: :btree
 
   create_table "oauth2_identities", force: true do |t|
     t.string   "provider",         null: false

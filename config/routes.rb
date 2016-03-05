@@ -54,6 +54,8 @@ Rails.application.routes.draw do
   end
 
   post 'lti/launch', to: 'lti#launch'
+  # Uncomment to allow an OAuth-ed LTI Launch via query parameters - handy for testing
+  # get 'lti/launch', to: 'lti#launch'
   get 'lti/content_item/(:id)', to: 'lti#content_item'
 
   namespace :mobile do

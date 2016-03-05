@@ -9,11 +9,6 @@ module Lti
         data
       end
 
-      def exists?
-        session.includes? 'launch_params'
-      end
-
-
     end
 
     attr_reader :credentials,
@@ -30,6 +25,7 @@ module Lti
       @request = options[:request]
       @session = options[:session]
       @tp = nil
+      @tp_metadata = nil
       @error = nil
 
       execute!
@@ -39,6 +35,7 @@ module Lti
     def save!
       if @error.nil?
         session['launch_params'] = @tp.to_params
+        session['tp_metadata'] = @tp_metadata unless @tp_metadata.blank?
         @tp.to_params
       else
         false
@@ -52,6 +49,15 @@ module Lti
       if key = params['oauth_consumer_key']
         if credentials.include? key
           @tp = Lti::ContentItemToolProvider.new(key, credentials[key], params)
+
+          # Grab any additional LTI Consumer metadata so it can be included in the ContentItemResponse
+          # POST back to the TC.
+          @tp_metadata = {}
+          results = LtiConsumer.where(key: key).select('event_store_url', 'event_store_api_key')
+          results.map { |row|
+            @tp_metadata['event_store_url'] = row.event_store_url unless row.event_store_url.blank?
+            @tp_metadata['event_store_api_key'] = row.event_store_api_key unless row.event_store_api_key.blank?
+          }
         else
           @error = 403
           return false

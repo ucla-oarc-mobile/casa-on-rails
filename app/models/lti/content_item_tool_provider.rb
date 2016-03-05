@@ -5,7 +5,7 @@ require 'oauth/request_proxy/rack_request'
 require 'securerandom'
 
 # ContentItem-supporting tool provider. Note that this only provides the functions needed by
-# this application, and it should not be used as a reference for complete conformace to the
+# this application, and it should not be used as a reference for complete conformance to the
 # ContentItem spec.
 module Lti
   class ContentItemToolProvider < ::IMS::LTI::ToolProvider
