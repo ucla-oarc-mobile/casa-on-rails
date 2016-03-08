@@ -6,4 +6,8 @@ class Category < ActiveRecord::Base
     presence: true,
     length: { minimum: 1 }
 
+  def has_apps?
+    self.apps.size > 0
+  end
+
 end

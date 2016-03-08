@@ -10,7 +10,7 @@ class AppsController < ApplicationController
       @collections = [];
       @site.homepage_categories.split(/\s*\n\s*/).each do |category_name|
         category = Category.where(name: category_name).first
-        @collections << category if category
+        @collections << category if category.has_apps?
       end
     else
       @collections = DEFAULT_CATEGORIES.map(){|name| @categories.find(){ |c| c.name == name } }.delete_if(){ |c| c.nil? }
