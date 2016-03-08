@@ -675,45 +675,57 @@
                   <p>-</p>
               <% end %>
             </div>
-
-                  <div class="additional-info-inline-block">
-                    <h4>Primary Contact</h4>
-                    <% if @app.primary_contact_name %>
-                        <p>
-                          <%= @app.primary_contact_name %>
-                          <% if @app.primary_contact_email %>
-                              <br><small><%= link_to @app.primary_contact_email, "mailto:#{@app.primary_contact_email}" %></small></p>
-                        <% end
-                           else %>
-                        <p>-</p>
-                    <% end %>
-                  </div>
-
         <% end %>
 
-            <div class="additional-info-inline-block">
-              <h4>Author<%= @app.app_authors.count > 1 ? 's' : '' %></h4>
-              <% if @app.app_authors.count > 0 %>
-              <p><%= raw @app.app_authors.map(){ |c|
-                           name = c.name ? c.name : 'Anonymous'
-                           c.email ? "<a href='mailto:#{c.email}'>#{name}</a>" : "<span class='text-muted'>#{name}</span>"
-                         }.join(', ') %></p>
-              <% else %>
-                <p>-</p>
-              <% end %>
-            </div>
+        <div class="additional-info-inline-block">
+          <h4>Primary Contact</h4>
+          <% if @app.primary_contact_name %>
+            <p>
+            <%= @app.primary_contact_name %>
+              <% if @app.primary_contact_email %>
+                <br><small><%= link_to @app.primary_contact_email, "mailto:#{@app.primary_contact_email}" %></small></p>
+              <% end
+          else %>
+            <p>-</p>
+          <% end %>
+        </div>
 
-            <div class="additional-info-inline-block">
-              <h4>Organization<%= @app.app_organizations.count > 1 ? 's' : '' %></h4>
-              <% if @app.app_organizations.count > 0 %>
-              <p><%= raw @app.app_organizations.map(){ |c|
-                           name = c.name ? c.name : 'Anonymous'
-                           c.website ? "<a href='#{c.website}' target='_blank'>#{name}</a>" : "<span class='text-muted'>#{name}</span>"
-                         }.join(', ') %></p>
-              <% else %>
-                  <p>-</p>
-              <% end %>
-            </div>
+        <div class="additional-info-inline-block">
+          <h4>Support Contact</h4>
+          <% if @app.support_contact_name %>
+              <p>
+                <%= @app.support_contact_name %>
+                <% if @app.support_contact_email %>
+                    <br><small><%= link_to @app.support_contact_email, "mailto:#{@app.support_contact_email}" %></small></p>
+              <% end
+                 else %>
+              <p>-</p>
+          <% end %>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Author<%= @app.app_authors.count > 1 ? 's' : '' %></h4>
+          <% if @app.app_authors.count > 0 %>
+          <p><%= raw @app.app_authors.map(){ |c|
+                       name = c.name ? c.name : 'Anonymous'
+                       c.email ? "<a href='mailto:#{c.email}'>#{name}</a>" : "<span class='text-muted'>#{name}</span>"
+                     }.join(', ') %></p>
+          <% else %>
+            <p>-</p>
+          <% end %>
+        </div>
+
+        <div class="additional-info-inline-block">
+          <h4>Organization<%= @app.app_organizations.count > 1 ? 's' : '' %></h4>
+          <% if @app.app_organizations.count > 0 %>
+          <p><%= raw @app.app_organizations.map(){ |c|
+                       name = c.name ? c.name : 'Anonymous'
+                       c.website ? "<a href='#{c.website}' target='_blank'>#{name}</a>" : "<span class='text-muted'>#{name}</span>"
+                     }.join(', ') %></p>
+          <% else %>
+              <p>-</p>
+          <% end %>
+        </div>
 
       </div>
 
