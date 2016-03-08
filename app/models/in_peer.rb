@@ -1,9 +1,11 @@
 require 'uri'
 require 'net/http'
+require 'validators/uri_validator'
 
 class InPeer < ActiveRecord::Base
   has_many :in_filter_rulesets
-  validates_with Validators::URIValidator
+
+  validates :uri, uri: true
 
   def get_payloads
 
