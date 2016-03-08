@@ -42,7 +42,8 @@ en:
       lti_consumer:
         event_store_url: "Event Store URL"
         event_store_api_key: "Event Store API Key"
-
+      in_peer:
+        uri: "URL"
     errors:
       models:
         app:
