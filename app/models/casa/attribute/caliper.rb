@@ -5,7 +5,7 @@ module Casa
       cattr_reader :name, :uuid
 
       @@name = 'caliper'
-      @@uuid = 'f6820326-5ea3-4a02-840d-7f91e75eb01b'
+      @@uuid = 'd96e4185-c52d-4f46-9fcb-59d28087c7d1'
 
       class << self
 
