@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160304161326) do
+ActiveRecord::Schema.define(version: 20160307193336) do
 
   create_table "app_authors", force: true do |t|
     t.integer "app_id"
@@ -65,6 +65,9 @@ ActiveRecord::Schema.define(version: 20160304161326) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "lti_default"
+    t.text     "lti_oauth_consumer_key"
+    t.text     "lti_oauth_consumer_secret"
+    t.text     "lti_url_for_oauth_consumer_key_and_secret"
   end
 
   create_table "app_media_requirements", force: true do |t|

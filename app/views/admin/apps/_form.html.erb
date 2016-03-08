@@ -1063,6 +1063,10 @@
                             '<option value="2.0"' +  ((data && data.lti_version && data.lti_version == '2.0') ?  ' selected' : '') + '>2.0</option>' +
                           '</select>' +
 
+                          '<label>OAuth Key</label><input type="text" class="input-lti_oauth_consumer_key"'+(data&&data.lti_oauth_consumer_key?(' value="'+data.lti_oauth_consumer_key+'"'):'')+'>' +
+                          '<label>OAuth Secret</label><input type="text" class="input-lti_oauth_consumer_secret"'+(data&&data.lti_oauth_consumer_secret?(' value="'+data.lti_oauth_consumer_secret+'"'):'')+'>' +
+                          '<label>URL for OAuth Key and Secret</label><input type="text" class="input-lti_url_for_oauth_consumer_key_and_secret"'+(data&&data.lti_url_for_oauth_consumer_key_and_secret?(' value="'+data.lti_url_for_oauth_consumer_key_and_secret+'"'):'')+'>' +
+
                           '<label>LIS Outcomes</label>' +
                           '<select class="select-lti_lis_outcomes">' +
                             '<option value="no"' +  ((data && data.lti_lis_outcomes && data.lti_lis_outcomes == 'no') ? ' selected' : '') + '>No</option>' +
@@ -1097,6 +1101,9 @@
                   lti_configuration_url = $(this).find('.input-lti_configuration_url').val(),
                   lti_registration_url = $(this).find('.input-lti_registration_url').val(),
                   lti_version = $(this).find('.select-lti_version').val(),
+                  lti_oauth_consumer_key = $(this).find('.input-lti_oauth_consumer_key').val(),
+                  lti_oauth_consumer_secret = $(this).find('.input-lti_oauth_consumer_secret').val(),
+                  lti_url_for_oauth_consumer_key_and_secret = $(this).find('.input-lti_url_for_oauth_consumer_key_and_secret').val(),
                   lti_lis_outcomes = $(this).find('.select-lti_lis_outcomes').val(),
                   lti_launch_params = $(this).find('.input-lti_launch_params').val(),
                   lti_content_item_message = $(this).find('.input-lti_content_item_message').val(),
@@ -1110,6 +1117,9 @@
               if(lti_configuration_url && lti_configuration_url.length) dataElement['lti_configuration_url'] = lti_configuration_url;
               if(lti_registration_url && lti_registration_url.length) dataElement['lti_registration_url'] = lti_registration_url;
               if(lti_version && lti_version.length) dataElement['lti_version'] = lti_version;
+              if(lti_oauth_consumer_key && lti_oauth_consumer_key.length) dataElement['lti_oauth_consumer_key'] = lti_oauth_consumer_key;
+              if(lti_oauth_consumer_secret && lti_oauth_consumer_secret.length) dataElement['lti_oauth_consumer_secret'] = lti_oauth_consumer_secret;
+              if(lti_url_for_oauth_consumer_key_and_secret && lti_url_for_oauth_consumer_key_and_secret.length) dataElement['lti_url_for_oauth_consumer_key_and_secret'] = lti_url_for_oauth_consumer_key_and_secret;
               if(lti_lis_outcomes && lti_lis_outcomes.length) dataElement['lti_lis_outcomes'] = lti_lis_outcomes;
               if(lti_launch_params && lti_launch_params.length) dataElement['lti_launch_params'] = lti_launch_params;
               if(lti_content_item_message && lti_content_item_message.length) dataElement['lti_content_item_message'] = lti_content_item_message;
