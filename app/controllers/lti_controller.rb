@@ -57,6 +57,8 @@ class LtiController < ApplicationController
     @parameters = tp.generate_content_item_response_parameters app_content_item
     @content_item_return_url = tp.content_item_return_url
 
+    event.added app
+
     Lti::ContentItemToolProvider.destroy_launch! session: session
     launch_provider.destroy!
 

@@ -138,6 +138,11 @@ module Admin
       @app.save
       @in_payload.update(app_id: @app.id)
 
+      event.accepted @in_payload,
+                     peer_id: @in_payload.in_peer ? @in_payload.in_peer.casa_id : nil,
+                     peer_name: @in_payload.in_peer ? @in_payload.in_peer.name : nil,
+                     peer_description: @in_payload.in_peer ? @in_payload.in_peer.uri : nil
+
       redirect_to @app
 
     end
@@ -151,6 +156,11 @@ module Admin
         InPayloadIgnore.create casa_id: @in_payload.casa_id,
                                casa_originator_id: @in_payload.casa_originator_id
       end
+
+      event.rejected @in_payload,
+                     peer_id: @in_payload.in_peer ? @in_payload.in_peer.casa_id : nil,
+                     peer_name: @in_payload.in_peer ? @in_payload.in_peer.name : nil,
+                     peer_description: @in_payload.in_peer ? @in_payload.in_peer.uri : nil
 
       redirect_to admin_in_payloads_path
 

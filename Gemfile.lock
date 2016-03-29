@@ -1,4 +1,11 @@
 GIT
+  remote: git@github.com:ebollens/caliper-ruby.git
+  revision: c7995239876bce75942804bae1eabb5957d34c39
+  branch: discovery_metric_profile
+  specs:
+    ims_caliper (0.1.1)
+
+GIT
   remote: https://github.com/WebBlocks/WebBlocks.git
   revision: e208bb3afae7ad45d56212f2b1a16a06969a39fe
   tag: 2.0.4.dev
@@ -109,6 +116,7 @@ GEM
     multi_xml (0.5.5)
     multipart-post (2.0.0)
     mysql2 (0.3.16)
+    netrc (0.10.3)
     oauth (0.4.7)
     oauth2 (1.0.0)
       faraday (>= 0.8, < 0.10)
@@ -140,6 +148,9 @@ GEM
       i18n (~> 0.6)
     rdoc (4.1.1)
       json (~> 1.4)
+    rest-client (1.7.3)
+      mime-types (>= 1.16, < 3.0)
+      netrc (~> 0.7)
     ruby-bower (0.0.1)
       execjs
     rufus-scheduler (3.0.8)
@@ -196,6 +207,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   elasticsearch
   ims-lti
+  ims_caliper!
   jbuilder (~> 2.0)
   jquery-rails
   json-schema (= 2.5.2)
@@ -204,6 +216,7 @@ DEPENDENCIES
   oauth2
   rails (= 4.1.4)
   rapporteur
+  rest-client
   rufus-scheduler
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)
@@ -214,4 +227,4 @@ DEPENDENCIES
   web_blocks!
 
 BUNDLED WITH
-   1.10.5
+   1.11.2

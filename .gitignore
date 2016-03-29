@@ -33,3 +33,6 @@ config/casa.yml
 
 # Ignore auth config file
 config/auth.yml
+
+# Ignore caliper config file
+config/caliper.yml

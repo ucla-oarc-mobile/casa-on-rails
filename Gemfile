@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.4'
 # Use sqlite3 as the database for Active Record
@@ -66,3 +65,10 @@ gem 'rapporteur'
 
 # for JSON Schema validation of payload attribute data
 gem 'json-schema', '2.5.2'
+
+gem 'ims_caliper',
+  git: 'git@github.com:ebollens/caliper-ruby.git',
+  branch: 'discovery_metric_profile'
+
+gem 'rest-client'
+
