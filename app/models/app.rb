@@ -252,6 +252,7 @@ class App < ActiveRecord::Base
   # Returns the Launch URL for the default LTI Config, if one exists
   def default_lti_launch_url
     app_lti_configs.try(:each){ |config| return config.lti_launch_url if config.lti_default }
+    return nil
   end
 
   # Returns the ContentItemResponse for the default LTI Config, if one exists
@@ -259,6 +260,7 @@ class App < ActiveRecord::Base
     app_lti_configs.try(:each){ |config|
       return (config.lti_content_item_message ? JSON.parse(config.lti_content_item_message) : nil) if config.lti_default
     }
+    return nil
   end
 
 
