@@ -59,26 +59,19 @@ module Admin
         }
       end
 
-      if attributes.include? 'lti'
-        # TODO: allow payloads to include an array of LTI configs (fully support spec)
+      unless attributes['lti'].blank?
         @app.lti = true
-        lti_config = AppLtiConfig.new do |c|
-          c.lti_default = true
-          c.lti_launch_url = attributes['lti']['launch_url'] if attributes['lti'].has_key?('launch_url')
-          c.lti_launch_params = attributes['lti']['launch_params'] if attributes['lti'].has_key?('launch_params')
-          c.lti_registration_url = attributes['lti']['registration_url'] if attributes['lti'].has_key?('registration_url')
-          c.lti_configuration_url = attributes['lti']['configuration_url'] if attributes['lti'].has_key?('configuration_url')
-          c.lti_content_item_message = attributes['lti']['content_item_response'] if attributes['lti'].has_key?('content_item_response')
-          c.lti_lis_outcomes = attributes['lti']['outcomes'] if attributes['lti'].has_key?('outcomes')
-          c.lti_version = attributes['lti']['version'] if attributes['lti'].has_key?('version')
-          if attributes['lti'].has_key?('ims_global_certification')
-            c.lti_ims_global_registration_number = attributes['lti']['ims_global_certification']['registration_number'] if attributes['lti']['ims_global_certification'].has_key?('registration_number')
-            c.lti_ims_global_conformance_date = attributes['lti']['ims_global_certification']['conformance_date'] if attributes['lti']['ims_global_certification'].has_key?('conformance_date')
-            c.lti_ims_global_registration_link = attributes['lti']['ims_global_certification']['link'] if attributes['lti']['ims_global_certification'].has_key?('link')
-          end
-        end
         @app.app_lti_configs = []
-        @app.app_lti_configs << lti_config
+
+        # The LTI Attribute is allowed to be an object or an array in the CASA specification
+
+        if attributes['lti'].is_a? Array
+          attributes['lti'].each do |config_hash|
+            @app.app_lti_configs << create_lti_config(config_hash)
+          end
+        else
+          @app.app_lti_configs << create_lti_config(attributes['lti'])
+        end
       end
 
       if attributes.include? 'ios_app'
@@ -156,5 +149,24 @@ module Admin
 
     end
 
+    def create_lti_config(config_hash)
+      AppLtiConfig.new do |c|
+        c.lti_default = true
+        c.lti_launch_url = config_hash['launch_url'] if config_hash.has_key?('launch_url')
+        c.lti_launch_params = config_hash['launch_params'] if config_hash.has_key?('launch_params')
+        c.lti_registration_url = config_hash['registration_url'] if config_hash.has_key?('registration_url')
+        c.lti_configuration_url = config_hash['configuration_url'] if config_hash.has_key?('configuration_url')
+        c.lti_content_item_message = config_hash['content_item_response'] if config_hash.has_key?('content_item_response')
+        c.lti_lis_outcomes = config_hash['outcomes'] if config_hash.has_key?('outcomes')
+        c.lti_version = config_hash['version'] if config_hash.has_key?('version')
+        if config_hash.has_key?('ims_global_certification')
+          c.lti_ims_global_registration_number = config_hash['ims_global_certification']['registration_number'] if config_hash['ims_global_certification'].has_key?('registration_number')
+          c.lti_ims_global_conformance_date = config_hash['ims_global_certification']['conformance_date'] if config_hash['ims_global_certification'].has_key?('conformance_date')
+          c.lti_ims_global_registration_link = config_hash['ims_global_certification']['link'] if config_hash['ims_global_certification'].has_key?('link')
+        end
+      end
+    end
+
   end
+
 end
