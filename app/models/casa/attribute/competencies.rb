@@ -5,7 +5,7 @@ module Casa
       cattr_reader :name, :uuid
 
       @@name = 'competencies'
-      @@uuid = 'dbc9751f-be5d-4508-8dee-4acc9e3babe5'
+      @@uuid = '4f51209d-780e-42b2-aeb6-d5cf942b86a3'
 
       class << self
 

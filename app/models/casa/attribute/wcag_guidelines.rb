@@ -5,7 +5,7 @@ module Casa
       cattr_reader :name, :uuid
 
       @@name = 'wcag_guidelines'
-      @@uuid = '17abad98-039c-4b21-a60c-40ac71601faa'
+      @@uuid = '398ad595-b2cd-44c4-8864-921f4f25536b'
 
       class << self
 

@@ -11,10 +11,10 @@ module Casa
 
         def make_for app
           data = {}
-          %i(student_data_stores_local_data student_data_requires_account student_data_has_opt_out_for_data_collection
-             student_data_has_opt_in_for_data_collection student_data_shows_eula student_data_is_app_externally_hosted
-             student_data_stores_pii).each do |field|
-            data[field] = app.public_send(field) if app.public_send(field)
+          %i(stores_local_data requires_account has_opt_out_for_data_collection has_opt_in_for_data_collection
+             shows_eula is_app_externally_hosted stores_pii).each do |field|
+            field_data = app.public_send("student_data_#{field.to_s}".to_sym)
+            data[field] = field_data unless field_data.nil?
           end
           data
         end

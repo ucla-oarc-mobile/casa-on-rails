@@ -11,9 +11,9 @@ module Casa
 
         def make_for app
           data = {}
-          %i(license_is_free license_is_paid license_is_recharge license_is_by_seat license_is_ad_supported
-             license_is_other license_text).each do |field|
-            data[field] = app.public_send(field) if app.public_send(field)
+          %i(is_free is_paid is_recharge is_by_seat is_ad_supported is_other text).each do |field|
+            field_data = app.public_send("license_#{field.to_s}".to_sym)
+            data[field] = field_data unless field_data.nil?
           end
           data
         end

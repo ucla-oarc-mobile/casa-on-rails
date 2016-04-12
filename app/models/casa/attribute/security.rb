@@ -11,9 +11,10 @@ module Casa
 
         def make_for app
           data = {}
-          %i(security_uses_https security_uses_additional_encryption security_requires_cookies security_requires_third_party_cookies
-             security_session_lifetime security_cloud_vendor security_policy_url security_text ).each do |field|
-            data[field] = app.public_send(field) if app.public_send(field)
+          %i(uses_https uses_additional_encryption requires_cookies requires_third_party_cookies
+             session_lifetime cloud_vendor policy_url sla_url text ).each do |field|
+            field_data = app.public_send("security_#{field.to_s}".to_sym)
+            data[field] = field_data unless field_data.nil?
           end
           data
         end

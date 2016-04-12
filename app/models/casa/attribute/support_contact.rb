@@ -11,8 +11,8 @@ module Casa
 
         def make_for app
           data = {}
-          data['support_contact_name'] = app.support_contact_name if app.support_contact_name
-          data['support_contact_email'] = app.support_contact_email if app.support_contact_email
+          data['name'] = app.support_contact_name if app.support_contact_name
+          data['email'] = app.support_contact_email if app.support_contact_email
           data
         end
 
