@@ -22,14 +22,12 @@
 /node_modules
 
 # Ignore editor and environment files
-.DS_Store
+/.DS_Store
 /.idea
 
-# Ignore es config file
+# Ignore local/Chef config files
 /config/elasticsearch.yml
+/config/casa.yml
+/config/auth.yml
+/config/caliper.yml
 
-# Ignore CASA metadata config file
-config/casa.yml
-
-# Ignore auth config file
-config/auth.yml

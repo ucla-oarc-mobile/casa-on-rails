@@ -5,7 +5,7 @@ require 'validators/uri_validator'
 class InPeer < ActiveRecord::Base
   has_many :in_filter_rulesets
 
-  validates :uri, uri: true
+  validates :uri, uri: true, presence: true
 
   def get_payloads
 

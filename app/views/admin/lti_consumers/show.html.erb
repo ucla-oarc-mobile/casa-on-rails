@@ -23,6 +23,15 @@
   <%= @lti_consumer.event_store_api_key %>
 </p>
 
+<p>
+  <strong>SSO Type:</strong>
+  <%= @lti_consumer.sso_type %>
+</p>
+
+<p>
+  <strong>SSO Identity Provider URL:</strong>
+  <%= @lti_consumer.sso_idp_url %>
+</p>
 
 <%= link_to 'Back', admin_lti_consumers_path %>
 | <%= link_to 'Edit', edit_admin_lti_consumer_path(@lti_consumer) %>

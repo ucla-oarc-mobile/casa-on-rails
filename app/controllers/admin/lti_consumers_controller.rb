@@ -69,7 +69,9 @@ module Admin
                                           :key,
                                           :secret,
                                           :event_store_url,
-                                          :event_store_api_key
+                                          :event_store_api_key,
+                                          :sso_type,
+                                          :sso_idp_url
                                       ])
 
     end
