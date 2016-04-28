@@ -205,6 +205,10 @@ class App < ActiveRecord::Base
     Rails.application.config.wcag_urls[wcag]
   end
 
+  def wcag_success_critereon_string_for(id)
+    "#{id} - #{Rails.application.config.wcag_success_critereon_descriptions[id]}"
+  end
+
   def lti_versions_supported
     versions = Array.new
     app_lti_configs.each { | config |
@@ -262,7 +266,6 @@ class App < ActiveRecord::Base
     }
     return nil
   end
-
 
   def caliper_attribute_is_valid
 
