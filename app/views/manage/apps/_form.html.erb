@@ -454,45 +454,45 @@
         <div class="form-field">
           <%= f.label :wcag_text_alternatives, '1.1 Text Alternatives'  %>
           <%= select_tag :wcag_text_alternatives,
-                         options_for_select([@app.wcag_success_critereon_string_for('1.1.1'), '1.1-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('1.1')}), multiple: true %>
+                         options_for_select([[@app.wcag_success_critereon_string_for('1.1.1'), '1.1.1'], '1.1-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('1.1')}), multiple: true %>
         </div>
 
         <div class="form-field">
           <%= f.label :wcag_time_based_media, '1.2 Time-Based Media' %>
           <%= select_tag :wcag_time_based_media,
-                         options_for_select([@app.wcag_success_critereon_string_for('1.2.1'),
-                                             @app.wcag_success_critereon_string_for('1.2.2'),
-                                             @app.wcag_success_critereon_string_for('1.2.3'),
-                                             @app.wcag_success_critereon_string_for('1.2.4'),
-                                             @app.wcag_success_critereon_string_for('1.2.5'),
-                                             @app.wcag_success_critereon_string_for('1.2.6'),
-                                             @app.wcag_success_critereon_string_for('1.2.7'),
-                                             @app.wcag_success_critereon_string_for('1.2.8'),
-                                             @app.wcag_success_critereon_string_for('1.2.9'),
+                         options_for_select([[@app.wcag_success_critereon_string_for('1.2.1'),'1.2.1'],
+                                             [@app.wcag_success_critereon_string_for('1.2.2'),'1.2.2'],
+                                             [@app.wcag_success_critereon_string_for('1.2.3'),'1.2.3'],
+                                             [@app.wcag_success_critereon_string_for('1.2.4'),'1.2.4'],
+                                             [@app.wcag_success_critereon_string_for('1.2.5'),'1.2.5'],
+                                             [@app.wcag_success_critereon_string_for('1.2.6'),'1.2.6'],
+                                             [@app.wcag_success_critereon_string_for('1.2.7'),'1.2.7'],
+                                             [@app.wcag_success_critereon_string_for('1.2.8'),'1.2.8'],
+                                             [@app.wcag_success_critereon_string_for('1.2.9'),'1.2.9'],
                                              '1.2-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('1.2')}), multiple: true %>
         </div>
 
         <div class="form-field">
           <%= f.label :wcag_adaptable, '1.3 Adaptable' %>
           <%= select_tag :wcag_adaptable,
-                         options_for_select([@app.wcag_success_critereon_string_for('1.3.1'),
-                                             @app.wcag_success_critereon_string_for('1.3.2'),
-                                             @app.wcag_success_critereon_string_for('1.3.3'),
+                         options_for_select([[@app.wcag_success_critereon_string_for('1.3.1'),'1.3.1'],
+                                             [@app.wcag_success_critereon_string_for('1.3.2'),'1.3.2'],
+                                             [@app.wcag_success_critereon_string_for('1.3.3'),'1.3.3'],
                                              '1.3-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('1.3')}), multiple: true %>
         </div>
 
         <div class="form-field">
           <%= f.label :wcag_distinguishable, '1.4 Distinguishable' %>
           <%= select_tag :wcag_distinguishable,
-                         options_for_select([@app.wcag_success_critereon_string_for('1.4.1'),
-                                             @app.wcag_success_critereon_string_for('1.4.2'),
-                                             @app.wcag_success_critereon_string_for('1.4.3'),
-                                             @app.wcag_success_critereon_string_for('1.4.4'),
-                                             @app.wcag_success_critereon_string_for('1.4.5'),
-                                             @app.wcag_success_critereon_string_for('1.4.6'),
-                                             @app.wcag_success_critereon_string_for('1.4.7'),
-                                             @app.wcag_success_critereon_string_for('1.4.8'),
-                                             @app.wcag_success_critereon_string_for('1.4.9'),
+                         options_for_select([[@app.wcag_success_critereon_string_for('1.4.1'),'1.4.1'],
+                                             [@app.wcag_success_critereon_string_for('1.4.2'),'1.4.2'],
+                                             [@app.wcag_success_critereon_string_for('1.4.3'),'1.4.3'],
+                                             [@app.wcag_success_critereon_string_for('1.4.4'),'1.4.4'],
+                                             [@app.wcag_success_critereon_string_for('1.4.5'),'1.4.5'],
+                                             [@app.wcag_success_critereon_string_for('1.4.6'),'1.4.6'],
+                                             [@app.wcag_success_critereon_string_for('1.4.7'),'1.4.7'],
+                                             [@app.wcag_success_critereon_string_for('1.4.8'),'1.4.8'],
+                                             [@app.wcag_success_critereon_string_for('1.4.9'),'1.4.9'],
                                              '1.4-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('1.4')}), multiple: true %>
         </div>
 
@@ -500,87 +500,87 @@
         <div class="form-field">
           <%= f.label :wcag_keyboard_accessible, '2.1 Keyboard Accessible' %>
           <%= select_tag :wcag_keyboard_accessible,
-                         options_for_select([@app.wcag_success_critereon_string_for('2.1.1'),
-                                             @app.wcag_success_critereon_string_for('2.1.2'),
-                                             @app.wcag_success_critereon_string_for('2.1.3'),
+                         options_for_select([[@app.wcag_success_critereon_string_for('2.1.1'),'2.1.1'],
+                                             [@app.wcag_success_critereon_string_for('2.1.2'),'2.1.2'],
+                                             [@app.wcag_success_critereon_string_for('2.1.3'),'2.1.3'],
                                              '2.1-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('2.1')}), multiple: true %>
         </div>
 
         <div class="form-field">
           <%= f.label :wcag_enough_time, '2.2 Enough Time' %>
           <%= select_tag :wcag_enough_time,
-                         options_for_select([@app.wcag_success_critereon_string_for('2.2.1'),
-                                             @app.wcag_success_critereon_string_for('2.2.2'),
-                                             @app.wcag_success_critereon_string_for('2.2.3'),
-                                             @app.wcag_success_critereon_string_for('2.2.4'),
-                                             @app.wcag_success_critereon_string_for('2.2.5'),
+                         options_for_select([[@app.wcag_success_critereon_string_for('2.2.1'),'2.2.1'],
+                                             [@app.wcag_success_critereon_string_for('2.2.2'),'2.2.2'],
+                                             [@app.wcag_success_critereon_string_for('2.2.3'),'2.2.3'],
+                                             [@app.wcag_success_critereon_string_for('2.2.4'),'2.2.4'],
+                                             [@app.wcag_success_critereon_string_for('2.2.5'),'2.2.5'],
                                              '2.2-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('2.2')}), multiple: true %>
         </div>
 
         <div class="form-field">
           <%= f.label :wcag_seizures, '2.3 Seizures' %>
           <%= select_tag :wcag_seizures,
-                         options_for_select([@app.wcag_success_critereon_string_for('2.3.1'),
-                                             @app.wcag_success_critereon_string_for('2.3.2'),
+                         options_for_select([[@app.wcag_success_critereon_string_for('2.3.1'),'2.3.1'],
+                                             [@app.wcag_success_critereon_string_for('2.3.2'),'2.3.2'],
                                              '2.3-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('2.3')}), multiple: true %>
         </div>
 
         <div class="form-field">
           <%= f.label :wcag_navigable, '2.4 Navigable' %>
           <%= select_tag :wcag_navigable,
-                         options_for_select([@app.wcag_success_critereon_string_for('2.4.1'),
-                                             @app.wcag_success_critereon_string_for('2.4.2'),
-                                             @app.wcag_success_critereon_string_for('2.4.3'),
-                                             @app.wcag_success_critereon_string_for('2.4.4'),
-                                             @app.wcag_success_critereon_string_for('2.4.5'),
-                                             @app.wcag_success_critereon_string_for('2.4.6'),
-                                             @app.wcag_success_critereon_string_for('2.4.7'),
-                                             @app.wcag_success_critereon_string_for('2.4.8'),
-                                             @app.wcag_success_critereon_string_for('2.4.9'),
-                                             @app.wcag_success_critereon_string_for('2.4.10'),
+                         options_for_select([[@app.wcag_success_critereon_string_for('2.4.1'),'2.4.1'],
+                                             [@app.wcag_success_critereon_string_for('2.4.2'),'2.4.2'],
+                                             [@app.wcag_success_critereon_string_for('2.4.3'),'2.4.3'],
+                                             [@app.wcag_success_critereon_string_for('2.4.4'),'2.4.4'],
+                                             [@app.wcag_success_critereon_string_for('2.4.5'),'2.4.5'],
+                                             [@app.wcag_success_critereon_string_for('2.4.6'),'2.4.6'],
+                                             [@app.wcag_success_critereon_string_for('2.4.7'),'2.4.7'],
+                                             [@app.wcag_success_critereon_string_for('2.4.8'),'2.4.8'],
+                                             [@app.wcag_success_critereon_string_for('2.4.9'),'2.4.9'],
+                                             [@app.wcag_success_critereon_string_for('2.4.10'),'2.4.10'],
                                              '2.4-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('2.4')}), multiple: true %>
         </div>
 
         <div class="form-field">
           <%= f.label :wcag_readable, '3.1 Readable' %>
           <%= select_tag :wcag_readable,
-                         options_for_select([@app.wcag_success_critereon_string_for('3.1.1'),
-                                             @app.wcag_success_critereon_string_for('3.1.2'),
-                                             @app.wcag_success_critereon_string_for('3.1.3'),
-                                             @app.wcag_success_critereon_string_for('3.1.4'),
-                                             @app.wcag_success_critereon_string_for('3.1.5'),
-                                             @app.wcag_success_critereon_string_for('3.1.6'),
+                         options_for_select([[@app.wcag_success_critereon_string_for('3.1.1'),'3.1.1'],
+                                             [@app.wcag_success_critereon_string_for('3.1.2'),'3.1.2'],
+                                             [@app.wcag_success_critereon_string_for('3.1.3'),'3.1.3'],
+                                             [@app.wcag_success_critereon_string_for('3.1.4'),'3.1.4'],
+                                             [@app.wcag_success_critereon_string_for('3.1.5'),'3.1.5'],
+                                             [@app.wcag_success_critereon_string_for('3.1.6'),'3.1.6'],
                                              '3.1-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('3.1')}), multiple: true %>
         </div>
 
         <div class="form-field">
           <%= f.label :wcag_predictable, '3.2 Predictable' %>
           <%= select_tag :wcag_predictable,
-                         options_for_select([@app.wcag_success_critereon_string_for('3.2.1'),
-                                             @app.wcag_success_critereon_string_for('3.2.2'),
-                                             @app.wcag_success_critereon_string_for('3.2.3'),
-                                             @app.wcag_success_critereon_string_for('3.2.4'),
-                                             @app.wcag_success_critereon_string_for('3.2.5'),
+                         options_for_select([[@app.wcag_success_critereon_string_for('3.2.1'),'3.2.1'],
+                                             [@app.wcag_success_critereon_string_for('3.2.2'),'3.2.2'],
+                                             [@app.wcag_success_critereon_string_for('3.2.3'),'3.2.3'],
+                                             [@app.wcag_success_critereon_string_for('3.2.4'),'3.2.4'],
+                                             [@app.wcag_success_critereon_string_for('3.2.5'),'3.2.5'],
                                              '3.2-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('3.2')}), multiple: true %>
         </div>
 
         <div class="form-field">
           <%= f.label :wcag_input_assistance, '3.3 Input Assistance' %>
           <%= select_tag :wcag_input_assistance,
-                         options_for_select([@app.wcag_success_critereon_string_for('3.3.1'),
-                                             @app.wcag_success_critereon_string_for('3.3.2'),
-                                             @app.wcag_success_critereon_string_for('3.3.3'),
-                                             @app.wcag_success_critereon_string_for('3.3.4'),
-                                             @app.wcag_success_critereon_string_for('3.3.5'),
-                                             @app.wcag_success_critereon_string_for('3.3.6'),
+                         options_for_select([[@app.wcag_success_critereon_string_for('3.3.1'),'3.3.1'],
+                                             [@app.wcag_success_critereon_string_for('3.3.2'),'3.3.2'],
+                                             [@app.wcag_success_critereon_string_for('3.3.3'),'3.3.3'],
+                                             [@app.wcag_success_critereon_string_for('3.3.4'),'3.3.4'],
+                                             [@app.wcag_success_critereon_string_for('3.3.5'),'3.3.5'],
+                                             [@app.wcag_success_critereon_string_for('3.3.6'),'3.3.6'],
                                              '3.3-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('3.3')}), multiple: true %>
         </div>
 
         <div class="form-field">
           <%= f.label :wcag_compatible, '4.1 Compatible' %>
           <%= select_tag :wcag_compatible,
-                         options_for_select([@app.wcag_success_critereon_string_for('4.1.1'),
-                                             @app.wcag_success_critereon_string_for('4.1.2'),
+                         options_for_select([[@app.wcag_success_critereon_string_for('4.1.1'),'4.1.1'],
+                                             [@app.wcag_success_critereon_string_for('4.1.2'),'4.1.2'],
                                              '4.1-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('4.1')}), multiple: true %>
         </div>
 

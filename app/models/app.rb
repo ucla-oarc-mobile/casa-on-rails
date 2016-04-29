@@ -209,6 +209,10 @@ class App < ActiveRecord::Base
     "#{id} - #{Rails.application.config.wcag_success_critereon_descriptions[id]}"
   end
 
+  def wcag_success_critereon_text_only_for(id)
+    Rails.application.config.wcag_success_critereon_descriptions[id]
+  end
+
   def lti_versions_supported
     versions = Array.new
     app_lti_configs.each { | config |
