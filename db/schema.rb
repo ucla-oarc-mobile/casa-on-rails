@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160307193336) do
+ActiveRecord::Schema.define(version: 20160408174358) do
 
   create_table "app_authors", force: true do |t|
     t.integer "app_id"
@@ -352,6 +352,8 @@ ActiveRecord::Schema.define(version: 20160307193336) do
     t.datetime "updated_at"
     t.text     "event_store_url"
     t.string   "event_store_api_key"
+    t.string   "sso_type"
+    t.string   "sso_idp_url"
   end
 
   add_index "lti_consumers", ["key"], name: "index_lti_consumers_on_key", unique: true, using: :btree
