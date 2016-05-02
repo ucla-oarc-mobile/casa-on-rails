@@ -263,6 +263,13 @@ class App < ActiveRecord::Base
     return nil
   end
 
+  # Returns the default LTI Config, if one exists
+  def default_lti_config
+    app_lti_configs.try(:each){ |config| return config if config.lti_default }
+    return nil
+  end
+
+
   # Returns the ContentItemResponse for the default LTI Config, if one exists
   def default_lti_content_item
     app_lti_configs.try(:each){ |config|
@@ -428,10 +435,22 @@ class App < ActiveRecord::Base
         'url' => self.uri
       }
 
+      content_item['custom'] = { 'official' => official }
+
       if self.lti
+        # A default LTI config is required when an app is marked as supporting LTI
+        lti_config = default_lti_config
+
         content_item['mediaType'] = 'application/vnd.ims.lti.v1.ltilink'
-        url = default_lti_launch_url
-        content_item['url'] = url if url
+
+        # The LTI launch URL is the only required LTI element in an LTI configuration
+        content_item['url'] = lti_config.lti_launch_url
+
+        # Here the OAuth info for the tool is included. The assumption is that we are only generating a
+        # Content-Item Message if the store has been launched by a trusted LTI Consumer.
+        content_item['custom']['oauth_key'] = lti_config.lti_oauth_consumer_key if lti_config.lti_oauth_consumer_key
+        content_item['custom']['oauth_secret'] = lti_config.lti_oauth_consumer_secret if lti_config.lti_oauth_consumer_secret
+        content_item['custom']['oauth_url_for_key_and_secret'] = lti_config.lti_url_for_oauth_consumer_key_and_secret if lti_config.lti_url_for_oauth_consumer_key_and_secret
       else
         content_item['mediaType'] = 'text/html'
       end
@@ -439,8 +458,6 @@ class App < ActiveRecord::Base
       content_item['text'] = self.description if self.description.length > 0
       content_item['icon'] = { '@id' => self.icon } if self.icon and self.icon.length > 0
     end
-
-    content_item['custom'] = { 'official' => official }
 
     content_item
 
