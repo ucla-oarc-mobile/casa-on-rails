@@ -447,10 +447,10 @@ class App < ActiveRecord::Base
         content_item['url'] = lti_config.lti_launch_url
 
         # Here the OAuth info for the tool is included. The assumption is that we are only generating a
-        # Content-Item Message if the store has been launched by a trusted LTI Consumer.
+        # Content-Item Message with these private values if the store itself has been launched by a trusted LTI Consumer.
         content_item['custom']['oauth_key'] = lti_config.lti_oauth_consumer_key if lti_config.lti_oauth_consumer_key
         content_item['custom']['oauth_secret'] = lti_config.lti_oauth_consumer_secret if lti_config.lti_oauth_consumer_secret
-        content_item['custom']['oauth_url_for_key_and_secret'] = lti_config.lti_url_for_oauth_consumer_key_and_secret if lti_config.lti_url_for_oauth_consumer_key_and_secret
+        content_item['custom']['registration_url'] = lti_config.lti_registration_url if lti_config.lti_registration_url
       else
         content_item['mediaType'] = 'text/html'
       end

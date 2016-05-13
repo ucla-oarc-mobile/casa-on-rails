@@ -38,7 +38,9 @@ en:
         caliper: "Interoperability - "
       app_lti_configs:
         lti_launch_url: "Interoperability - Launch URL"
+        lti_registration_url: "Interoperability - Registration URL"
         lti_content_item_message: "Interoperability - Content Item Message"
+        oauth: "Interoperability - OAuth"
       lti_consumer:
         event_store_url: "Event Store URL"
         event_store_api_key: "Event Store API Key"
