@@ -363,7 +363,9 @@
 
       <legend>LTI</legend>
 
-      <p>IMS Global's <a href="http://www.imsglobal.org/toolsinteroperability2.cfm" target="_blank">Learning Tools Interoperability (LTI)</a> standard allows for interoperability between applications and consumers such as learning management systems. These properties allow the app store to push an app back to a learning management system with all the information necessary to set up the app as an LTI tool.</p>
+      <p data-help="Launch URL is the launch URL for LTI 1.x launches.">
+
+        IMS Global's <a href="http://www.imsglobal.org/toolsinteroperability2.cfm" target="_blank">Learning Tools Interoperability (LTI)</a> standard allows for interoperability between applications and consumers such as learning management systems. These properties allow the app store to push an app back to a learning management system with all the information necessary to set up the app as an LTI tool.</p>
 
       <div class="form-field">
         <%= f.label :lti, 'Supports LTI' %>
@@ -1109,12 +1111,12 @@
           var $li = $(document.createElement('li'))
                   .addClass('form-field')
                   .attr('style', 'border-left:3px solid #eee;padding-left:10px;margin-bottom:10px;')
-                  .append('<label style="color: black;">Set As Default Config</label><input type="checkbox" class="input-lti_default"'+(data&&data.lti_default?(' checked="'+(data.lti_default ? 'checked' : '')+'"'):'')+'>' +
-                          '<label>Launch URL</label><input type="text" class="input-lti_launch_url"'+(data&&data.lti_launch_url?(' value="'+data.lti_launch_url+'"'):'')+'>' +
-                          '<label>Configuration URL</label><input type="text" class="input-lti_configuration_url"'+(data&&data.lti_configuration_url?(' value="'+data.lti_configuration_url+'"'):'')+'>' +
-                          '<label>Registration URL</label><input type="text" class="input-lti_registration_url"'+(data&&data.lti_registration_url?(' value="'+data.lti_registration_url+'"'):'')+'>' +
+                  .append('<label data-help="The default LTI configuration is what will be used when adding this tool back to a TC when CASA on Rails itself is launched using LTI." style="color: black;">Set As Default Config</label><input type="checkbox" class="input-lti_default"'+(data&&data.lti_default?(' checked="'+(data.lti_default ? 'checked' : '')+'"'):'')+'>' +
+                          '<label data-help="The launch URL to use for LTI 1.x launches. Required for LTI 1.x.">Launch URL</label><input type="text" class="input-lti_launch_url"'+(data&&data.lti_launch_url?(' value="'+data.lti_launch_url+'"'):'')+'>' +
+                          '<label data-help="Optional. A URL for retrieving detailed XML Common Cartridge configuration.">Configuration URL</label><input type="text" class="input-lti_configuration_url"'+(data&&data.lti_configuration_url?(' value="'+data.lti_configuration_url+'"'):'')+'>' +
+                          '<label data-help="The registration URL for LTI 2.0 launches. Required for LTI 2.0.">Registration URL</label><input type="text" class="input-lti_registration_url"'+(data&&data.lti_registration_url?(' value="'+data.lti_registration_url+'"'):'')+'>' +
 
-                          '<label>Version</label>' +
+                          '<label data-help="The LTI Version for this particular configuration. If no value is selected, 1.0 will be used.">Version</label>' +
                           '<select class="select-lti_version">' +
                             '<option value="1.0"' +  ((data && data.lti_version && data.lti_version == '1.0') ? ' selected' : '') + '>1.0</option>' +
                             '<option value="1.1"' +  ((data && data.lti_version && data.lti_version == '1.1') ?  ' selected' : '') + '>1.1</option>' +
@@ -1123,18 +1125,18 @@
                             '<option value="2.0"' +  ((data && data.lti_version && data.lti_version == '2.0') ?  ' selected' : '') + '>2.0</option>' +
                           '</select>' +
 
-                          '<label>OAuth Key</label><input type="text" class="input-lti_oauth_consumer_key"'+(data&&data.lti_oauth_consumer_key?(' value="'+data.lti_oauth_consumer_key+'"'):'')+'>' +
-                          '<label>OAuth Secret</label><input type="text" class="input-lti_oauth_consumer_secret"'+(data&&data.lti_oauth_consumer_secret?(' value="'+data.lti_oauth_consumer_secret+'"'):'')+'>' +
+                          '<label data-help="Optional. The OAuth key the Tool Consumer will use when signing launches of this tool.">OAuth Key</label><input type="text" class="input-lti_oauth_consumer_key"'+(data&&data.lti_oauth_consumer_key?(' value="'+data.lti_oauth_consumer_key+'"'):'')+'>' +
+                          '<label data-help="Optional. The OAuth secret the Tool Consumer will use when signing launches of this tool.">OAuth Secret</label><input type="text" class="input-lti_oauth_consumer_secret"'+(data&&data.lti_oauth_consumer_secret?(' value="'+data.lti_oauth_consumer_secret+'"'):'')+'>' +
 
-                          '<label>LIS Outcomes</label>' +
+                          '<label data-help="Optional. Whether this tool supports LTI 1.x Outcomes">LIS Outcomes</label>' +
                           '<select class="select-lti_lis_outcomes">' +
                             '<option value="no"' +  ((data && data.lti_lis_outcomes && data.lti_lis_outcomes == 'no') ? ' selected' : '') + '>No</option>' +
                             '<option value="optional"' +  ((data && data.lti_lis_outcomes && data.lti_lis_outcomes == 'optional') ?  ' selected' : '') + '>Optional</option>' +
                             '<option value="required"' +  ((data && data.lti_lis_outcomes && data.lti_lis_outcomes == 'required') ?  ' selected' : '') + '>Required</option>' +
                           '</select>' +
 
-                          '<label>Launch Params</label><textarea style="height: 30em;" class="input-lti_launch_params">'+ (data && data.lti_launch_params ? data.lti_launch_params : '') +'</textarea>' +
-                          '<label>Content Item Message</label><textarea style="height: 30em;" class="input-lti_content_item_message">'+(data&&data.lti_content_item_message? data.lti_content_item_message :'') +'</textarea>' +
+                          '<label data-help="Optional. The LTI launch parameters as an HTTP query string.">Launch Params</label><textarea style="height: 30em;" class="input-lti_launch_params">'+ (data && data.lti_launch_params ? data.lti_launch_params : '') +'</textarea>' +
+                          '<label data-help="Optional. A JSON Object representing a Content-Item Message that a TC can use to embed this tool. If this value is set, it will override the default Content-Item functionality, which generates the JSON from the app\'s title, URL, Official designation, LTI Launch URL, OAuth key and secret, Registration URL, and LTI Consumer metadata for SSO and event data storage.">Content Item Message</label><textarea style="height: 30em;" class="input-lti_content_item_message">'+(data&&data.lti_content_item_message? data.lti_content_item_message :'') +'</textarea>' +
                           '<label>IMS Global Registration Number</label><input type="text" class="input-lti_ims_global_registration_number"'+(data&&data.lti_ims_global_registration_number?(' value="'+data.lti_ims_global_registration_number+'"'):'')+'>'  +
                           '<label>IMS Global Conformance Date</label><input type="text" class="input-lti_ims_global_conformance_date"'+(data&&data.lti_ims_global_conformance_date?(' value="'+data.lti_ims_global_conformance_date+'"'):'')+'>'  +
                           '<label>IMS Global Registration Link</label><input type="text" class="input-lti_ims_global_registration_link"'+(data&&data.lti_ims_global_registration_link?(' value="'+data.lti_ims_global_registration_link+'"'):'')+'>');
@@ -1142,6 +1144,26 @@
           $(document.createElement('button')).text('Remove').addClass('danger').click(function(){$(this).closest('li').remove()}).appendTo($li);
 
           $('#app_lti_configs > ul').append($li);
+
+          $('[data-help]').each(function(){
+              $('<a>')
+                      .attr('href', '#')
+                      .addClass('mark')
+                      .attr('data-help', $(this).attr('data-help'))
+                      .html('(?)')
+                      .click(function(e){
+                          e.preventDefault();
+                          if($(this).hasClass('clicked'))
+                              $(this).removeClass('clicked')
+                          else {
+                              $('.mark.clicked').each(function(){
+                                  $(this).removeClass('clicked');
+                              })
+                              $(this).addClass('clicked')
+                          }
+                      })
+                      .appendTo(this);
+          });
       }
 
       $.each(<%= raw @app.app_lti_configs.to_json %>, function(idx, lti_config){
