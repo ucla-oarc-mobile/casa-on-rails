@@ -1015,29 +1015,32 @@
           $('#app_lti_configs > ul').append($li);
 
           $('[data-help]').each(function(){
-              $('<a>')
-                      .attr('href', '#')
-                      .addClass('mark')
-                      .attr('data-help', $(this).attr('data-help'))
-                      .html('(?)')
-                      .click(function(e){
-                          e.preventDefault();
-                          if($(this).hasClass('clicked'))
-                              $(this).removeClass('clicked')
-                          else {
-                              $('.mark.clicked').each(function(){
-                                  $(this).removeClass('clicked');
-                              })
-                              $(this).addClass('clicked')
-                          }
-                      })
-                      .appendTo(this);
+
+              if(! data) {
+
+                  $('<a>')
+                          .attr('href', '#')
+                          .addClass('mark')
+                          .attr('data-help', $(this).attr('data-help'))
+                          .html('(?)')
+                          .click(function (e) {
+                              e.preventDefault();
+                              if ($(this).hasClass('clicked'))
+                                  $(this).removeClass('clicked')
+                              else {
+                                  $('.mark.clicked').each(function () {
+                                      $(this).removeClass('clicked');
+                                  })
+                                  $(this).addClass('clicked')
+                              }
+                          })
+                          .appendTo(this);
+              }
           });
 
       }
 
       $.each(<%= raw @app.app_lti_configs.to_json %>, function(idx, lti_config){
-          console.log(lti_config)
           createLtiFields(lti_config)
       })
 

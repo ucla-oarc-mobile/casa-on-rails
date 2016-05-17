@@ -1143,27 +1143,32 @@
 
           $(document.createElement('button')).text('Remove').addClass('danger').click(function(){$(this).closest('li').remove()}).appendTo($li);
 
-          $('#app_lti_configs > ul').append($li);
+          $li.children('label[data-help]').each(function(){
 
-          $('[data-help]').each(function(){
-              $('<a>')
-                      .attr('href', '#')
-                      .addClass('mark')
-                      .attr('data-help', $(this).attr('data-help'))
-                      .html('(?)')
-                      .click(function(e){
-                          e.preventDefault();
-                          if($(this).hasClass('clicked'))
-                              $(this).removeClass('clicked')
-                          else {
-                              $('.mark.clicked').each(function(){
-                                  $(this).removeClass('clicked');
-                              })
-                              $(this).addClass('clicked')
-                          }
-                      })
-                      .appendTo(this);
+              if(! data) { // Only invoke if we are creating a new empty form. If data is present, the version of this
+                           // function in application.html.erb will be invoked.
+
+                  $('<a>')
+                          .attr('href', '#')
+                          .addClass('mark')
+                          .attr('data-help', $(this).attr('data-help'))
+                          .html('(?)')
+                          .click(function (e) {
+                              e.preventDefault();
+                              if ($(this).hasClass('clicked'))
+                                  $(this).removeClass('clicked')
+                              else {
+                                  $('.mark.clicked').each(function () {
+                                      $(this).removeClass('clicked');
+                                  })
+                                  $(this).addClass('clicked')
+                              }
+                          })
+                          .appendTo(this);
+              }
           });
+
+          $('#app_lti_configs > ul').append($li);
       }
 
       $.each(<%= raw @app.app_lti_configs.to_json %>, function(idx, lti_config){
