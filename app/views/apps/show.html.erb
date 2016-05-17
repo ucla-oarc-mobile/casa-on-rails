@@ -740,8 +740,13 @@
     <h1>Additional Information</h1>
 
     <div class="additional-info-inline-block">
+      <h4>Created</h4>
+      <p><%= @app.created_at.strftime('%B %d, %Y %l:%M %p') %></p>
+    </div>
+
+    <div class="additional-info-inline-block">
       <h4>Updated</h4>
-      <p><%= @app.updated_at.strftime('%B %d, %Y') %></p>
+      <p><%= @app.updated_at.strftime('%B %d, %Y %l:%M %p') %></p>
     </div>
 
     <div class="additional-info-inline-block">
