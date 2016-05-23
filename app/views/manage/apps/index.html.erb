@@ -13,7 +13,7 @@
     <tr>
       <th>Title</th>
       <th>Status</th>
-      <th></th>
+      <th>Actions</th>
     </tr>
     </thead>
 
@@ -22,7 +22,7 @@
       <tr>
         <td><strong><%= app.title %></strong></td>
         <td><%= app.enabled ? 'Enabled' : 'Not Enabled' %></td>
-        <td><%= link_to 'Show', app_path(app) %></td>
+        <td><div><span><%= link_to 'Show', app_path(app) %></span><span style="margin-left: 10px;"><%= link_to 'Edit', edit_admin_app_path(app) %></span></div></td>
       </tr>
     <% end %>
     </tbody>

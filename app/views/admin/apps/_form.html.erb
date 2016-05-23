@@ -20,11 +20,15 @@
       <li><a href="#" data-target="#contacts">Contacts</a></li>
       <li><a href="#" data-target="#display">Display</a></li>
       <li><a href="#" data-target="#licensing">Licensing</a></li>
-      <li><a href="#" data-target="#sharing">Sharing</a></li>
+      <% if session_user.admin %>
+        <li><a href="#" data-target="#sharing">Sharing</a></li>
+      <% end %>
       <li><a href="#" data-target="#privacy">Privacy</a></li>
       <li><a href="#" data-target="#security">Security</a></li>
       <li><a href="#" data-target="#native">Mobile Apps</a></li>
-      <li><a href="#" data-target="#acl">Access Control</a></li>
+      <% if session_user.admin %>
+        <li><a href="#" data-target="#acl">Access Control</a></li>
+      <% end %>
       <li><a href="#" data-target="#student-data">Student Data</a></li>
       <li><a href="#" data-target="#interoperability">Interoperability</a></li>
       <li><a href="#" data-target="#accessibility">Accessibility</a></li>
@@ -200,6 +204,8 @@
 
   </fieldset>
 
+  <% if session_user.admin %>
+
     <fieldset role="tab" id="sharing">
 
       <legend>Sharing</legend>
@@ -226,6 +232,8 @@
       </fieldset>
 
     </fieldset>
+
+    <% end %>
 
     <fieldset role="tab" id="browser">
 
@@ -810,6 +818,8 @@
 
     </fieldset>
 
+    <% if session_user.admin %>
+
     <fieldset role="tab" id="acl">
 
     <legend>Access Control</legend>
@@ -852,6 +862,8 @@
     </div>
 
   </fieldset>
+
+  <% end %>
 
   <p class="text-center">
     <%= f.submit 'Save App' %>

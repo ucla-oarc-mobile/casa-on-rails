@@ -3,7 +3,8 @@ require 'json'
 module Admin
   class AppsController < ApplicationController
 
-    before_action :require_session_admin!
+    before_action :require_session_admin!, only: [:new, :create]
+    before_action :require_edit_privilege!, only: [:edit, :update]
 
     def index
 
@@ -274,6 +275,15 @@ module Admin
 
       redirect_to admin_apps_path
 
+    end
+
+    def require_edit_privilege!
+      if session_user
+        created_by_id = App.find(params[:id]).created_by
+        redirect_to root_path unless session_user.admin || created_by_id == session_user.id
+      else
+        redirect_to session_path
+      end
     end
 
   private
