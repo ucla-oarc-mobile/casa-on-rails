@@ -142,19 +142,12 @@
         </div>
     </fieldset>
 
-    <fieldset>
-        <div class="form-field">
-          <%= f.label :icon, 'Icon', for: 'app_icon', 'data-help' => 'A 144x144 square PNG works best.'%>
-          <select id="app_icon-selector">
-            <option value="upload">Upload</option>
-            <option value="url">URL</option>
-          </select>
-          <img src="" id="app_icon-upload-preview" style="margin: 10px 0;">
-          <input type="file" id="app_icon-upload">
-          <input type="text" id="app_icon-url">
-          <%= f.text_area :icon, style: 'display:none' %>
-        </div>
-    </fieldset>
+    <div class="form-field">
+      <%= f.label :icon, 'Icon', for: 'app_icon-selector', 'data-help' => 'A 144x144 square PNG works best.' %>
+      <img src="" id="app_icon-upload-preview" style="margin: 10px 0;">
+      <input type="file" id="app_icon-upload">
+      <%= f.text_area :icon, style: 'display:none' %>
+    </div>
 
     <fieldset>
         <% if @categories %>
