@@ -138,13 +138,13 @@
     <fieldset>
         <div class="form-checkbox">
           <%= f.check_box :mobile_support %>
-          <%= f.label :mobile_support, 'App Supports Mobile' %>
+          <%= f.label :mobile_support, 'App Supports Mobile', 'data-help' => 'Only apps with mobile support will be shown on the mobile dashboard.'%>
         </div>
     </fieldset>
 
     <fieldset>
         <div class="form-field">
-          <%= f.label :icon, 'Icon', for: 'app_icon-selector' %>
+          <%= f.label :icon, 'Icon', for: 'app_icon', 'data-help' => 'A 144x144 square PNG works best.'%>
           <select id="app_icon-selector">
             <option value="upload">Upload</option>
             <option value="url">URL</option>

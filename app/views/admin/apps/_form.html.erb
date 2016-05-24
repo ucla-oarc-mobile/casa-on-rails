@@ -159,11 +159,11 @@
       <legend>Default</legend>
 
       <div class="form-checkbox">
-        <input type="checkbox" id="enable_default_app_order" <%= (!@app.new_record? and @app.default_app_order) ? 'checked' : '' %>><label for="enable_default_app_order"> Show by Default</label>
+        <input type="checkbox" id="enable_default_app_order" <%= (!@app.new_record? and @app.default_app_order) ? 'checked' : '' %>><label for="enable_default_app_order" data-help="Controls whether this app will show by default on the mobile dashboard."> Show by Default</label>
       </div>
 
       <div class="form-field"style="margin-top:6px;">
-        <%= f.label :default_app_order, 'Default Position' %>
+        <%= f.label :default_app_order, 'Default Position' 'data-help' => 'The order from top to bottom and left to right the app will appear in on the mobile dashboard.'%>
         <%= f.text_field :default_app_order %>
       </div>
 
@@ -175,18 +175,18 @@
 
       <div class="form-checkbox">
         <%= f.check_box :official %>
-        <%= f.label :official, 'Official App' %>
+        <%= f.label :official, 'Official App', 'data-help' => 'Official apps have a specialized icon on the store homepage. The official designation is included when this app is added to a Tool Consumer as an LTI tool.'%>
       </div>
 
       <div class="form-checkbox">
         <%= f.check_box :mobile_support %>
-        <%= f.label :mobile_support, 'Supports Mobile' %>
+        <%= f.label :mobile_support, 'Supports Mobile' 'data-help' => 'Only apps with mobile support will be shown on the mobile dashboard.'%>
       </div>
 
     </fieldset>
 
     <div class="form-field">
-      <%= f.label :icon, 'Icon', for: 'app_icon-selector' %>
+      <%= f.label :icon, 'Icon', for: 'app_icon-selector', 'data-help' => 'A 144x144 square PNG works best.' %>
       <img src="" id="app_icon-upload-preview" style="margin: 10px 0;">
       <input type="file" id="app_icon-upload">
       <%= f.text_area :icon, style: 'display:none' %>
