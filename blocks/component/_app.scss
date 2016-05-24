@@ -218,9 +218,8 @@
         p {
           font-size: 13px;
           color: #666;
-          overflow-wrap: break-word;
-          word-wrap: break-word;
-          word-break: break-all;
+          word-wrap: normal;
+          word-break: keep-all;
           &.one-line {
             white-space: nowrap;
             text-overflow: ellipsis;
