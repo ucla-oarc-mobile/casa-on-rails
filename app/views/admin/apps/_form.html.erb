@@ -154,29 +154,34 @@
 
     <legend>Display</legend>
 
-    <fieldset>
+    <% if session_user.admin %>
+        <fieldset>
 
-      <legend>Default</legend>
+          <legend>Default</legend>
 
-      <div class="form-checkbox">
-        <input type="checkbox" id="enable_default_app_order" <%= (!@app.new_record? and @app.default_app_order) ? 'checked' : '' %>><label for="enable_default_app_order" data-help="Controls whether this app will show by default on the mobile dashboard."> Show by Default</label>
-      </div>
+          <div class="form-checkbox">
+            <input type="checkbox" id="enable_default_app_order" <%= (!@app.new_record? and @app.default_app_order) ? 'checked' : '' %>><label for="enable_default_app_order" data-help="Controls whether this app will show by default on the mobile dashboard."> Show by Default</label>
+          </div>
 
-      <div class="form-field"style="margin-top:6px;">
-        <%= f.label :default_app_order, 'Default Position' 'data-help' => 'The order from top to bottom and left to right the app will appear in on the mobile dashboard.'%>
-        <%= f.text_field :default_app_order %>
-      </div>
+          <div class="form-field"style="margin-top:6px;">
+            <%= f.label :default_app_order, 'Default Position' 'data-help' => 'The order from top to bottom and left to right the app will appear in on the mobile dashboard.'%>
+            <%= f.text_field :default_app_order %>
+          </div>
 
-    </fieldset>
+        </fieldset>
+    <% end %>
 
     <fieldset class="form-fields">
 
-      <legend>Designations</legend>
+      <% if session_user.admin %>
+        <legend>Designations</legend>
 
       <div class="form-checkbox">
         <%= f.check_box :official %>
         <%= f.label :official, 'Official App', 'data-help' => 'Official apps have a specialized icon on the store homepage. The official designation is included when this app is added to a Tool Consumer as an LTI tool.'%>
       </div>
+
+      <% end %>
 
       <div class="form-checkbox">
         <%= f.check_box :mobile_support %>
