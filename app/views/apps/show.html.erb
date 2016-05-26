@@ -753,30 +753,37 @@
       <p><%= @app.updated_at.strftime('%B %d, %Y %l:%M %p') %></p>
     </div>
 
-    <div class="additional-info-inline-block">
-          <h4>Supported Mobile Platforms</h4>
-        <% if @app.mobile_support or @app.has_ios_properties_set? or @app.has_android_properties_set? %>
-          <ul>
-            <% if @app.mobile_support %><li>Mobile Web</li><% end %>
-            <% if @app.has_ios_properties_set? %><li>iOS</li><% end %>
-            <% if @app.has_android_properties_set? %><li>Android</li><% end %>
-          </ul>
-          <% else %>
-            <p>-</p>
-      <% end %>
-    </div>
 
-    <div class="additional-info-inline-block">
-      <h4>Download Size</h4>
-      <p><%= @app.download_size ? @app.download_size : '-' %></p>
-    </div>
-    <div class="additional-info-inline-block">
-      <h4>Supported Languages</h4>
-      <p><%= @app.supported_languages ? @app.supported_languages : '-' %></p>
-    </div>
+    <% if @app.mobile_support || @app.has_ios_properties_set? || @app.has_android_properties_set? %>
+        <div class="additional-info-inline-block">
+              <h4>Supported Mobile Platforms</h4>
+            <% if @app.mobile_support or @app.has_ios_properties_set? or @app.has_android_properties_set? %>
+              <ul>
+                <% if @app.mobile_support %><li>Mobile Web</li><% end %>
+                <% if @app.has_ios_properties_set? %><li>iOS</li><% end %>
+                <% if @app.has_android_properties_set? %><li>Android</li><% end %>
+              </ul>
+              <% else %>
+                <p>-</p>
+          <% end %>
+        </div>
+    <% end %>
+
+    <% if @app.download_size %>
+        <div class="additional-info-inline-block">
+          <h4>Download Size</h4>
+          <p><%= @app.download_size %></p>
+        </div>
+    <% end %>
+
+    <% if @app.supported_languages %>
+      <div class="additional-info-inline-block">
+        <h4>Supported Languages</h4>
+        <p><%= @app.supported_languages %></p>
+      </div>
+    <% end %>
 
   </div>
-
 
 </main>
 
