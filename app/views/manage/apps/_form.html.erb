@@ -32,12 +32,12 @@
 
     <div class="form-field">
       <%= f.label :title, raw('Title <span class="required">(required)</span>') %>
-      <%= f.text_field :title, required: true %>
+      <%= f.text_field :title  %>
     </div>
 
     <div class="form-field">
       <%= f.label :uri, raw('URL <span class="required">(required)</span>') %>
-      <%= f.text_field :uri, required: true %>
+      <%= f.text_field :uri  %>
     </div>
 
     <div class="form-field">
@@ -49,8 +49,7 @@
     <div class="form-field">
       <%= f.label :description, raw('Description <span class="required">(required)</span>'), data: { help: 'The description of an app may be specified either as simple text or with basic HTML tags including p, ul, ol, li, strong, em and h1-6.' } %>
       <%= f.text_area :description,
-                      :class => 'long',
-                      :required => true %>
+                      :class => 'long' %>
     </div>
 
     <div class="form-field">
@@ -90,12 +89,12 @@
 
       <div class="form-field">
         <%= f.label :primary_contact_name, raw('Name <span class="required">(required)</span>') %>
-        <%= f.text_field :primary_contact_name, required: true %>
+        <%= f.text_field :primary_contact_name %>
       </div>
 
       <div class="form-field">
         <%= f.label :primary_contact_email, raw('Email <span class="required">(required)</span>') %>
-        <%= f.text_field :primary_contact_email, required: true %>
+        <%= f.text_field :primary_contact_email %>
       </div>
 
     </fieldset>

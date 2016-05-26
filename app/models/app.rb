@@ -1,3 +1,4 @@
+require 'validators/uri_validator'
 
 class App < ActiveRecord::Base
   include AttributeConcern,
@@ -65,14 +66,30 @@ class App < ActiveRecord::Base
 
   validates :title,
     presence: true,
-    length: { minimum: 1 }
+    length: { maximum: 255 }
+
+  validates :description,
+    presence: true,
+    length: { maximum: 255 }
+
+  validates :uri,
+    presence: true,
+    uri: true
+
+  validates :primary_contact_name,
+    presence: true,
+    length: { maximum: 255}
+
+  validates :primary_contact_email,
+    presence: true,
+    length: { minimum: 6, maximum: 255}
 
   validates :support_contact_email,
     length: { minimum: 6, maximum: 255},
     allow_blank: true
 
   validates :download_size, :support_contact_name, :supported_languages,
-            :security_session_lifetime, :security_cloud_vendor, :security_policy_url ,
+            :security_session_lifetime, :security_cloud_vendor, :security_policy_url,
             :security_sla_url,
     length: { maximum: 255 }
 

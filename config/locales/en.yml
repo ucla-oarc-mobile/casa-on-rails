@@ -23,9 +23,14 @@ en:
   activerecord:
     attributes:
       app:
+        description: "General - "
+        title: "General - "
+        uri: "General - URL "
         download_size: "General - "
         support_contact_name: "General - "
         supported_languages: "General - "
+        primary_contact_name: "Contacts - "
+        primary_contact_email: "Contacts - "
         security_session_lifetime: "Security - "
         security_cloud_vendor: "Security - "
         security_policy_url: "Security - "
@@ -52,6 +57,21 @@ en:
       models:
         app:
           attributes:
+            title:
+              blank: "A title is required."
+              too_long: "A title cannot be longer than 255 characters."
+            description:
+              blank: "A description is required."
+              too_long: "A description cannot be longer than 255 characters."
+            uri:
+              blank: " is required."
+            primary_contact_name:
+              blank: "A primary contact name is required."
+              too_long: "The primary contact name cannot be longer than 255 characters."
+            primary_contact_email:
+              blank: "A primary contact email address is required."
+              too_short: "The primary contact email must be longer than 6 characters."
+              too_long: "The primary contact email cannot be longer than 255 characters."
             download_size:
                too_long: "The value for Download Size cannot be saved. Please use a value that is fewer than 256 characters."
             support_contact_name:
