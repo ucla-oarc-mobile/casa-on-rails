@@ -112,17 +112,17 @@
             <th style="border-right: 0px;">Supports Caliper&trade;</th>
           </tr>
 
-          <tr>
-            <td> <% if @app.official %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
-            <td><% if @app.support_contact_name or @app.support_contact_email %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
-            <td><% if @app.vpat_url or @app.accessibility_url or @app.wcag_url or @app.app_wcag_guidelines.count > 0 %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
-            <td><% if @app.privacy_url or @app.app_privacy_policy_id %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
-            <td><% if @app.has_security_properties_set? %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
-            <td><% if @app.mobile_support %><%= image_tag "web.png" %><% end %><% if @app.has_ios_properties_set? %><%= image_tag "apple.png" %><% end %><% if @app.has_android_properties_set? %><%= image_tag "android.png" %><% end %>
-              <% if ! @app.android_app_package and ! @app.ios_app_id and ! @app.mobile_support %><%= image_tag "dash.png" %><% end %></td>
-            <td><% if @app.lti %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
-            <td style="border-right: 0px;"><% if @app.caliper %><%= image_tag "check.png" %><% else %><%= image_tag "dash.png" %><% end %></td>
-          </tr>
+      <tr>
+        <td> <% if @app.official %><%= image_tag "infobar_infobar_check.png" %><% else %><%= image_tag "infobar_dash.png" %><% end %></td>
+        <td><% if @app.support_contact_name or @app.support_contact_email %><%= image_tag "infobar_check.png" %><% else %><%= image_tag "infobar_dash.png" %><% end %></td>
+        <td><% if @app.vpat_url or @app.accessibility_url or @app.wcag_url or @app.app_wcag_guidelines.count > 0 %><%= image_tag "infobar_check.png" %><% else %><%= image_tag "infobar_dash.png" %><% end %></td>
+        <td><% if @app.privacy_url or @app.app_privacy_policy_id %><%= image_tag "infobar_check.png" %><% else %><%= image_tag "infobar_dash.png" %><% end %></td>
+        <td><% if @app.has_security_properties_set? %><%= image_tag "infobar_check.png" %><% else %><%= image_tag "infobar_dash.png" %><% end %></td>
+        <td><% if @app.mobile_support %><%= image_tag "infobar_web.png" %><% end %><% if @app.has_ios_properties_set? %><%= image_tag "infobar_apple.png" %><% end %><% if @app.has_android_properties_set? %><%= image_tag "infobar_android.png" %><% end %>
+          <% if ! @app.android_app_package and ! @app.ios_app_id and ! @app.mobile_support %><%= image_tag "infobar_dash.png" %><% end %></td>
+        <td><% if @app.lti %><%= image_tag "infobar_check.png" %><% else %><%= image_tag "infobar_dash.png" %><% end %></td>
+        <td style="border-right: 0px;"><% if @app.caliper %><%= image_tag "infobar_check.png" %><% else %><%= image_tag "infobar_dash.png" %><% end %></td>
+      </tr>
 
       </tbody>
     </table>
