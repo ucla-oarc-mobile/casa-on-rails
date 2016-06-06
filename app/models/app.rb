@@ -10,7 +10,14 @@ class App < ActiveRecord::Base
                            ios_app_id ios_app_scheme ios_app_path ios_app_affiliate_data android_app_package android_app_scheme
                            android_app_action android_app_category android_app_component download_size supported_languages
                            security_session_lifetime security_cloud_vendor security_policy_url security_sla_url security_text
-                           license_text support_contact_name support_contact_email primary_contact_name primary_contact_email )
+                           license_text support_contact_name support_contact_email primary_contact_name primary_contact_email
+                           overall_review_status privacy_review_status security_review_status accessibility_review_status
+                           tool_review_url)
+
+  RECOMMENDED_FOR_USE = 100
+  USE_WITH_CAUTION = 101
+  NOT_RECOMMENDED = 102
+  IN_PROGRESS = 103
 
   class LTIExistenceValidator < ActiveModel::Validator
     def validate(record)
@@ -34,6 +41,21 @@ class App < ActiveRecord::Base
       if record.app_lti_configs.size > 1 && number_of_default_configs == 0
         record.errors.add(:lti, 'When multiple LTI configurations are being created, one of them must be set as the default.')
       end
+    end
+  end
+
+  # Guard against the case where new enum values are added without being referenced here or
+  # if the API is being used headlessly.
+  class ReviewEnumValidator < ActiveModel::Validator
+    def validate(record)
+      [[:overall_review_status, record.overall_review_status ],
+       [:privacy_review_status, record.privacy_review_status],
+       [:security_review_status, record.security_review_status],
+       [:accessibility_review_status, record.accessibility_review_status]].each { |key, value|
+          unless value.blank? || record.is_valid_review_status?(value)
+            record.errors.add(key, 'The selected status is invalid.')
+          end
+      }
     end
   end
 
@@ -61,6 +83,7 @@ class App < ActiveRecord::Base
 
   validates_with LTIExistenceValidator
   validates_with LTIDefaultValidator
+  validates_with ReviewEnumValidator
 
   validate :caliper_attribute_is_valid
 
@@ -69,8 +92,7 @@ class App < ActiveRecord::Base
     length: { maximum: 255 }
 
   validates :description,
-    presence: true,
-    length: { maximum: 255 }
+    presence: true
 
   validates :uri,
     presence: true,
@@ -95,6 +117,9 @@ class App < ActiveRecord::Base
 
   validates :icon, :license_text, :security_text,
     length: { maximum: 65535 }
+
+  validates :tool_review_url,
+            uri: true
 
   after_validation :log_errors, :if => Proc.new {|m| m.errors}
 
@@ -216,6 +241,42 @@ class App < ActiveRecord::Base
       student_data_shows_eula.present? or
       student_data_is_app_externally_hosted.present? or
       student_data_stores_pii.present? )
+  end
+
+  def is_valid_review_status?(value)
+    (value.eql?(RECOMMENDED_FOR_USE) || value.eql?(USE_WITH_CAUTION) || value.eql?(NOT_RECOMMENDED) || value.eql?(IN_PROGRESS))
+  end
+
+  def image_for_review_status(status)
+    if status == RECOMMENDED_FOR_USE
+      return '/assets/infobar_recommended_for_use.png'
+    elsif status == USE_WITH_CAUTION
+      return '/assets/infobar_use_with_caution.png'
+    elsif status == NOT_RECOMMENDED
+      return '/assets/infobar_not_recommended.png'
+    elsif status == IN_PROGRESS
+      return '/assets/infobar_in_progress.png'
+    else
+      return '/assets/infobar_dash.png'
+    end
+  end
+
+  def title_text_for_review_status(status)
+    if status == RECOMMENDED_FOR_USE
+      return 'Recommended for use.'
+    elsif status == USE_WITH_CAUTION
+      return 'Use with caution.'
+    elsif status == NOT_RECOMMENDED
+      return 'Not recommended.'
+    elsif status == IN_PROGRESS
+      return 'Review in progress.'
+    else
+      return 'A review has not yet occurred.'
+    end
+  end
+
+  def image_tag_for_review_status(status)
+    "<img src=\"#{image_for_review_status(status)}\" title=\"#{title_text_for_review_status(status)}\">"
   end
 
   def url_for_wcag(wcag)

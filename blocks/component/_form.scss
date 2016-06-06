@@ -22,6 +22,41 @@
   }
 }
 
+.infobar-radios {
+
+  img {
+    max-height: 52px;
+    padding: 2px 2px 0px 2px;
+    vertical-align: bottom;
+  }
+
+  table {
+    background : #EEEEEE;
+    display: table;
+  }
+
+  tbody {
+    display: table-row-group;
+    vertical-align: middle;
+    border-color: inherit;
+  }
+
+  tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+  }
+
+  td {
+    border: 1px solid #999;
+    padding: 15px;
+  }
+
+  td.in_progress {
+    padding-bottom: 21px;
+  }
+}
+
 .form-fields {
   margin-bottom: 12px;
 }
@@ -80,5 +115,33 @@ fieldset, .fields-table {
   }
   td, th {
     padding: 8px 4px;
+  }
+}
+
+@media (max-width: 599px) {
+
+  .infobar-radios {
+    width: 70%;
+    margin: 20px auto;
+
+    /* Force table to not be like tables anymore */
+    table, thead, tbody, th, td, tr {
+      display: block;
+    }
+
+    td {
+      /* Behave like a "row" */
+      border-bottom: 1px solid #666666;
+      text-align: center;
+      vertical-align: middle;
+      padding: 10px;
+      font-weight: bold;
+    }
+
+    td:before {
+      display: block;
+      vertical-align: middle;
+      padding-right: 10px;
+    }
   }
 }

@@ -155,6 +155,52 @@
 
     <% if session_user.admin %>
         <fieldset>
+          <legend>Tool Review Status</legend>
+
+          <div class="infobar-radios" style="margin-top:6px; align: left;">
+            <table>
+              <tbody>
+              <tr>
+                <td>
+                  <%= f.radio_button :overall_review_status, App::RECOMMENDED_FOR_USE %>
+                  <%= image_tag "infobar_recommended_for_use.png" %>
+                  <%= f.label :overall_review_status_recommended, "Recommended for use" %>
+                </td>
+                <td>
+                  <%= f.radio_button :overall_review_status, App::USE_WITH_CAUTION %>
+                  <%= image_tag "infobar_use_with_caution.png" %>
+                  <%= f.label :overall_review_status_use_with_caution, "Use with caution" %>
+                </td>
+                <td>
+                  <%= f.radio_button :overall_review_status, App::NOT_RECOMMENDED %>
+                  <%= image_tag "infobar_not_recommended.png" %>
+                  <%= f.label :overall_review_status_not_recommended, "Not recommended" %>
+                </td>
+                <td class="in_progress">
+                  <%= f.radio_button :overall_review_status, App::IN_PROGRESS %>
+                  <%= image_tag "infobar_in_progress.png" %>
+                  <%= f.label :overall_review_status_in_progress, "In progress" %>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </fieldset>
+    <% end %>
+
+    <fieldset>
+
+      <legend>Tool Review URL</legend>
+
+      <div class="form-field"style="margin-top:6px;">
+        <%= f.text_field :tool_review_url %>
+      </div>
+
+    </fieldset>
+
+    <% if session_user.admin %>
+        <fieldset>
 
           <legend>Default</legend>
 
@@ -422,6 +468,42 @@
 
     <legend>Privacy</legend>
 
+    <% if session_user.admin %>
+        <fieldset>
+          <legend>Privacy Review Status</legend>
+
+          <div class="infobar-radios" style="margin-top:6px; align: left;">
+            <table>
+              <tbody>
+              <tr>
+                <td>
+                  <%= f.radio_button :privacy_review_status, App::RECOMMENDED_FOR_USE %>
+                  <%= image_tag "infobar_recommended_for_use.png" %>
+                  <%= f.label :privacy_review_status_recommended, "Recommended for use" %>
+                </td>
+                <td>
+                  <%= f.radio_button :privacy_review_status, App::USE_WITH_CAUTION %>
+                  <%= image_tag "infobar_use_with_caution.png" %>
+                  <%= f.label :privacy_review_status_use_with_caution, "Use with caution" %>
+                </td>
+                <td>
+                  <%= f.radio_button :privacy_review_status, App::NOT_RECOMMENDED %>
+                  <%= image_tag "infobar_not_recommended.png" %>
+                  <%= f.label :privacy_review_status_not_recommended, "Not recommended" %>
+                </td>
+                <td class="in_progress">
+                  <%= f.radio_button :privacy_review_status, App::IN_PROGRESS %>
+                  <%= image_tag "infobar_in_progress.png" %>
+                  <%= f.label :privacy_review_status_in_progress, "In progress" %>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </fieldset>
+    <% end %>
+
     <div class="form-field">
       <%= f.label :privacy_url, 'Privacy Policy URL' %>
       <%= f.text_field :privacy_url %>
@@ -478,6 +560,42 @@
   <fieldset role="tab" id="accessibility">
 
     <legend>Accessibility</legend>
+
+    <% if session_user.admin %>
+        <fieldset>
+          <legend>Accessibility Review Status</legend>
+
+          <div class="infobar-radios" style="margin-top:6px; align: left;">
+            <table>
+              <tbody>
+              <tr>
+                <td>
+                  <%= f.radio_button :accessibility_review_status, App::RECOMMENDED_FOR_USE %>
+                  <%= image_tag "infobar_recommended_for_use.png" %>
+                  <%= f.label :accessibility_review_status_recommended, "Recommended for use" %>
+                </td>
+                <td>
+                  <%= f.radio_button :accessibility_review_status, App::USE_WITH_CAUTION %>
+                  <%= image_tag "infobar_use_with_caution.png" %>
+                  <%= f.label :accessibility_review_status_use_with_caution, "Use with caution" %>
+                </td>
+                <td>
+                  <%= f.radio_button :accessibility_review_status, App::NOT_RECOMMENDED %>
+                  <%= image_tag "infobar_not_recommended.png" %>
+                  <%= f.label :accessibility_review_status_not_recommended, "Not recommended" %>
+                </td>
+                <td class="in_progress">
+                  <%= f.radio_button :accessibility_review_status, App::IN_PROGRESS %>
+                  <%= image_tag "infobar_in_progress.png" %>
+                  <%= f.label :accessibility_review_status_in_progress, "In progress" %>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </fieldset>
+    <% end %>
 
     <fieldset>
       <div class="form-field">
@@ -712,7 +830,43 @@
 
         <legend>Security</legend>
 
-        <fieldset>
+      <% if session_user.admin %>
+          <fieldset>
+            <legend>Security Review Status</legend>
+
+            <div class="infobar-radios" style="margin-top:6px; align: left;">
+              <table>
+                <tbody>
+                <tr>
+                  <td>
+                    <%= f.radio_button :security_review_status, App::RECOMMENDED_FOR_USE %>
+                    <%= image_tag "infobar_recommended_for_use.png" %>
+                    <%= f.label :security_review_status_recommended, "Recommended for use" %>
+                  </td>
+                  <td>
+                    <%= f.radio_button :security_review_status, App::USE_WITH_CAUTION %>
+                    <%= image_tag "infobar_use_with_caution.png" %>
+                    <%= f.label :security_review_status_use_with_caution, "Use with caution" %>
+                  </td>
+                  <td>
+                    <%= f.radio_button :security_review_status, App::NOT_RECOMMENDED %>
+                    <%= image_tag "infobar_not_recommended.png" %>
+                    <%= f.label :security_review_status_not_recommended, "Not recommended" %>
+                  </td>
+                  <td class="in_progress">
+                    <%= f.radio_button :security_review_status, App::IN_PROGRESS %>
+                    <%= image_tag "infobar_in_progress.png" %>
+                    <%= f.label :security_review_status_in_progress, "In progress" %>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </fieldset>
+      <% end %>
+
+      <fieldset>
           <div class="form-field">
               <%= f.label :security_uses_https, 'Uses HTTPS for Network Encryption', data: { help: 'Check this box if an SSL certificate is used to secure network traffic to and from the app.' }%>
               <%= f.check_box :security_uses_https %>

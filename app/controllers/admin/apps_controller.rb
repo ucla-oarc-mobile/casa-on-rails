@@ -99,10 +99,10 @@ module Admin
 
     def update
 
+      @categories = Category.order name: :asc
+
       @app = App.find params[:id]
       @app.category_ids = params[:app][:categories]
-
-      Rails.logger.info params.to_json
 
       if params[:app_browser_features]
         fs = {}
@@ -350,7 +350,12 @@ module Admin
         :student_data_shows_eula,
         :student_data_is_app_externally_hosted,
         :student_data_stores_pii,
-        :wcag_url
+        :wcag_url,
+        :overall_review_status,
+        :privacy_review_status,
+        :security_review_status,
+        :accessibility_review_status,
+        :tool_review_url
       ])
 
     end

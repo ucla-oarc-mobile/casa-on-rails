@@ -465,24 +465,27 @@
         content: "Official";
       }
       td:nth-of-type(2):before {
-        content: "Support";
+        content: "Tool Review Status";
       }
       td:nth-of-type(3):before {
-        content: "Accessibility";
+        content: "Support";
       }
       td:nth-of-type(4):before {
-        content: "Privacy";
+        content: "Accessibility";
       }
       td:nth-of-type(5):before {
-        content: "Security";
+        content: "Privacy";
       }
       td:nth-of-type(6):before {
-        content: "Mobile Friendly";
+        content: "Security";
       }
       td:nth-of-type(7):before {
-        content: "Supports LTI\00ae";
+        content: "Mobile Friendly";
       }
       td:nth-of-type(8):before {
+        content: "Supports LTI\00ae";
+      }
+      td:nth-of-type(9):before {
         content: "Supports Caliper\2122";
       }
     }
