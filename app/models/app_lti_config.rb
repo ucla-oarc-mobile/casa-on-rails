@@ -20,6 +20,8 @@ class AppLtiConfig < ActiveRecord::Base
     end
   end
 
+  belongs_to :lti_consumer
+
   validates :lti_launch_url, uri: true
   validates :lti_registration_url, uri: true
   validates :lti_configuration_url, uri: true

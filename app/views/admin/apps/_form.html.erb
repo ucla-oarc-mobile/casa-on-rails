@@ -1273,7 +1273,6 @@
     })();
 
   //////////////////////
-
   (function(){
 
       var createLtiFields = function(data){
@@ -1282,6 +1281,17 @@
                   .addClass('form-field')
                   .attr('style', 'border-left:3px solid #eee;padding-left:10px;margin-bottom:10px;')
                   .append('<label data-help="The default LTI configuration is what will be used when adding this tool back to a TC when CASA on Rails itself is launched using LTI." style="color: black;">Set As Default Config</label><input type="checkbox" class="input-lti_default"'+(data&&data.lti_default?(' checked="'+(data.lti_default ? 'checked' : '')+'"'):'')+'>' +
+
+                          <% if @lti_consumers %>
+                          '<label data-help="To restrict the use of this configuration to a particular LTI Consumer, choose a value from this list.">LTI Consumer</label>' +
+                          '<select class="select-lti_consumer_id">' +
+                            '<option value=""></option>' +
+                            <% @lti_consumers.each do |c| %>
+                              '<option value="<%= c.id %>"' +  ((data && data.lti_consumer_id && data.lti_consumer_id == '<%= c.id %>') ? ' selected' : '') + '><%= c.name %></option>' +
+                            <% end %>
+                          '</select>' +
+                          <% end %>
+
                           '<label data-help="The launch URL to use for LTI 1.x launches. Required for LTI 1.x.">Launch URL</label><input type="text" class="input-lti_launch_url"'+(data&&data.lti_launch_url?(' value="'+data.lti_launch_url+'"'):'')+'>' +
                           '<label data-help="Optional. A URL for retrieving detailed XML Common Cartridge configuration.">Configuration URL</label><input type="text" class="input-lti_configuration_url"'+(data&&data.lti_configuration_url?(' value="'+data.lti_configuration_url+'"'):'')+'>' +
                           '<label data-help="The registration URL for LTI 2.0 launches. Required for LTI 2.0.">Registration URL</label><input type="text" class="input-lti_registration_url"'+(data&&data.lti_registration_url?(' value="'+data.lti_registration_url+'"'):'')+'>' +
@@ -1356,6 +1366,7 @@
                   lti_launch_url = $(this).find('.input-lti_launch_url').val(),
                   lti_configuration_url = $(this).find('.input-lti_configuration_url').val(),
                   lti_registration_url = $(this).find('.input-lti_registration_url').val(),
+                  lti_consumer_id = $(this).find('.select-lti_consumer_id').val(),
                   lti_version = $(this).find('.select-lti_version').val(),
                   lti_oauth_consumer_key = $(this).find('.input-lti_oauth_consumer_key').val(),
                   lti_oauth_consumer_secret = $(this).find('.input-lti_oauth_consumer_secret').val(),
@@ -1372,6 +1383,7 @@
               if(lti_configuration_url && lti_configuration_url.length) dataElement['lti_configuration_url'] = lti_configuration_url;
               if(lti_registration_url && lti_registration_url.length) dataElement['lti_registration_url'] = lti_registration_url;
               if(lti_version && lti_version.length) dataElement['lti_version'] = lti_version;
+              if(lti_consumer_id && lti_consumer_id.length) dataElement['lti_consumer_id'] = lti_consumer_id;
               if(lti_oauth_consumer_key && lti_oauth_consumer_key.length) dataElement['lti_oauth_consumer_key'] = lti_oauth_consumer_key;
               if(lti_oauth_consumer_secret && lti_oauth_consumer_secret.length) dataElement['lti_oauth_consumer_secret'] = lti_oauth_consumer_secret;
               if(lti_lis_outcomes && lti_lis_outcomes.length) dataElement['lti_lis_outcomes'] = lti_lis_outcomes;

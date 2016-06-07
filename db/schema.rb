@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160603180208) do
+ActiveRecord::Schema.define(version: 20160607213659) do
 
   create_table "app_authors", force: :cascade do |t|
     t.integer "app_id",  limit: 4
@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(version: 20160603180208) do
     t.boolean  "lti_default"
     t.text     "lti_oauth_consumer_key",             limit: 65535
     t.text     "lti_oauth_consumer_secret",          limit: 65535
+    t.integer  "lti_consumer_id",                    limit: 4
   end
 
   create_table "app_media_requirements", force: :cascade do |t|

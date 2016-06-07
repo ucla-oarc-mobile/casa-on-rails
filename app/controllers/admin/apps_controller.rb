@@ -17,6 +17,7 @@ module Admin
       @app = App.new
       @categories = Category.order name: :asc
       @out_peers = OutPeer.order name: :asc
+      @lti_consumers = LtiConsumer.order name: :asc
 
     end
 
@@ -94,12 +95,14 @@ module Admin
       @app = App.find params[:id]
       @categories = Category.order name: :asc
       @out_peers = OutPeer.order name: :asc
+      @lti_consumers = LtiConsumer.order name: :asc
 
     end
 
     def update
 
       @categories = Category.order name: :asc
+      @lti_consumers = LtiConsumer.order name: :asc
 
       @app = App.find params[:id]
       @app.category_ids = params[:app][:categories]
@@ -355,7 +358,7 @@ module Admin
         :privacy_review_status,
         :security_review_status,
         :accessibility_review_status,
-        :tool_review_url
+        :tool_review_url,
       ])
 
     end
