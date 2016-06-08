@@ -1282,15 +1282,13 @@
                   .attr('style', 'border-left:3px solid #eee;padding-left:10px;margin-bottom:10px;')
                   .append('<label data-help="The default LTI configuration is what will be used when adding this tool back to a TC when CASA on Rails itself is launched using LTI." style="color: black;">Set As Default Config</label><input type="checkbox" class="input-lti_default"'+(data&&data.lti_default?(' checked="'+(data.lti_default ? 'checked' : '')+'"'):'')+'>' +
 
-                          <% if @lti_consumers %>
-                          '<label data-help="To restrict the use of this configuration to a particular LTI Consumer, choose a value from this list.">LTI Consumer</label>' +
+                          '<label data-help="To restrict the use of this configuration to a particular LTI Consumer, choose one from this list. To add an LTI Consumer, navigate to Admin -> LTI Conusmers.">LTI Consumer</label>' +
                           '<select class="select-lti_consumer_id">' +
                             '<option value=""></option>' +
                             <% @lti_consumers.each do |c| %>
                               '<option value="<%= c.id %>"' +  ((data && data.lti_consumer_id && data.lti_consumer_id == '<%= c.id %>') ? ' selected' : '') + '><%= c.name %></option>' +
                             <% end %>
                           '</select>' +
-                          <% end %>
 
                           '<label data-help="The launch URL to use for LTI 1.x launches. Required for LTI 1.x.">Launch URL</label><input type="text" class="input-lti_launch_url"'+(data&&data.lti_launch_url?(' value="'+data.lti_launch_url+'"'):'')+'>' +
                           '<label data-help="Optional. A URL for retrieving detailed XML Common Cartridge configuration.">Configuration URL</label><input type="text" class="input-lti_configuration_url"'+(data&&data.lti_configuration_url?(' value="'+data.lti_configuration_url+'"'):'')+'>' +
