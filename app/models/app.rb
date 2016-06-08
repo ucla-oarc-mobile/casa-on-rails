@@ -347,12 +347,12 @@ class App < ActiveRecord::Base
     return nil
   end
 
-
-  # Returns the ContentItemResponse for the default LTI Config, if one exists
-  def default_lti_content_item
-    app_lti_configs.try(:each){ |config|
-      return (config.lti_content_item_message ? JSON.parse(config.lti_content_item_message) : nil) if config.lti_default
-    }
+  def lti_config_for_lti_consumer(lti_consumer_id)
+    if lti_consumer_id
+      app_lti_configs.try(:each){ |config|
+        return config if config.lti_consumer_id == lti_consumer_id
+      }
+    end
     return nil
   end
 
@@ -503,26 +503,33 @@ class App < ActiveRecord::Base
 
   end
 
-  def to_content_item
+  def to_content_item(lti_consumer_id)
 
-    content_item = default_lti_content_item
+    # 1. Check to see if there is an LTI Configuration that is bound to the LTI Consumer that
+    # launched CASA on Rails. Use it if it exists.
+    # 2. Else use the default LTI Configuration.
+    # 3. Else generate the message manually from the app metadata.
 
-    unless content_item
-      content_item = {
-        'title' => self.title.length > 0 ? self.title : 'Untitled',
-        'url' => self.uri
-      }
+    content_item = nil
 
-      content_item['custom'] = { 'official' => official }
+    if self.lti
+      lti_config = lti_config_for_lti_consumer lti_consumer_id
 
-      if self.lti
-        # A default LTI config is required when an app is marked as supporting LTI
+      unless lti_config
         lti_config = default_lti_config
+      end
 
-        content_item['mediaType'] = 'application/vnd.ims.lti.v1.ltilink'
+      content_item = lti_config.lti_content_item_message
 
-        # The LTI launch URL is the only required LTI element in an LTI configuration
-        content_item['url'] = lti_config.lti_launch_url
+      unless content_item
+        content_item = {
+          'title' => self.title.length > 0 ? self.title : 'Untitled',
+          # The LTI launch URL is the only required LTI element in an LTI configuration
+          'url' => lti_config.lti_launch_url,
+          'mediaType' => 'application/vnd.ims.lti.v1.ltilink'
+        }
+
+        content_item['custom'] = { 'official' => official }
 
         # Here the OAuth info for the tool is included. The assumption is that we are only generating a
         # Content-Item Message with these private values if the store itself has been launched by a trusted LTI Consumer.
@@ -530,15 +537,20 @@ class App < ActiveRecord::Base
         content_item['custom']['oauth_secret'] = lti_config.lti_oauth_consumer_secret if lti_config.lti_oauth_consumer_secret
         content_item['custom']['registration_url'] = lti_config.lti_registration_url if lti_config.lti_registration_url
       else
-        content_item['mediaType'] = 'text/html'
+        content_item = JSON.parse content_item
       end
-
+    else
+      content_item = {
+        'title' => self.title.length > 0 ? self.title : 'Untitled',
+        'url' => self.uri,
+        'mediaType' => 'text/html'
+      }
       content_item['text'] = self.description if self.description.length > 0
       content_item['icon'] = { '@id' => self.icon } if self.icon and self.icon.length > 0
+      content_item['custom'] = { 'official' => official }
     end
 
     content_item
-
   end
 
   def add_to_index!

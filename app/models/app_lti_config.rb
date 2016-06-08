@@ -28,6 +28,8 @@ class AppLtiConfig < ActiveRecord::Base
 
   validates :lti_content_item_message, simple_json: true
 
+  validates_uniqueness_of :lti_consumer_id, scope: :app_id, allow_nil: true
+
   validates_with LtiUrlForVersionValidator
 
   after_validation :log_errors, :if => Proc.new {|m| m.errors}

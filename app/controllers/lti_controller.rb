@@ -33,7 +33,7 @@ class LtiController < ApplicationController
     end
 
     app = App.find params[:id]
-    app_content_item = app.to_content_item
+    app_content_item = app.to_content_item session['tp_metadata'] ? session['tp_metadata']['lti_consumer_id'] : nil
 
     # If the store was launched with an LTI Tool Consumer that has its own TC-wide configuration data,
     # return that information with the ContentItemResponse so it can be included with each launch of the app.

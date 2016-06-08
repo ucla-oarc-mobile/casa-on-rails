@@ -53,12 +53,13 @@ module Lti
           # Grab any additional LTI Consumer metadata so it can be included in the ContentItemResponse
           # POST back to the TC.
           @tp_metadata = {}
-          results = LtiConsumer.where(key: key).select('event_store_url', 'event_store_api_key', 'sso_type', 'sso_idp_url')
+          results = LtiConsumer.where(key: key).select('id', 'event_store_url', 'event_store_api_key', 'sso_type', 'sso_idp_url')
           results.map { |row|
             @tp_metadata['event_store_url'] = row.event_store_url unless row.event_store_url.blank?
             @tp_metadata['event_store_api_key'] = row.event_store_api_key unless row.event_store_api_key.blank?
             @tp_metadata['sso_type'] = row.sso_type unless row.sso_type.blank?
             @tp_metadata['sso_idp_url'] = row.sso_idp_url unless row.sso_idp_url.blank?
+            @tp_metadata['lti_consumer_id'] = row.id
           }
         else
           @error = 403

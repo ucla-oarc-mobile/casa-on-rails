@@ -47,10 +47,10 @@ en:
         accessibility_review_status: "Accessibility - Accessibility Review Status "
         tool_review_url: "Display - Tool Review URL "
       app_lti_configs:
-        lti_launch_url: "Interoperability - Launch URL"
-        lti_registration_url: "Interoperability - Registration URL"
-        lti_content_item_message: "Interoperability - Content Item Message"
-        oauth: "Interoperability - OAuth"
+        lti_launch_url: "Interoperability - LTI Launch URL"
+        lti_registration_url: "Interoperability - LTI Registration URL"
+        lti_content_item_message: "Interoperability - LTI Content Item Message"
+        lti_consumer_id: "Interoperability - LTI Consumer - "
       lti_consumer:
         event_store_url: "Event Store URL"
         event_store_api_key: "Event Store API Key"
@@ -99,3 +99,7 @@ en:
               too_long: "The license text is too long and cannot be saved. Please use a value that is shorter than 65536 characters."
             security_text:
               too_long: "The security text is too long and cannot be saved. Please use a value that is shorter than 65536 characters."
+        app_lti_config:
+          attributes:
+            lti_consumer_id:
+              taken: "The LTI Consumer has already been used in another LTI Configuration for this app."
