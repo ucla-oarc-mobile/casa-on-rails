@@ -17,8 +17,36 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-      .privacy-policy-link-text {
-          font-size: 12px;
+      .privacy-block {
+        background-color: #FFFFFF;
+        padding-top: 5%;
+        padding-right: 5%;
+        padding-left: 5%;
+        padding-bottom: 2%;
+      }
+      .question-block {
+        background-color: #F0F0F0;
+        padding: 0px;
+        padding-top: 1px;
+      }
+      .question-text {
+        margin-top: 0%;
+        margin-right: 1%;
+        margin-left: 0%;
+        margin-bottom: 1%;
+        font-weight: bold;
+        padding-left: 2px;
+        //padding-top: 1px;
+      }
+      .answer-text {
+        background-color: #FCFCFC;
+      }
+      .small-indent {
+        text-indent: 8px;
+      }
+      .small-indent-bottom {
+        text-indent: 8px;
+        margin-bottom: 0px;
       }
       body {
         margin: 0;
@@ -267,214 +295,48 @@
 </header>
 
 <main>
-
+    <div class="privacy-block">
+      <div class="question-block">
+        <div class="question-text">What information do we collect?</div>
+        <div class="answer-text"><p class="small-indent">We do not collect user specific information about the personalized use of the Mobile Dashboard, nor do we collect information about data searches.</p></div>
+      </div>
+      <div class="question-block">
+        <div class="question-text">What do we use your information for?</div>
+        <div class="answer-text"><p class="small-indent">This information is used to "personalize" your experience using this app.  It is also used to improve your user experience.</p></div>
+      </div>
+      <div class="question-block">
+        <div class="question-text">Do we disclose any information to outside parties?</div>
+        <div class="answer-text"><p class="small-indent">No.</p></div>
+      </div>
+      <div class="question-block">
+        <div class="question-text">California Online Privacy Protection Act Compliance</div>
+        <div class="answer-text"><p class="small-indent">We are in compliance with the California Online Privacy Protection Act Compliance, therefore we do not distribute any of your data to any third party users.</p></div>
+      </div>
+      <div class="question-block">
+        <div class="question-text">Children’s Online Privacy Protection Act Compliance</div>
+        <div class="answer-text"><p class="small-indent">We are in compliance with the Children’s Online Privacy Protection Act (COPPA); therefore we do not collect data from anyone including those under the age of 13.</p></div>
+      </div>
+      <div class="question-block">
+        <div class="question-text">Your Consent</div>
+        <div class="answer-text"><p class="small-indent">By using this app, you consent to our privacy policy.</p></div>
+      </div>
+      <div class="question-block">
+        <div class="question-text">Changes to our Privacy Policy</div>
+        <div class="answer-text"><p class="small-indent">If we decide to change our privacy policy, we will post the changes at this location, and we will note the date it was last modified.</p><p class="small-indent">This policy was last modified on 12/16/2015.</p></div>
+      </div>
+      <div class="question-block">
+        <div class="question-text">Contacting Us</div>
+        <div class="answer-text"><p class="small-indent-bottom">If you have any questions regarding this privacy policy, please send them to this email address: uclamobile@oit.ucla.edu.</p></div>
+      </div>
+    </div>
 </main>
 
 <footer>
-  <nav>
-    <div class="when-not-editing">
-      <a href="<%= mobile_launch_url %>" class="button">Add</a>
-      <a href="#" data-start-rearrange-apps class="button">Rearrange</a>
-      <a href="#" data-start-delete-apps class="button">Delete</a>
-    </div>
-    <div class="when-editing">
-      <a href="#" data-stop-edit-apps class="button">Stop Editing</a>
-      <a href="#" data-reset-to-default-apps class="button">Reset to Default</a>
-    </div>
-  </nav>
   <div id="footer">
     <%= raw((@site.mobile_footer and @site.mobile_footer.length > 0) ? @site.mobile_footer : '') %>
-    <a href="/mobile/privacy.html"><span class="privacy-policy-link-text">UCLA Mobile Privacy Policy</span></a>
   </div>
 </footer>
 
-<script type="text/javascript">
-
-  /**
-   * Access and manage apps
-   */
-
-  (function(){
-
-    var localStorageKey = '<%= @local_storage_key %>',
-
-        appContainerSelector = 'main',
-
-        dragSrc = null,
-
-        dragSrcInnerHTML = null,
-
-        dragSrcAppData = null,
-
-        attachDragHandlersTo = function(element){
-
-          $(element).on('dragstart', function(){
-            if(!$(this).attr('draggable')){
-              return;
-            }
-            $(this).addClass('being-dragged')
-            if(dragSrc === null)
-              dragSrc = this;
-            if(dragSrcInnerHTML === null)
-              dragSrcInnerHTML = this.innerHTML;
-            if(dragSrcAppData === null)
-              dragSrcAppData = $(this).attr('data-app');
-          });
-
-          $(element).on('dragover', function(e){
-            e.preventDefault();
-            e.originalEvent.dataTransfer.dropEffect = 'move';
-          });
-
-          $(element).on('dragend', function(e){
-            $(dragSrc).removeClass('being-dragged')
-          });
-
-          $(element).on('drop', function(e){
-            e.stopPropagation();
-            if(dragSrc && dragSrcInnerHTML && dragSrc != this){
-              $(dragSrc).removeClass('being-dragged')
-              dragSrc.innerHTML = this.innerHTML;
-              $(dragSrc).attr('data-app', $(this).attr('data-app'));
-              this.innerHTML = dragSrcInnerHTML;
-              $(this).attr('data-app', dragSrcAppData);
-              $([this, dragSrc]).find('a').click(function(e){
-                if($(this).closest('li').attr('draggable')){
-                  e.preventDefault();
-                }
-              });
-              dragSrc = null;
-              dragSrcInnerHTML = null;
-              dragSrcAppData = null;
-              if(apps && dashboard)
-                apps.set(dashboard.getApps());
-            }
-          });
-
-        },
-
-        AppDashboard = function(element){
-
-          var $container = $(element);
-
-          this.clear = function(){
-            $container.html('')
-          }
-
-          this.render = function(appsToRender){
-
-            var $ul = $('<ul>');
-
-            $.each(appsToRender, function(_, app){
-
-              var $li = $('<li>').attr('data-app', JSON.stringify(app)).appendTo($ul),
-                  $a = $('<a>').attr('href', app.uri).appendTo($li),
-                  $figure = $('<figure>').appendTo($a),
-                  $imgContainer = $('<div class="image-container">').appendTo($figure);
-
-              if(app.icon && app.icon.length > 0){
-                $('<img>').attr('src', app.icon).appendTo($imgContainer);
-              }else{
-                $imgContainer.addClass('letter-icon')
-                $('<span>').html(app.title.charAt(0)).appendTo($imgContainer);
-              }
-
-              $('<figcaption>').text(app.title).appendTo($figure);
-
-              $('<button>').addClass('delete-button').text('X').appendTo($li).click(function(e){
-                e.stopPropagation();
-                $(this).closest('[data-app]').remove();
-                if(apps && dashboard)
-                  apps.set(dashboard.getApps());
-              });
-
-              attachDragHandlersTo($li);
-
-            });
-
-            $ul.appendTo($container);
-
-            $ul.find('a').click(function(e){
-              if($(this).closest('li').attr('draggable') || $(this).closest('li').attr('data-deletable')){
-                e.preventDefault();
-              }
-            })
-
-          }
-
-          this.getApps = function(){
-            return $container.find('[data-app]').map(function(){
-              return JSON.parse($(this).attr('data-app'))
-            }).get();
-          }
-
-          this.startDrag = function(){
-            $container.find('li').attr('draggable', 'true');
-            $('body').addClass('editing-apps');
-          }
-
-          this.startDelete = function(){
-            $container.find('li').attr('data-deletable', 'true');
-            $('body').addClass('editing-apps');
-          }
-
-          this.stopEdit = function(){
-            $container.find('li').attr('draggable', null).attr('data-deletable', null);
-            $('body').removeClass('editing-apps');
-          }
-
-        },
-
-        AppStorage = function(key){
-          this.get = function(){
-            var apps = localStorage.getItem(key)
-            return apps ? JSON.parse(apps) : [];
-          }
-          this.set = function(apps){
-            localStorage.setItem(key, JSON.stringify(apps))
-          }
-          this.defined = function(){
-            return localStorage.getItem(key) !== null;
-          }
-          this.setToDefault = function(){
-            this.set(<%= raw JSON.generate @default_apps %>);
-          }
-        },
-
-        apps = new AppStorage(localStorageKey),
-
-        dashboard = new AppDashboard(appContainerSelector);
-
-    if(!apps.defined()){
-      apps.setToDefault();
-    }
-
-    dashboard.render(apps.get());
-
-    $('[data-stop-edit-apps]').click(function(){
-      dashboard.stopEdit();
-      apps.set(dashboard.getApps());
-    });
-
-    $('[data-start-rearrange-apps]').click(function(){
-      dashboard.startDrag();
-    });
-
-    $('[data-start-delete-apps]').click(function(){
-      dashboard.startDelete();
-    });
-
-    $('[data-reset-to-default-apps]').click(function(){
-      if(confirm('Are you sure you wish to reset to default settings?')){
-        apps.setToDefault();
-        dashboard.clear();
-        dashboard.render(apps.get());
-        $('[data-stop-edit-apps]').click();
-      }
-    });
-
-  })();
-</script>
 </body>
 
 </html>
