@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     resources :categories
     resources :in_payloads do
         get 'to_app', to: 'in_payloads#to_app'
+        post 'to_app', to: 'in_payloads#to_app'
     end
     resources :in_filter_rulesets
     resources :in_peers

@@ -12,6 +12,14 @@ module Admin
     def show
 
       @in_payload = InPayload.find params[:id]
+      @incomplete_payload = false
+      
+      attributes = @in_payload.content_data['attributes']
+
+      if attributes.has_key?('use') and attributes['use'].has_key?('admin_contact')
+        admin = attributes['use']['admin_contact']
+        @incomplete_payload = true if admin['name'].to_s.empty? or admin['email'].to_s.empty?
+      end
 
     end
 
@@ -24,6 +32,18 @@ module Admin
       attributes = @in_payload.content_data['attributes']
       attributes = attributes.merge(attributes['use']) if attributes.has_key?('use')
       attributes = attributes.merge(attributes['require']) if attributes.has_key?('require')
+
+      # Map 'admin_contact' => 'primary_contact' if available.
+      if attributes.has_key?('admin_contact') and attributes['admin_contact'].has_key?('name') and attributes['admin_contact'].has_key?('email')
+        attributes['primary_contact_name'] = attributes['admin_contact']['name']
+        attributes['primary_contact_email'] = attributes['admin_contact']['email']
+      end
+
+      # Map 'primary_contact' => user provided values.
+      if params.has_key?('admin') and params['admin'].has_key?('name') and params['admin'].has_key?('email')
+        attributes['primary_contact_name'] = params['admin']['name']
+        attributes['primary_contact_email'] = params['admin']['email']
+      end
 
       if @in_payload.related_app
         @app = @in_payload.related_app
@@ -47,6 +67,8 @@ module Admin
       @app.accessibility_url = attributes['accessibility_url'] if attributes.has_key?('accessibility_url')
       @app.vpat_url = attributes['vpat_url'] if attributes.has_key?('vpat_url')
       @app.acceptable = attributes['acceptable'].to_json if attributes.has_key?('acceptable')
+      @app.primary_contact_name = attributes['primary_contact_name'] if attributes.has_key?('primary_contact_name')
+      @app.primary_contact_email = attributes['primary_contact_email'] if attributes.has_key?('primary_contact_email')
       if attributes.has_key?('categories')
         @app.categories = attributes['categories'].map(){ |category_name|
           begin

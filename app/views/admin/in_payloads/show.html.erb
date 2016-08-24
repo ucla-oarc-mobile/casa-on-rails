@@ -8,7 +8,22 @@
 
 <pre style="border: 1px solid #bbb; padding: 10px;"><%= @in_payload.content_data['attributes'].to_yaml.sub('---', '') %></pre>
 
-<%= link_to "Approve (#{@in_payload.related_app ? 'Update Existing App' : 'Create New App'})", admin_in_payload_to_app_url(@in_payload), class: 'button' %>
+<% if @incomplete_payload %>
+
+  <%= form_tag admin_in_payload_to_app_url(@in_payload), :method => 'post' do %>
+    <%= field_set_tag "Update required admin contact fields" do %>
+      <%= label :admin, :name, "Name" %>
+      <%= text_field_tag 'admin[name]', nil, :required => true %>
+      <%= label :admin, :email, "Email" %>
+      <%= email_field 'admin[email]' , nil, :required => true, pattern: ".{5,}" %>
+      <%= submit_tag("Approve (and update missing required fields)") %>
+    <% end %>
+  
+  <% end %>
+
+<% else %>
+  <%= link_to "Approve (#{@in_payload.related_app ? 'Update Existing App' : 'Create New App'})", admin_in_payload_to_app_url(@in_payload), class: 'button approve' %>
+<% end %>
 
 <%= link_to 'Ignore This Payload', admin_in_payload_url(@in_payload), method: :delete, class: 'button warning' %>
 
