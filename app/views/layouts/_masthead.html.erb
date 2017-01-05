@@ -63,7 +63,8 @@
   <nav role="search" class="container">
     <% unless Rails.application.config.elasticsearch_client.nil? %>
       <form action="<%= apps_search_url %>" class="navbar-form navbar-right">
-        <input type="text" name="query" class="form-control" placeholder="Search">
+        <label for="casa-search-id" class="casa-search-label">Search</label>
+        <input type="text" name="query" class="form-control" placeholder="Search" id="casa-search-id">
         <button type="submit" class="raw">
           <div class="fa fa-search">
             <div class="hide-accessible">Search</div>
