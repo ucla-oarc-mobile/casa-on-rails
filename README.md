@@ -179,7 +179,7 @@ CASA on Rails is a standard Rails server. Once you ensure that the database and 
 
 ### Docker Container
 
-CASA on Rails now has a docker container to facilitate getting started developing or testing the project.  Visit the [docker hub page](https://hub.docker.com/r/stevenolen/casa-on-rails/) for more details. 
+CASA on Rails now has a docker container to facilitate getting started developing or testing the project.  Visit the [docker hub page](https://hub.docker.com/r/ucla/casa-on-rails/) for more details. 
 
 ## License
 
