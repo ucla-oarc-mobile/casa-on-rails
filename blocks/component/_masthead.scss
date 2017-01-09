@@ -1,0 +1,25 @@
+header {
+  // Accessibility fix for search label.
+  .casa-search-label {
+    clip: rect(0px,0px,0px,0px);
+    position: absolute;
+  }
+  
+  // Placeholder text color
+  ::-webkit-input-placeholder {
+   color: #666;
+  }
+
+  :-moz-placeholder { /* Firefox 18- */
+     color: #666;  
+  }
+
+  ::-moz-placeholder {  /* Firefox 19+ */
+     color: #666;  
+  }
+
+  :-ms-input-placeholder {  
+     color: #666;  
+  }
+
+}
