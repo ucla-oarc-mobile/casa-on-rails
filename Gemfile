@@ -66,3 +66,7 @@ gem 'rapporteur'
 
 # for JSON Schema validation of payload attribute data
 gem 'json-schema', '2.5.2'
+
+group :development do
+  gem 'awesome_print'
+end
