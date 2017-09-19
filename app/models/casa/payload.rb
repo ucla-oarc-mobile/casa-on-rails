@@ -30,7 +30,7 @@ module Casa
             Casa::Attribute::Security.name => Casa::Attribute::Security,
             Casa::Attribute::StudentData.name => Casa::Attribute::StudentData,
             Casa::Attribute::Features.name => Casa::Attribute::Features,
-            Casa::Attribute::DefaultAppOrder.name => Casa::Attribute::DefaultAppOrder,
+            Casa::Attribute::DefaultAppOrder.name => Casa::Attribute::DefaultAppOrder
         },
         'require' => {
         }
