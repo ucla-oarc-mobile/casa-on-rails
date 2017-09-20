@@ -29,7 +29,8 @@ module Casa
             Casa::Attribute::Licensing.name => Casa::Attribute::Licensing,
             Casa::Attribute::Security.name => Casa::Attribute::Security,
             Casa::Attribute::StudentData.name => Casa::Attribute::StudentData,
-            Casa::Attribute::Features.name => Casa::Attribute::Features
+            Casa::Attribute::Features.name => Casa::Attribute::Features,
+            Casa::Attribute::DefaultAppOrder.name => Casa::Attribute::DefaultAppOrder
         },
         'require' => {
         }
