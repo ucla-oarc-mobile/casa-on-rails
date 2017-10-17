@@ -59,7 +59,9 @@ gem 'bcrypt'
 
 gem 'oauth2'
 
+# Use either thin or puma for web server
 gem 'thin'
+gem 'puma'
 
 # generates a status page at /status.json
 gem 'rapporteur'
