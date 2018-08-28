@@ -47,4 +47,12 @@ class AppsController < ApplicationController
 
   end
 
+  def privacy
+    @app = App.find params[:id]
+
+    unless @app.privacy_url.blank?
+      return redirect_to @app.privacy_url
+    end
+  end
+
 end

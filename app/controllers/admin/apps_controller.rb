@@ -315,6 +315,7 @@ module Admin
         :accessibility_url,
         :vpat_url,
         :privacy_url,
+        :privacy_text,
         :restrict,
         :mobile_support,
         :restrict_launch,
