@@ -52,7 +52,7 @@ This application is a reduced and opinionated implementation of CASA. For a more
 
 ## Configuration
 
-The Basic steps below **must** be run prior to database migration and seeding, or your default set will not be created!
+The Basic steps below **must** be run prior to database migration and seeding, or your default site will not be created!
 
 #### Basic
 
