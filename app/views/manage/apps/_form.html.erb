@@ -187,15 +187,12 @@
     <%= fields_for :app_browser_features do |features| %>
 
       <%
-
          app_features = {}
-
          if @app.app_browser_features
            @app.app_browser_features.each do |r|
              app_features[r.feature] = r.level
            end
          end
-
          {
              'Application Cache' => 'applicationcache',
              'Canvas Element' => 'canvas',
@@ -357,19 +354,33 @@
 
   <fieldset role="tab" id="privacy">
 
-    <legend>Privacy</legend>
+    <legend>Privacy Policy</legend>
 
-    <div class="form-field">
-      <%= f.label :privacy_url, 'Privacy Policy URL' %>
-      <%= f.text_field :privacy_url %>
+    <div class="form-field" >
+      <%= label_tag :privacy_toggle_url, 'External URL' %>
+      <%= radio_button_tag :privacy_toggle, 'url', checked: true %>
+      <%= label_tag 'Host on App Catalog' %>
+      <%= radio_button_tag :privacy_toggle, 'text' %>
     </div>
+
+
+      <div class="form-field" id="privacy_field_url">
+        Paste URL for privacy policy:
+        <%= f.text_field :privacy_url %>
+      </div>
+
+      <div class="form-field" id="privacy_field_text">
+        Paste text of privacy policy directly into this field: </br>
+        <%= f.text_area :privacy_text %>
+        (A privacy policy page will be created for your app at apps.ucla.edu/apps/[AppId]/privacy)
+      </div>
 
     <div class="form-field">
       <%= label_tag :privacy_enable, 'Privacy Matrix', data: { help: 'This privacy matrix is based on the Privacy Nutrition Label concept. Instead of the complex legalese of traditional privacy policies, it is intended to condense a privacy policy into a simple, understandable table.' } %>
       <%= check_box :privacy, 'enable' %>
     </div>
 
-
+<!--
     <fieldset id="privacy-fields">
       <div class="fields-table">
         <table>
@@ -408,7 +419,7 @@
           </tbody>
         </table>
       </div>
-    </fieldset>
+    </fieldset> -->
 
   </fieldset>
 
@@ -768,11 +779,8 @@
 <% end %>
 
 <script type="text/javascript">
-
   (function(){
-
     $('#app_icon-selector').change(function(){
-
       if($(this).val() == 'upload'){
         $('#app_icon-url').hide();
         $('#app_icon-upload').show();
@@ -782,9 +790,7 @@
         $('#app_icon-upload').hide();
         $('#app_icon-upload-preview').hide();
       }
-
     });
-
     $('#app_icon-upload').change(function(){
       var file = this.files[0],
           reader = new FileReader;
@@ -797,11 +803,9 @@
         reader.readAsDataURL(file);
       }
     });
-
     $('#app_icon-url').change(function(){
       $('#app_icon').val($(this).val());
     });
-
     if($('#app_icon').val().indexOf('http') === 0){
       $('#app_icon-selector').val('url').change();
       $('#app_icon-url').val($('#app_icon').val());
@@ -809,21 +813,25 @@
       $('#app_icon-selector').val('upload').change();
       $('#app_icon-upload-preview').attr('src', $('#app_icon').val());
     }
-
   })();
 
+
   (function(){
-    $('#privacy_enable').change(function(){
-      if($(this).is(':checked')) {
-        $('#privacy-fields').show();
-      }else{
-        $('#privacy-fields').hide();
-      }
+    $('#privacy_toggle_url').change(function(){
+        $('#privacy_field_url').show();
+        $('#privacy_field_text').hide();
     }).change();
   })();
 
   (function(){
+    $('#privacy_toggle_text').change(function(){
+        $('#privacy_field_url').hide();
+        $('#privacy_field_text').show();
+    }).change();
+  })();
 
+
+  (function(){
     $('[role="tab"]').hide();
     $('.tabs [data-target]').click(function(e){
       e.preventDefault();
@@ -833,9 +841,7 @@
       $('[role="tab"]').hide();
       $target.show();
     }).first().click();
-
   })();
-
   (function(){
     $('#app_propagate').change(function(){
       if($(this).is(':checked')) {
@@ -848,7 +854,6 @@
       $('#app_share').attr('disabled', null);
     });
   })();
-
   (function(){
     $('#app_lti').change(function(){
       if($(this).is(':checked')) {
@@ -858,7 +863,6 @@
       }
     }).change();
   })();
-
   (function(){
       $('#app_caliper').change(function(){
           if($(this).is(':checked')) {
@@ -868,37 +872,27 @@
           }
       }).change();
   })();
-
   (function(){
     $('.set-data-value-on-change select').change(function(){
       $(this).closest('.form-field').attr('data-value', $(this).val());
     }).change();
   })();
-
     (function(){
-
         var createAuthorField = function(data){
-
             var $li = $(document.createElement('li'))
                     .addClass('form-field')
                     .attr('style', 'border-left:3px solid #eee;padding-left:10px;margin-bottom:10px;')
                     .append('<label>Name</label><input type="text" class="input-name"'+(data&&data.name?(' value="'+data.name+'"'):'')+'><label>Email</label><input type="text" class="input-email"'+(data&&data.email?(' value="'+data.email+'"'):'')+'>'+(data&&data.id?('<input type="hidden" class="input-id" value="'+data.id+'">'):''));
-
             $(document.createElement('button')).text('Remove').addClass('danger').click(function(){$(this).closest('li').remove()}).appendTo($li);
-
             $('#app_authors > ul').append($li);
         }
-
         $.each(<%= raw @app.app_authors.to_json %>, function(idx, author){
             createAuthorField(author)
         })
-
         $('#app_authors > button').click(function(e){
             createAuthorField();
         })
-
         $('#app-form').submit(function(e){
-
             var data = [];
             $('#app_authors li').each(function(){
                 var id = $(this).find('.input-id').val(),
@@ -910,41 +904,29 @@
                 if(email && email.length) dataElement['email'] = email
                 data.push(dataElement);
             })
-
             $(this).append($(document.createElement('textarea'))
                                 .attr('name', 'app_authors')
                                 .attr('style', 'display:none')
                                 .val(JSON.stringify(data)));
         })
-
     })();
-
 //////////////////////
-
     (function(){
-
         var createOrganizationField = function(data){
-
             var $li = $(document.createElement('li'))
                     .addClass('form-field')
                     .attr('style', 'border-left:3px solid #eee;padding-left:10px;margin-bottom:10px;')
                     .append('<label>Name</label><input type="text" class="input-name"'+(data&&data.name?(' value="'+data.name+'"'):'')+'><label>Website</label><input type="text" class="input-website"'+(data&&data.website?(' value="'+data.website+'"'):'')+'>'+(data&&data.id?('<input type="hidden" class="input-id" value="'+data.id+'">'):''));
-
             $(document.createElement('button')).text('Remove').addClass('danger').click(function(){$(this).closest('li').remove()}).appendTo($li);
-
             $('#app_organizations > ul').append($li);
         }
-
         $.each(<%= raw @app.app_organizations.to_json %>, function(idx, organization){
             createOrganizationField(organization)
         })
-
         $('#app_organizations > button').click(function(e){
             createOrganizationField();
         })
-
         $('#app-form').submit(function(e){
-
             var data = [];
             $('#app_organizations li').each(function(){
                 var id = $(this).find('.input-id').val(),
@@ -956,21 +938,15 @@
                 if(website && website.length) dataElement['website'] = website
                 data.push(dataElement);
             })
-
             $(this).append($(document.createElement('textarea'))
                     .attr('name', 'app_organizations')
                     .attr('style', 'display:none')
                     .val(JSON.stringify(data)));
         })
-
     })();
-
   //////////////////////
-
   (function(){
-
       var createLtiFields = function(data){
-
           var $li = $(document.createElement('li'))
                   .addClass('form-field')
                   .attr('style', 'border-left:3px solid #eee;padding-left:10px;margin-bottom:10px;')
@@ -978,7 +954,6 @@
                   '<label data-help="The launch URL to use for LTI 1.x launches. Required for LTI 1.x.">Launch URL</label><input type="text" id="lti_launch_url" class="input-lti_launch_url"'+(data&&data.lti_launch_url?(' value="'+data.lti_launch_url+'"'):'')+'>' +
                   '<label data-help="Optional. A URL for retrieving detailed XML Common Cartridge configuration.">Configuration URL</label><input type="text" class="input-lti_configuration_url"'+(data&&data.lti_configuration_url?(' value="'+data.lti_configuration_url+'"'):'')+'>' +
                   '<label data-help="The registration URL for LTI 2.0 launches. Required for LTI 2.0.">Registration URL</label><input type="text" class="input-lti_registration_url"'+(data&&data.lti_registration_url?(' value="'+data.lti_registration_url+'"'):'')+'>' +
-
                   '<label data-help="The LTI Version for this particular configuration. If no value is selected, 1.0 will be used.">Version</label>' +
                   '<select id="select-lti_version">' +
                   '<option value="1.0"' +  ((data && data.lti_version && data.lti_version == '1.0') ? ' selected' : '') + '>1.0</option>' +
@@ -987,31 +962,23 @@
                   '<option value="1.2"' +  ((data && data.lti_version && data.lti_version == '1.2') ?  ' selected' : '') + '>1.2</option>' +
                   '<option value="2.0"' +  ((data && data.lti_version && data.lti_version == '2.0') ?  ' selected' : '') + '>2.0</option>' +
                   '</select>' +
-
                   '<label data-help="Optional. The OAuth key the Tool Consumer will use when signing launches of this tool.">OAuth Key</label><input type="text" class="input-lti_oauth_consumer_key"'+(data&&data.lti_oauth_consumer_key?(' value="'+data.lti_oauth_consumer_key+'"'):'')+'>' +
                   '<label data-help="Optional. The OAuth secret the Tool Consumer will use when signing launches of this tool.">OAuth Secret</label><input type="text" class="input-lti_oauth_consumer_secret"'+(data&&data.lti_oauth_consumer_secret?(' value="'+data.lti_oauth_consumer_secret+'"'):'')+'>' +
-
                   '<label data-help="Optional. Whether this tool supports LTI 1.x Outcomes">LIS Outcomes</label>' +
                   '<select id="select-lti_lis_outcomes">' +
                   '<option value="no"' +  ((data && data.lti_lis_outcomes && data.lti_lis_outcomes == 'no') ? ' selected' : '') + '>No</option>' +
                   '<option value="optional"' +  ((data && data.lti_lis_outcomes && data.lti_lis_outcomes == 'optional') ?  ' selected' : '') + '>Optional</option>' +
                   '<option value="required"' +  ((data && data.lti_lis_outcomes && data.lti_lis_outcomes == 'required') ?  ' selected' : '') + '>Required</option>' +
                   '</select>' +
-
                   '<label data-help="Optional. The LTI launch parameters as an HTTP query string.">Launch Params</label><textarea style="height: 30em;" class="input-lti_launch_params">'+ (data && data.lti_launch_params ? data.lti_launch_params : '') +'</textarea>' +
                   '<label data-help="Optional. A JSON Object representing a Content-Item Message that a TC can use to embed this tool. If this value is set, it will override the default Content-Item functionality, which generates the JSON from the app\'s title, URL, Official designation, LTI Launch URL, OAuth key and secret, Registration URL, and LTI Consumer metadata for SSO and event data storage.">Content Item Message</label><textarea style="height: 30em;" class="input-lti_content_item_message">'+(data&&data.lti_content_item_message? data.lti_content_item_message :'') +'</textarea>' +
                   '<label>IMS Global Registration Number</label><input type="text" class="input-lti_ims_global_registration_number"'+(data&&data.lti_ims_global_registration_number?(' value="'+data.lti_ims_global_registration_number+'"'):'')+'>'  +
                   '<label>IMS Global Conformance Date</label><input type="text" class="input-lti_ims_global_conformance_date"'+(data&&data.lti_ims_global_conformance_date?(' value="'+data.lti_ims_global_conformance_date+'"'):'')+'>'  +
                   '<label>IMS Global Registration Link</label><input type="text" class="input-lti_ims_global_registration_link"'+(data&&data.lti_ims_global_registration_link?(' value="'+data.lti_ims_global_registration_link+'"'):'')+'>');
-
           $(document.createElement('button')).text('Remove').addClass('danger').click(function(){$(this).closest('li').remove()}).appendTo($li);
-
           $('#app_lti_configs > ul').append($li);
-
           $li.children('label[data-help]').each(function(){
-
               if(! data) {
-
                   $('<a>')
                           .attr('href', '#')
                           .addClass('mark')
@@ -1031,17 +998,13 @@
                           .appendTo(this);
               }
           });
-
       }
-
       $.each(<%= raw @app.app_lti_configs.to_json %>, function(idx, lti_config){
           createLtiFields(lti_config)
       })
-
       $('#app_lti_configs > button').click(function(e){
           createLtiFields();
       })
-
       $('#app-form').submit(function(e){
           var data = [];
           $('#app_lti_configs li').each(function(){
@@ -1059,7 +1022,6 @@
                   lti_ims_global_conformance_date = $(this).find('.input-lti_ims_global_conformance_date').val(),
                   lti_ims_global_registration_link = $(this).find('.input-lti_ims_global_registration_link').val(),
                   dataElement = {};
-
               dataElement['lti_default'] = lti_default;
               if(lti_launch_url && lti_launch_url.length) dataElement['lti_launch_url'] = lti_launch_url;
               if(lti_configuration_url && lti_configuration_url.length) dataElement['lti_configuration_url'] = lti_configuration_url;
@@ -1075,13 +1037,10 @@
               if(lti_ims_global_registration_link && lti_ims_global_registration_link.length) dataElement['lti_ims_global_registration_link'] = lti_ims_global_registration_link;
               data.push(dataElement);
           })
-
           $(this).append($(document.createElement('textarea'))
                   .attr('name', 'app_lti_configs')
                   .attr('style', 'display:none')
                   .val(JSON.stringify(data)));
       })
-
   })();
-
 </script>
