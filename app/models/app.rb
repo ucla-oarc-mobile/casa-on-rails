@@ -44,6 +44,17 @@ class App < ActiveRecord::Base
     end
   end
 
+  class PrivacyPolicyValidator < ActiveModel::Validator
+    def validate(record)
+      # An app must have either a privacy policy text or URL, but not both
+      if record.privacy_url.blank? && record.privacy_text.blank?
+        record.errors.add(:privacy_policy, "A privacy policy is required (either the text or a URL).")
+      elsif !record.privacy_url.blank? && !record.privacy_text.blank?
+        record.errors.add(:privacy_policy, "You cannot use both a privacy policy text and an external URL.")
+      end
+    end
+  end
+
   # Guard against the case where new enum values are added without being referenced here or
   # if the API is being used headlessly.
   class ReviewEnumValidator < ActiveModel::Validator
@@ -84,6 +95,7 @@ class App < ActiveRecord::Base
   validates_with LTIExistenceValidator
   validates_with LTIDefaultValidator
   validates_with ReviewEnumValidator
+  validates_with PrivacyPolicyValidator
 
   validate :caliper_attribute_is_valid
 
