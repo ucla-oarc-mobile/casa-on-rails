@@ -111,6 +111,7 @@ module Manage
         :accessibility_url,
         :vpat_url,
         :privacy_url,
+        :privacy_text,
         :lti,
         :mobile_support,
         :primary_contact_name,

@@ -12,7 +12,7 @@ class App < ActiveRecord::Base
                            security_session_lifetime security_cloud_vendor security_policy_url security_sla_url security_text
                            license_text support_contact_name support_contact_email primary_contact_name primary_contact_email
                            overall_review_status privacy_review_status security_review_status accessibility_review_status
-                           tool_review_url)
+                           tool_review_url privacy_text)
 
   RECOMMENDED_FOR_USE = 100
   USE_WITH_CAUTION = 101
@@ -119,6 +119,9 @@ class App < ActiveRecord::Base
     length: { maximum: 65535 }
 
   validates :tool_review_url,
+            uri: true
+
+  validates :privacy_url,
             uri: true
 
   after_validation :log_errors, :if => Proc.new {|m| m.errors}
