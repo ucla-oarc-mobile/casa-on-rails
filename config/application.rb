@@ -20,5 +20,11 @@ module CasaOnRails
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
+    # Set default hostname for URL generators, for use outside controllers
+    if !ENV["HOSTNAME"].blank?
+      Rails.application.routes.default_url_options[:host] = ENV["HOSTNAME"]
+    else
+      Rails.application.routes.default_url_options[:host] = "localhost"
+    end
   end
 end
