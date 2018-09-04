@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   resources :apps, :only => [:index, :show] do
     member do
       resources :ratings, module: 'apps', as: 'app_ratings', param: :rating_id
-      get '/privacy', to: 'apps#privacy'
+      get '/privacy', to: 'apps#privacy', as: 'privacy'
     end
   end
 

@@ -276,8 +276,6 @@
 
       <% end %>
 
-  <% if @app.app_privacy_policy or @app.privacy_url %>
-
   <div class="content">
 
     <div class="line"></div>
@@ -324,17 +322,12 @@
 
         <div class="additional-info-inline-block">
           <h4>Privacy Policy</h4>
-          <% if @app.privacy_url %>
-              <p><a href="<%= @app.privacy_url %>">View</a></p>
-          <% else %>
-              <p>-</p>
-          <% end %>
+          <p><a href="<%= privacy_app_url(@app) %>">View</a></p>
         </div>
 
       </section>
 
     </div>
-  <% end %>
 
   <% if @app.has_student_data_properties_set? %>
       <div class="content">
