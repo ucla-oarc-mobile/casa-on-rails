@@ -325,30 +325,7 @@
 
     </fieldset>
 
-    <fieldset>
 
-      <legend>Caliper</legend>
-
-      <p>IMS Global's <a href="https://www.imsglobal.org/activity/caliperram" target="_blank">Caliper</a> standard allows
-        apps to generate analytics data in an interoperable way. The JSON schema for this attribute can be found
-        <a href="http://imsglobal.github.io/casa-protocol/#Attributes/Interoperability:caliper" target="_blank">here</a>.</p>
-
-      <div class="form-field">
-        <%= f.label :caliper, 'Supports Caliper' %>
-        <%= f.check_box :caliper %>
-      </div>
-
-      <div class="form-field">
-        <%= f.label :caliper_metric_profiles, raw('Caliper Metric Profile JSON <span class="required">(required)</span>') %>
-        <%= f.text_area :caliper_metric_profiles, style: 'height: 30em;' %>
-      </div>
-
-      <div class="form-field">
-        <%= f.label :caliper_ims_global_certifications, 'IMS Global Caliper Certification JSON' %>
-        <%= f.text_area :caliper_ims_global_certifications, style: 'height: 30em;' %>
-      </div>
-
-    </fieldset>
 
   </fieldset>
 
@@ -357,10 +334,10 @@
     <legend>Privacy Policy</legend>
 
     <div class="form-field" >
-      <%= label_tag :privacy_toggle_url, 'External URL' %>
-      <%= radio_button_tag :privacy_toggle, 'url', checked: true %>
       <%= label_tag 'Host on App Catalog' %>
-      <%= radio_button_tag :privacy_toggle, 'text' %>
+      <%= radio_button_tag :privacy_toggle, 'text', checked: true %>
+      <%= label_tag :privacy_toggle_url, 'External URL' %>
+      <%= radio_button_tag :privacy_toggle, 'url' %>
     </div>
 
 
@@ -375,10 +352,10 @@
         (A privacy policy page will be created for your app at apps.ucla.edu/apps/[AppId]/privacy)
       </div>
 
-    <div class="form-field">
+    <!-- <div class="form-field">
       <%= label_tag :privacy_enable, 'Privacy Matrix', data: { help: 'This privacy matrix is based on the Privacy Nutrition Label concept. Instead of the complex legalese of traditional privacy policies, it is intended to condense a privacy policy into a simple, understandable table.' } %>
       <%= check_box :privacy, 'enable' %>
-    </div>
+    </div> -->
 
 <!--
     <fieldset id="privacy-fields">
