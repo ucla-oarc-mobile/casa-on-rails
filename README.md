@@ -50,55 +50,9 @@ Additional features are planned:
 
 This application is a reduced and opinionated implementation of CASA. For a more overarching (but also more complex and challenging) implementation, the [CASA reference implementation](https://github.com/imsglobal/casa) may be useful. A series of [gems](https://github.com/imsglobal) were developed during the process of building this reference implementation, and they may be useful in some contexts as well.
 
-## Setup
-
-#### System Dependencies
-
-* Ruby 2.1+
-* Node.js 0.10+
-* Java 1.6+
-* MySQL 5.0+, PostgreSQL 8.4+ and SQLite 3.6.16+ *
-* ElasticSearch 1.0+
-
-*\*To use a database besides MySQL, update `Gemfile` accordingly*
-
-#### Manged Dependencies
-
-For Ruby packages:
-
-```
-bundle
-```
-
-For Node packages:
-
-```
-npm install
-```
-
-#### Build Web Assets
-
-To build web assets:
-
-```
-bundle exec blocks build
-```
-
-#### Configure Rails App
-
-See:
-
-* `config/database.yml` to set the database configuration
-* `config/environments/*.rb` to set the `config.casa` and `config.store` variables
-
-#### Setup Database
-
-```
-bundle exec bin/rake db:migrate
-bundle exec bin/rake db:seed
-```
-
 ## Configuration
+
+The Basic steps below **must** be run prior to database migration and seeding, or your default site will not be created!
 
 #### Basic
 
@@ -173,13 +127,61 @@ end
 
 This configuration makes it possible for users with the `employee@ucla.edu` eduPersonAffiliation to log in and submit applications for review.
 
+## Setup
+
+#### System Dependencies
+
+* Ruby 2.1+
+* Node.js 0.10+
+* Java 1.6+
+* MySQL 5.0+, PostgreSQL 8.4+ and SQLite 3.6.16+ *
+* ElasticSearch 1.0+
+
+*\*To use a database besides MySQL, update `Gemfile` accordingly*
+
+#### Manged Dependencies
+
+For Ruby packages:
+
+```
+bundle
+```
+
+For Node packages:
+
+```
+npm install
+```
+
+#### Build Web Assets
+
+To build web assets:
+
+```
+bundle exec blocks build
+```
+
+#### Configure Rails App
+
+See:
+
+* `config/database.yml` to set the database configuration
+* `config/environments/*.rb` to set the `config.casa` and `config.store` variables
+
+#### Setup Database
+
+```
+bundle exec bin/rake db:migrate
+bundle exec bin/rake db:seed
+```
+
 ## Usage
 
 CASA on Rails is a standard Rails server. Once you ensure that the database and Elasticsearch are running, start it as you'd usually start a Rails server.
 
 ### Docker Container
 
-CASA on Rails now has a docker container to facilitate getting started developing or testing the project.  Visit the [docker hub page](https://hub.docker.com/r/stevenolen/casa-on-rails/) for more details. 
+CASA on Rails now has a docker container to facilitate getting started developing or testing the project.  Visit the [docker hub page](https://hub.docker.com/r/stevenolen/casa-on-rails/) for more details.
 
 ## License
 

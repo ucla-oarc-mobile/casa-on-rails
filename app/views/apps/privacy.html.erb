@@ -1,0 +1,5 @@
+<% if @app.privacy_text.blank? %>
+  This app is missing a privacy policy.
+<% else %>
+  <%= @app.privacy_text %>
+<% end %>

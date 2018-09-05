@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160608180400) do
+ActiveRecord::Schema.define(version: 20180828221745) do
 
   create_table "app_authors", force: :cascade do |t|
     t.integer "app_id",  limit: 4
@@ -296,7 +296,12 @@ ActiveRecord::Schema.define(version: 20160608180400) do
     t.integer  "security_review_status",                       limit: 4
     t.integer  "accessibility_review_status",                  limit: 4
     t.string   "tool_review_url",                              limit: 255
+    t.text     "privacy_text",                                 limit: 65535
   end
+
+  add_index "apps", ["propagate"], name: "index_apps_on_propagate", using: :btree
+  add_index "apps", ["share"], name: "index_apps_on_share", using: :btree
+  add_index "apps", ["title"], name: "index_apps_on_title", using: :btree
 
   create_table "apps_categories", force: :cascade do |t|
     t.integer "app_id",      limit: 4
@@ -308,6 +313,8 @@ ActiveRecord::Schema.define(version: 20160608180400) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "categories", ["name"], name: "index_categories_on_name", using: :btree
 
   create_table "in_filter_rulesets", force: :cascade do |t|
     t.integer  "in_peer_id", limit: 4
@@ -351,6 +358,8 @@ ActiveRecord::Schema.define(version: 20160608180400) do
     t.string   "casa_id",    limit: 255
   end
 
+  add_index "in_peers", ["name"], name: "index_in_peers_on_name", using: :btree
+
   create_table "lti_consumers", force: :cascade do |t|
     t.string   "name",                limit: 255
     t.string   "key",                 limit: 255
@@ -384,6 +393,8 @@ ActiveRecord::Schema.define(version: 20160608180400) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "out_peers", ["name"], name: "index_out_peers_on_name", using: :btree
 
   create_table "sessions", force: :cascade do |t|
     t.string   "session_id", limit: 255,   null: false

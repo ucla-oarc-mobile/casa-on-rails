@@ -12,7 +12,7 @@ class App < ActiveRecord::Base
                            security_session_lifetime security_cloud_vendor security_policy_url security_sla_url security_text
                            license_text support_contact_name support_contact_email primary_contact_name primary_contact_email
                            overall_review_status privacy_review_status security_review_status accessibility_review_status
-                           tool_review_url)
+                           tool_review_url privacy_text)
 
   RECOMMENDED_FOR_USE = 100
   USE_WITH_CAUTION = 101
@@ -40,6 +40,17 @@ class App < ActiveRecord::Base
       end
       if record.app_lti_configs.size > 1 && number_of_default_configs == 0
         record.errors.add(:lti, 'When multiple LTI configurations are being created, one of them must be set as the default.')
+      end
+    end
+  end
+
+  class PrivacyPolicyValidator < ActiveModel::Validator
+    def validate(record)
+      # An app must have either a privacy policy text or URL, but not both
+      if record.privacy_url.blank? && record.privacy_text.blank?
+        record.errors.add(:privacy_policy, "A privacy policy is required (either the text or a URL).")
+      elsif !record.privacy_url.blank? && !record.privacy_text.blank?
+        record.errors.add(:privacy_policy, "You cannot use both a privacy policy text and an external URL.")
       end
     end
   end
@@ -84,6 +95,7 @@ class App < ActiveRecord::Base
   validates_with LTIExistenceValidator
   validates_with LTIDefaultValidator
   validates_with ReviewEnumValidator
+  validates_with PrivacyPolicyValidator
 
   validate :caliper_attribute_is_valid
 
@@ -119,6 +131,9 @@ class App < ActiveRecord::Base
     length: { maximum: 65535 }
 
   validates :tool_review_url,
+            uri: true
+
+  validates :privacy_url,
             uri: true
 
   after_validation :log_errors, :if => Proc.new {|m| m.errors}
