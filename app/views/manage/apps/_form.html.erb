@@ -331,12 +331,12 @@
 
   <fieldset role="tab" id="privacy">
 
-    <legend>Privacy Policy</legend>
+    <legend>Privacy Policy (required)</legend>
 
     <div class="form-field" >
       <%= label_tag 'Host on App Catalog' %>
       <%= radio_button_tag :privacy_toggle, 'text', checked: true %>
-      <%= label_tag :privacy_toggle_url, 'External URL' %>
+      <%= label_tag 'External URL' %>
       <%= radio_button_tag :privacy_toggle, 'url' %>
     </div>
 
@@ -352,12 +352,13 @@
         (A privacy policy page will be created for your app at apps.ucla.edu/apps/[AppId]/privacy)
       </div>
 
-    <!-- <div class="form-field">
+
+    <div class="form-field" style="display: none;">
       <%= label_tag :privacy_enable, 'Privacy Matrix', data: { help: 'This privacy matrix is based on the Privacy Nutrition Label concept. Instead of the complex legalese of traditional privacy policies, it is intended to condense a privacy policy into a simple, understandable table.' } %>
       <%= check_box :privacy, 'enable' %>
-    </div> -->
+    </div>
 
-<!--
+
     <fieldset id="privacy-fields">
       <div class="fields-table">
         <table>
@@ -396,7 +397,7 @@
           </tbody>
         </table>
       </div>
-    </fieldset> -->
+    </fieldset>
 
   </fieldset>
 
@@ -792,11 +793,23 @@
     }
   })();
 
+  // DISABLED
+  (function(){
+    $('#privacy_enable').change(function(){
+      if($(this).is(':checked')) {
+        $('#privacy-fields').show();
+      }else{
+        $('#privacy-fields').hide();
+      }
+    }).change();
+  })();
+  // DISABLED
 
   (function(){
     $('#privacy_toggle_url').change(function(){
         $('#privacy_field_url').show();
         $('#privacy_field_text').hide();
+        $('#app_privacy_text').val("")
     }).change();
   })();
 
@@ -804,6 +817,7 @@
     $('#privacy_toggle_text').change(function(){
         $('#privacy_field_url').hide();
         $('#privacy_field_text').show();
+        $('#app_privacy_url').val("")
     }).change();
   })();
 
