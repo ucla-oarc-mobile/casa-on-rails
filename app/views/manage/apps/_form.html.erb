@@ -337,17 +337,17 @@
       <%= label_tag 'Host on App Catalog' %>
       <%= radio_button_tag :privacy_toggle, 'text', checked: true %>
       <%= label_tag 'External URL' %>
-      <%= radio_button_tag :privacy_toggle, 'url' %>
+      <%= radio_button_tag :privacy_toggle, 'url', checked: false %>
     </div>
 
 
       <div class="form-field" id="privacy_field_url">
-        Paste URL for privacy policy:
+        <%= f.label :privacy_url, 'Paste URL for privacy policy:' %>
         <%= f.text_field :privacy_url %>
       </div>
 
       <div class="form-field" id="privacy_field_text">
-        Paste text of privacy policy directly into this field:
+        <%= f.label :privacy_text, 'Paste text of privacy policy directly into this field:' %>
         <%= f.text_area :privacy_text %>
         (A privacy policy page will be created for your app at apps.ucla.edu/apps/[AppId]/privacy)
       </div>
@@ -809,7 +809,6 @@
     $('#privacy_toggle_url').change(function(){
         $('#privacy_field_url').show();
         $('#privacy_field_text').hide();
-        $('#app_privacy_text').val("")
     }).change();
   })();
 
@@ -817,9 +816,24 @@
     $('#privacy_toggle_text').change(function(){
         $('#privacy_field_url').hide();
         $('#privacy_field_text').show();
-        $('#app_privacy_url').val("")
     }).change();
   })();
+
+  (function(){
+    $('#privacy_toggle_url').change(function(){
+        $('#app_privacy_text').val("")
+    });
+  })();
+
+  (function(){
+    $('#privacy_toggle_text').change(function(){
+        $('#app_privacy_url').val("")
+    });
+  })();
+
+
+
+
 
 
   (function(){

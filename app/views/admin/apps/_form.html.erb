@@ -1186,6 +1186,8 @@
       }).change();
   })();
 
+  //PRIVACY
+
   (function(){
     $('#privacy_enable').change(function(){
       if($(this).is(':checked')) {
@@ -1200,7 +1202,6 @@
     $('#privacy_toggle_url').change(function(){
         $('#privacy_field_url').show();
         $('#privacy_field_text').hide();
-        $('#app_privacy_text').val("")
     }).change();
   })();
 
@@ -1208,8 +1209,19 @@
     $('#privacy_toggle_text').change(function(){
         $('#privacy_field_url').hide();
         $('#privacy_field_text').show();
-        $('#app_privacy_url').val("")
     }).change();
+  })();
+
+  (function(){
+    $('#privacy_toggle_url').change(function(){
+        $('#app_privacy_text').val("")
+    });
+  })();
+
+  (function(){
+    $('#privacy_toggle_text').change(function(){
+        $('#app_privacy_url').val("")
+    });
   })();
 
 
