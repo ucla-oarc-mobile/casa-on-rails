@@ -46,6 +46,7 @@ en:
         security_review_status: "Security - Security Review Status "
         accessibility_review_status: "Accessibility - Accessibility Review Status "
         tool_review_url: "Display - Tool Review URL "
+        privacy_policy: "Privacy - "
       app_lti_configs:
         lti_launch_url: "Interoperability - LTI Launch URL"
         lti_registration_url: "Interoperability - LTI Registration URL"
@@ -77,17 +78,17 @@ en:
               too_short: "The primary contact email must be longer than 5 characters."
               too_long: "The primary contact email cannot be longer than 255 characters."
             download_size:
-               too_long: "The value for Download Size cannot be saved. Please use a value that is fewer than 256 characters."
+              too_long: "The value for Download Size cannot be saved. Please use a value that is fewer than 256 characters."
             support_contact_name:
-               too_long: "The value for Support Contact Name cannot be saved. Please use a value that is fewer than 256 characters."
+              too_long: "The value for Support Contact Name cannot be saved. Please use a value that is fewer than 256 characters."
             support_contact_name:
-               too_long: "The value for Supported Languages cannot be saved. Please use a value that is fewer than 256 characters."
+              too_long: "The value for Supported Languages cannot be saved. Please use a value that is fewer than 256 characters."
             security_session_lifetime:
-               too_long: "The value for Session Lifetime cannot be saved. Please use a value that is fewer than 256 characters."
+              too_long: "The value for Session Lifetime cannot be saved. Please use a value that is fewer than 256 characters."
             security_cloud_vendor:
-               too_long: "The value for Cloud Vendor cannot be saved. Please use a value that is fewer than 256 characters."
+              too_long: "The value for Cloud Vendor cannot be saved. Please use a value that is fewer than 256 characters."
             security_policy_url:
-               too_long: "The value for Security Policy URL cannot be saved. Please use a value that is fewer than 256 characters."
+              too_long: "The value for Security Policy URL cannot be saved. Please use a value that is fewer than 256 characters."
             security_sla_url:
               too_long: "The value for Security SLA URL cannot be saved. Please use a value that is fewer than 256 characters."
             support_contact_email:
