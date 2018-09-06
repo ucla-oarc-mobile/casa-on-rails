@@ -506,11 +506,9 @@
 
 
 
-
-
     <div class="form-field" >
       <%= label_tag 'Host on App Catalog' %>
-      <%= radio_button_tag :privacy_toggle, 'text', checked: true %>
+      <%= radio_button_tag :privacy_toggle, 'text' %>
       <%= label_tag :privacy_toggle_url, 'External URL' %>
       <%= radio_button_tag :privacy_toggle, 'url' %>
     </div>
@@ -526,8 +524,9 @@
       (A privacy policy page will be created for your app at apps.ucla.edu/apps/[AppId]/privacy)
     </div>
 
-
-
+    <br/>
+    <br/>
+    <br/>
 
     <div class="form-field">
       <%= label_tag :privacy_enable, 'Privacy Matrix', data: { help: 'This privacy matrix is based on the Privacy Nutrition Label concept. Instead of the complex legalese of traditional privacy policies, it is intended to condense a privacy policy into a simple, understandable table.' } %>
@@ -1198,20 +1197,43 @@
     }).change();
   })();
 
+  // initialize privacy policy fields
+  (function(){
+    if ($('#app_privacy_url').val() != ""){
+        console.log('tiny')
+        $("#privacy_toggle_url").prop("checked", true);
+        $('#app_privacy_text').val("")
+        $('#privacy_field_url').show();
+        $('#privacy_field_text').hide();
+    } else if ($('#app_privacy_text').val() != ""){
+        console.log('tiny')
+        $("#privacy_toggle_text").prop("checked", true);
+        $('#app_privacy_url').val("")
+        $('#privacy_field_url').hide();
+        $('#privacy_field_text').show();
+    } else {
+      $("#privacy_toggle_text").prop("checked", true);
+      $('#privacy_field_url').hide();
+      $('#privacy_field_text').show();
+    }
+  })();
+
+  // toggle between privacy policy options
   (function(){
     $('#privacy_toggle_url').change(function(){
         $('#privacy_field_url').show();
         $('#privacy_field_text').hide();
-    }).change();
+    });
   })();
 
   (function(){
     $('#privacy_toggle_text').change(function(){
         $('#privacy_field_url').hide();
         $('#privacy_field_text').show();
-    }).change();
+    });
   })();
 
+  // Delete entry for alternative privacy policy method
   (function(){
     $('#privacy_toggle_url').change(function(){
         $('#app_privacy_text').val("")
