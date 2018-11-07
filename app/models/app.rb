@@ -107,11 +107,11 @@ class App < ActiveRecord::Base
     presence: true
 
   validates :uri,
-    presence: true,
+    # presence: true,
     uri: true
 
   validates :primary_contact_name,
-    presence: true,
+    # presence: true,
     length: { maximum: 255}
 
   validates :primary_contact_email,
