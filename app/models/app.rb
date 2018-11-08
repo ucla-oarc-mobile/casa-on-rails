@@ -107,11 +107,9 @@ class App < ActiveRecord::Base
     presence: true
 
   validates :uri,
-    # presence: true,
     uri: true
 
   validates :primary_contact_name,
-    # presence: true,
     length: { maximum: 255}
 
   validates :primary_contact_email,
@@ -141,6 +139,7 @@ class App < ActiveRecord::Base
             uri: true
 
   after_validation :log_errors, :if => Proc.new {|m| m.errors}
+
 
   def log_errors
     Rails.logger.info self.errors.full_messages.join("\n")

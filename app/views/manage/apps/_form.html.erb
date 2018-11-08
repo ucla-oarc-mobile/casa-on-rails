@@ -54,16 +54,15 @@
   </fieldset>
 
   <fieldset role="tab" id="launch">
-    <legend> How should we launch your app? (required)</legend>
+    <legend> How should we launch your app? (required) </legend>
 
-    <p>The App Catalog is used by various clients and platforms to display and launch Apps.
+    <p>The App Catalog is used by a variety of platforms to display and launch Apps.
       In order for your App to launch properly, you need to provide a few additional details.
       If you have both an Android and iOS version of your app, please provide launch details for both
       Apps.</p>
 
     <fieldset>
       <legend> Web App </legend>
-      <p> To launch a web app please provide a URL.</p>
       <div class="form-field">
         <%= f.label :uri, raw('URL') %>
         <%= f.text_field :uri  %>
@@ -72,18 +71,14 @@
 
     <fieldset>
 
-      <legend>iOS Native App</legend>
-      <p>
-        To launch a native iOS App please provide the App ID
-        (example: https://itunes.apple.com/us/app/apple-store/ <b>id1356392252</b>)
-        and Custom URL scheme (example: <b>edu.ucla.mobile</b>)
-      </p>
+      <legend>iOS App</legend>
       <div class="form-field">
-        <%= f.label :ios_app_id, 'App ID' %>
+        <%= f.label :ios_app_id, 'App ID', data: {help:'For iOS apps, the App ID can be found in iTunes Connect or in the URL for the App Store page (example: https://itunes.apple.com/us/app/apple-store/id1356392252)'} %>
         <%= f.text_field :ios_app_id %>
       </div>
+
       <div class="form-field">
-        <%= f.label :ios_app_scheme, 'Custom URL Scheme' %>
+        <%= f.label :ios_app_scheme, 'Custom URL Scheme', data: {help:'The custom URL scheme is set by the developer (example: edu.ucla.mobile)'} %>
         <%= f.text_field :ios_app_scheme %>
       </div>
 
@@ -91,11 +86,9 @@
 
     <fieldset>
 
-      <legend>Android Native App</legend>
-      <p>To launch a native Android App please provide the
-        Android Package Name (example: <b>edu.ucla.mobile</b>)</p>
+      <legend>Android App</legend>
       <div class="form-field">
-        <%= f.label :android_app_package, 'Android Package Name' %>
+        <%= f.label :android_app_package, 'Android Package Name', data: {help:'Example: edu.ucla.mobile'} %>
         <%= f.text_field :android_app_package %>
       </div>
 
