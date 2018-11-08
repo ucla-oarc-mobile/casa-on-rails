@@ -156,6 +156,20 @@
         </div>
       </fieldset>
       <div class="form-field">
+        <%= f.label :app_tags, 'Tags (one per line)', data: { help: 'Flexible metadata values that may be assigned to apps to improve searchability.' } %>
+        <%= f.text_area :app_tags, value: @app.app_tags.map(){ |t| t.name }.join("\n") %>
+      </div>
+      <fieldset>
+        <% if @categories %>
+            <div class="form-field">
+              <%= f.label :categories %>
+              <%= f.select :categories, @categories.map(){ |c|
+                                        [c.name, c.id, {:selected => @app.categories.include?(c)}]
+                                      }, {}, {:multiple => true} %>
+            </div>
+        <% end %>
+    </fieldset>
+      <div class="form-field">
         <%= f.label :download_size, 'Download Size', data: { help: 'Free-form text that describes the size requirements for downloading and installing the app. E.g., "500KB", "10 Megabytes", "an e-book that requires downloads of large images".' } %>
         <%= f.text_field :download_size %>
       </div>
