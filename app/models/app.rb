@@ -127,7 +127,11 @@ class App < ActiveRecord::Base
             :security_sla_url,
     length: { maximum: 255 }
 
-  validates :icon, :license_text, :security_text,
+  validates :license_text, :security_text,
+    length: { maximum: 65535 }
+
+  validates :icon,
+    presence: true,
     length: { maximum: 65535 }
 
   validates :tool_review_url,

@@ -14,178 +14,527 @@
 
     <div class="tabs" role="tablist">
       <ul>
-        <li><a href="#" data-target="#general">General</a></li>
-        <li><a href="#" data-target="#contacts">Contacts</a></li>
-        <li><a href="#" data-target="#display">Display</a></li>
-        <li><a href="#" data-target="#licensing">Licensing</a></li>
-        <li><a href="#" data-target="#privacy">Privacy</a></li>
-        <li><a href="#" data-target="#security">Security</a></li>
-        <li><a href="#" data-target="#native">Mobile Apps</a></li>
-        <li><a href="#" data-target="#student-data">Student Data</a></li>
-        <li><a href="#" data-target="#interoperability">Interoperability</a></li>
-        <li><a href="#" data-target="#accessibility">Accessibility</a></li>
-        <li><a href="#" data-target="#browser">Advanced Web</a></li>
+        <li><a href="#" data-target="#general">1. Basic Info</a></li>
+        <li><a href="#" data-target="#launch">2. App Launch</a></li>
+        <li><a href="#" data-target="#privacy">3. Privacy Policy</a></li>
+        <li><a href="#" data-target="#advanced">Advanced</a></li>
       </ul>
     </div>
 
   <fieldset role="tab" id="general">
 
+    <legend> App details </legend>
     <div class="form-field">
-      <%= f.label :title, raw('Title <span class="required">(required)</span>') %>
+      <%= f.label :title, raw('App name <span class="required">(required)</span>') %>
       <%= f.text_field :title  %>
     </div>
 
     <div class="form-field">
-      <%= f.label :uri, raw('URL <span class="required">(required)</span>') %>
-      <%= f.text_field :uri  %>
-    </div>
-
-    <div class="form-field">
-      <%= f.label :short_description, 'Short Description', data: { help: 'This short text is used as a sub-title for the app in the storefront.' } %>
-      <%= f.text_area :short_description,
-                      :maxlength => 255 %>
-    </div>
-
-    <div class="form-field">
-      <%= f.label :description, raw('Description <span class="required">(required)</span>'), data: { help: 'The description of an app may be specified either as simple text or with basic HTML tags including p, ul, ol, li, strong, em and h1-6.' } %>
+      <%= f.label :description, raw('Description <span class="required">(required)</span>') %>
       <%= f.text_area :description,
-                      :class => 'long' %>
+                      :class => 'short' %>
     </div>
 
     <div class="form-field">
-      <%= f.label :app_tags, 'Tags (one per line)', data: { help: 'Flexible metadata values that may be assigned to apps to improve searchability.' } %>
-      <%= f.text_area :app_tags, value: @app.app_tags.map(){ |t| t.name }.join("\n") %>
+      <%= f.label :icon, raw('Icon <span class="required">(required)</span>'), for: 'app_icon-selector' %>
+      <p> (Upload a 512x512 PNG) </p>
+      <img src="" id="app_icon-upload-preview" style="margin: 10px 0; display: none;" alt="Placeholder for icon">
+      <input type="file" id="app_icon-upload">
+      <%= f.text_area :icon, style: 'display:none' %>
     </div>
+    <br/>
+
+    <legend>Primary Contact</legend>
 
     <div class="form-field">
-      <%= f.label :app_competencies, 'Competencies (one word or phrase per line)', data: { help: 'Competencies or skills that may be learned by using the app.' } %>
-      <%= f.text_area :app_competencies, value: @app.app_competencies.map(){ |t| t.name }.join("\n") %>
+      <%= f.label :primary_contact_email, raw('Email <span class="required">(required)</span>') %>
+      <%= f.text_field :primary_contact_email %>
     </div>
 
-    <div class="form-field">
-      <%= f.label :app_features, 'Features (one word or phrase per line)', data: { help: 'Features that the app has, such as "discussion board" or "quizzes" or "interactive math problems".' } %>
-      <%= f.text_area :app_features, value: @app.app_features.map(){ |t| t.feature_name }.join("\n") %>
-    </div>
+  </fieldset>
 
+  <fieldset role="tab" id="launch">
+    <legend> How should we launch your app? </legend>
+
+    <p>The App Catalog is used by various clients and platforms to display and launch Apps.
+      In order for your App to launch properly, you need to provide a few additional details.
+      If you have both an Android and iOS version of your app, please provide launch details for both
+      Apps.</p>
+
+    <fieldset>
+      <legend> Web App </legend>
+      <p> To launch a web app please provide a URL.</p>
+      <div class="form-field">
+        <%= f.label :uri, raw('URL') %>
+        <%= f.text_field :uri  %>
+      </div>
+    </fieldset>
+
+    <fieldset>
+
+      <legend>iOS Native App</legend>
+      <p>
+        To launch a native iOS App please provide the App ID
+        (example: https://itunes.apple.com/us/app/apple-store/ <b>id1356392252</b>)
+        and Custom URL scheme (example: <b>edu.ucla.mobile</b>)
+      </p>
+      <div class="form-field">
+        <%= f.label :ios_app_id, 'App ID' %>
+        <%= f.text_field :ios_app_id %>
+      </div>
+      <div class="form-field">
+        <%= f.label :ios_app_scheme, 'Custom URL Scheme' %>
+        <%= f.text_field :ios_app_scheme %>
+      </div>
+
+    </fieldset>
+
+    <fieldset>
+
+      <legend>Android Native App</legend>
+      <p>To launch a native Android App please provide the
+        Android Package Name (example: <b>edu.ucla.mobile</b>)</p>
+      <div class="form-field">
+        <%= f.label :android_app_package, 'Android Package Name' %>
+        <%= f.text_field :android_app_package %>
+      </div>
+
+    </fieldset>
+
+  </fieldset>
+
+  <fieldset role="tab" id="privacy">
+
+      <legend>Privacy Policy (required)</legend>
+
+      <p> For help creating a privacy policy you can use a <a href="https://privacypolicytemplate.net/" target="_blank"> privacy policy template generator </a>. </p>
+
+      <div class="form-field" >
+        <%= label_tag 'Host on App Catalog' %>
+        <%= radio_button_tag :privacy_toggle, 'text' %>
+        <%= label_tag 'External URL' %>
+        <%= radio_button_tag :privacy_toggle, 'url' %>
+      </div>
+
+
+        <div class="form-field" id="privacy_field_url">
+          <%= f.label :privacy_url, 'Paste URL for privacy policy:' %>
+          <%= f.text_field :privacy_url %>
+        </div>
+
+        <div class="form-field" id="privacy_field_text">
+          <%= f.label :privacy_text, 'Paste text of privacy policy directly into this field:' %>
+          <%= f.text_area :privacy_text %>
+          (A privacy policy page will be created for your app at apps.ucla.edu/apps/<b>[AppId]</b>/privacy)
+        </div>
+
+    </fieldset>
+
+    <fieldset role="tab" id="advanced">
+
+      <legend>Additional Details</legend>
+
+      <fieldset class="form-fields" id="app_authors">
+        <legend style="border:0;font-size:1em;font-weight:bold;">Author(s)</legend>
+        <ul style="list-style:none;padding: 0 10px;"></ul>
+        <button type="button" class="secondary">Add Author</button>
+      </fieldset>
+      <fieldset class="form-fields" id="app_organizations">
+        <legend style="border:0;font-size:1em;font-weight:bold;">Organization(s)</legend>
+        <ul style="list-style:none;padding: 0 10px;"></ul>
+        <button type="button" class="secondary">Add Organization</button>
+      </fieldset>
+      <fieldset class="form-fields">
+        <legend>Support Contact</legend>
+        <div class="form-field">
+          <%= f.label :support_contact_name, 'Name' %>
+          <%= f.text_field :support_contact_name %>
+        </div>
+        <div class="form-field">
+          <%= f.label :support_contact_email, 'Email' %>
+          <%= f.text_field :support_contact_email %>
+        </div>
+      </fieldset>
       <div class="form-field">
         <%= f.label :download_size, 'Download Size', data: { help: 'Free-form text that describes the size requirements for downloading and installing the app. E.g., "500KB", "10 Megabytes", "an e-book that requires downloads of large images".' } %>
         <%= f.text_field :download_size %>
       </div>
-
       <div class="form-field">
         <%= f.label :supported_languages, 'Supported Languages', data: { help: 'The languages supported by the app.' } %>
         <%= f.text_field :supported_languages %>
       </div>
-
-  </fieldset>
-
-  <fieldset role="tab" id="contacts">
-
-    <legend>Contacts</legend>
-
-    <fieldset class="form-fields">
-
-      <legend>Primary Contact</legend>
-
       <div class="form-field">
-        <%= f.label :primary_contact_name, raw('Name <span class="required">(required)</span>') %>
-        <%= f.text_field :primary_contact_name %>
+        <%= f.label :short_description, 'Short Description', data: { help: 'This short text is used as a sub-title for the app in the storefront.' } %>
+        <%= f.text_area :short_description,
+                        :maxlength => 255 %>
+      </div>
+      <div class="form-field">
+        <%= f.label :short_description, 'Short Description', data: { help: 'This short text is used as a sub-title for the app in the storefront.' } %>
+        <%= f.text_area :short_description,
+                        :maxlength => 255 %>
+      </div>
+      <div class="form-field">
+        <%= f.label :app_competencies, 'Competencies (one word or phrase per line)', data: { help: 'Competencies or skills that may be learned by using the app.' } %>
+        <%= f.text_area :app_competencies, value: @app.app_competencies.map(){ |t| t.name }.join("\n") %>
+      </div>
+      <div class="form-field">
+        <%= f.label :app_features, 'Features (one word or phrase per line)', data: { help: 'Features that the app has, such as "discussion board" or "quizzes" or "interactive math problems".' } %>
+        <%= f.text_area :app_features, value: @app.app_features.map(){ |t| t.feature_name }.join("\n") %>
       </div>
 
+      <legend>Security</legend>
+
+      <fieldset>
+          <div class="form-field">
+              <%= f.label :security_uses_https, 'Uses HTTPS for Network Encryption', data: { help: 'Check this box if an SSL certificate is used to secure network traffic to and from the app.' }%>
+              <%= f.check_box :security_uses_https %>
+          </div>
+      </fieldset>
+      <fieldset>
+          <div class="form-field">
+              <%= f.label :security_uses_additional_encryption, 'Uses Additional Methods of Encryption', data: { help: 'Check this box if additional methods of encryption are used, for example, if data is encrypted at rest.' }%>
+              <%= f.check_box :security_uses_additional_encryption %>
+          </div>
+      </fieldset>
+      <fieldset>
+          <div class="form-field">
+              <%= f.label :security_requires_cookies, 'Requires Cookies', data: { help: 'Check this box if the app requires cookies in order to function.' } %>
+              <%= f.check_box :security_requires_cookies %>
+          </div>
+      </fieldset>
+      <fieldset>
+          <div class="form-field">
+              <%= f.label :security_requires_third_party_cookies, 'Requires Third-Party Cookies', data: { help: 'Check this box if the app requires third-party cookies in order to function.' } %>
+              <%= f.check_box :security_requires_third_party_cookies %>
+          </div>
+      </fieldset>
       <div class="form-field">
-        <%= f.label :primary_contact_email, raw('Email <span class="required">(required)</span>') %>
-        <%= f.text_field :primary_contact_email %>
+          <%= f.label :security_session_lifetime, 'Session Lifetime', data: { help: 'The amount of time a user has between interactions before their login session is ended.' } %>
+          <%= f.text_field :security_session_lifetime %>
+      </div>
+      <div class="form-field">
+          <%= f.label :security_cloud_vendor, 'Cloud Vendor', data: { help: 'If a cloud vendor is used, the vendor\'s name.' } %>
+          <%= f.text_field :security_cloud_vendor %>
+      </div>
+      <div class="form-field">
+          <%= f.label :security_policy_url, 'Security Policy URL', data: { help: 'A link to information about the app\'s security policy.' }%>
+          <%= f.text_field :security_policy_url %>
+      </div>
+      <div class="form-field">
+          <%= f.label :security_sla_url, 'Security SLA URL', data: { help: 'A link to information about the app\'s SLA (Service Level Agreement).' }%>
+          <%= f.text_field :security_sla_url %>
+      </div>
+      <div class="form-field">
+        <%= f.label :security_text, raw('Security Text'), data: { help: 'Free form text describing additional information about how the app handles security.' } %>
+        <%= f.text_area :security_text, style: 'height: 30em;' %>
       </div>
 
-    </fieldset>
+      <legend>Interoperability</legend>
 
-    <fieldset class="form-fields">
+      <fieldset>
+        <legend>LTI</legend>
+        <p>IMS Global's <a href="http://www.imsglobal.org/toolsinteroperability2.cfm" target="_blank">Learning Tools Interoperability (LTI)</a> standard allows for interoperability between applications and consumers such as learning management systems. These properties allow the app store to push an app back to a learning management system with all the information necessary to set up the app as an LTI tool.</p>
+        <div class="form-field">
+          <%= f.label :lti, 'Supports LTI' %>
+          <%= f.check_box :lti %>
+        </div>
+        <fieldset class="form-field" id="app_lti_configs">
+          <ul style="list-style:none;padding: 0 10px;"></ul>
+          <button type="button" class="secondary">Add LTI Configuration</button>
+        </fieldset>
+      </fieldset>
 
-      <legend>Support Contact</legend>
+      <legend>Student Data</legend>
+      <fieldset>
+        <div class="form-field">
+          <%= f.label :student_data_stores_local_data, 'The app stores local data.', data: { help: 'Check this box if the app stores any local data about the student.' }%>
+          <%= f.check_box :student_data_stores_local_data %>
+        </div>
+      </fieldset>
+      <fieldset>
+        <div class="form-field">
+          <%= f.label :student_data_stores_pii, 'The app stores personally identifying information (PII) about the student.', data: { help: 'Check this box if the app stores any PII regarding the student.' }%>
+          <%= f.check_box :student_data_stores_pii %>
+        </div>
+      </fieldset>
+      <fieldset>
+        <div class="form-field">
+          <%= f.label :student_data_requires_account, 'The app requires the student to create an account.', data: { help: 'Check this box if the app requires the student to create an account.' }%>
+          <%= f.check_box :student_data_requires_account %>
+        </div>
+      </fieldset>
+      <fieldset>
+        <div class="form-field">
+          <%= f.label :student_data_has_opt_out_for_data_collection, 'The app allows students to opt-out of data collection.', data: { help: 'Check this box if the student is given the option to opt-out of data collection.' }%>
+          <%= f.check_box :student_data_has_opt_out_for_data_collection %>
+        </div>
+      </fieldset>
+      <fieldset>
+        <div class="form-field">
+          <%= f.label :student_data_has_opt_in_for_data_collection, 'The app allows students to opt-in to data collection.', data: { help: 'Check this box if the student is given the option to opt-in to data collection.' }%>
+          <%= f.check_box :student_data_has_opt_in_for_data_collection %>
+        </div>
+      </fieldset>
+      <fieldset>
+        <div class="form-field">
+          <%= f.label :student_data_shows_eula, 'The app displays a EULA to students.', data: { help: 'Check this box if an End User License Agreement (EULA) is presented to the student.' }%>
+          <%= f.check_box :student_data_shows_eula %>
+        </div>
+      </fieldset>
+      <fieldset>
+        <div class="form-field">
+          <%= f.label :student_data_is_app_externally_hosted, 'The app is hosted outside of the institution.', data: { help: 'Check this box if the app is hosted externally.' }%>
+          <%= f.check_box :student_data_is_app_externally_hosted %>
+        </div>
+      </fieldset>
 
-      <div class="form-field">
-        <%= f.label :support_contact_name, 'Name' %>
-        <%= f.text_field :support_contact_name %>
-      </div>
+      <legend data-help="Check any of the licesing models below that the app supports.">Licensing</legend>
 
-      <div class="form-field">
-        <%= f.label :support_contact_email, 'Email' %>
-        <%= f.text_field :support_contact_email %>
-      </div>
-
-    </fieldset>
-
-    <fieldset class="form-fields" id="app_authors">
-      <legend style="border:0;font-size:1em;font-weight:bold;">Author(s)</legend>
-      <ul style="list-style:none;padding: 0 10px;"></ul>
-      <button type="button" class="secondary">Add Author</button>
-    </fieldset>
-
-    <fieldset class="form-fields" id="app_organizations">
-      <legend style="border:0;font-size:1em;font-weight:bold;">Organization(s)</legend>
-      <ul style="list-style:none;padding: 0 10px;"></ul>
-      <button type="button" class="secondary">Add Organization</button>
-    </fieldset>
-
-
-  </fieldset>
-
-  <fieldset role="tab" id="display">
-
-    <legend>Display</legend>
-
+      <fieldset>
+        <div class="form-field">
+            <%= f.label :license_is_free, 'Free', data: { help: 'Check this box if the app has a free cost model.' } %>
+            <%= f.check_box :license_is_free %>
+        </div>
+      </fieldset>
+      <fieldset>
+        <div class="form-field">
+            <%= f.label :license_is_paid, 'Paid', data: { help: 'Check this box if the app has a paid cost model.' } %>
+            <%= f.check_box :license_is_paid %>
+        </div>
+      </fieldset>
+      <fieldset>
+        <div class="form-field">
+            <%= f.label :license_is_recharge, 'Recharge', data: { help: 'Check this box if the app uses an operational or departmental recharge cost model.' } %>
+            <%= f.check_box :license_is_recharge %>
+        </div>
+      </fieldset>
     <fieldset>
-        <div class="form-checkbox">
-          <%= f.check_box :mobile_support %>
-          <%= f.label :mobile_support, 'App Supports Mobile', 'data-help' => 'Only apps with mobile support will be shown on the mobile dashboard.'%>
+        <div class="form-field">
+            <%= f.label :license_is_by_seat, 'By Seat', data: { help: 'Check this box if the app uses by-seat licensing. Details about different by-seat plans may be added to the License Text section below.' } %>
+            <%= f.check_box :license_is_by_seat %>
         </div>
     </fieldset>
-
+    <fieldset>
+        <div class="form-field">
+            <%= f.label :license_is_subscription, 'Subscription', data: { help: 'Check this box if the app has a subscription-based cost model. Details about different subscription plans may be added to the License Text section below.' } %>
+            <%= f.check_box :license_is_subscription %>
+        </div>
+    </fieldset>
+    <fieldset>
+        <div class="form-field">
+            <%= f.label :license_is_ad_supported, 'Ad Supported', data: { help: 'Check this box if the app has an ad-supported cost model. Ad network or other ad details may be added to the License Text section below. Information about ads that set local cookies can be declared in the Security details for this app\'s configuration.' } %>
+            <%= f.check_box :license_is_ad_supported %>
+        </div>
+    </fieldset>
+    <fieldset>
+        <div class="form-field">
+            <%= f.label :license_is_other, 'Other', data: { help: 'Check this box if the app has a cost model that is not one of the models above. The License Text field below may be used to describe any other licensing details.' } %>
+            <%= f.check_box :license_is_other %>
+        </div>
+    </fieldset>
     <div class="form-field">
-      <%= f.label :icon, 'Icon', for: 'app_icon-selector', 'data-help' => 'A 144x144 square PNG works best.' %>
-      <img src="" id="app_icon-upload-preview" style="margin: 10px 0; display: none;" alt="Placeholder for icon">
-      <%= label_tag "app_icon-upload", "Upload a file" %>
-      <input type="file" id="app_icon-upload">
-      <%= f.text_area :icon, style: 'display:none' %>
+      <%= f.label :license_text, raw('License Text') %>
+      <%= f.text_area :license_text, style: 'height: 30em;' %>
     </div>
 
+    <legend>Accessibility</legend>
+
     <fieldset>
-        <% if @categories %>
-            <div class="form-field">
-              <%= f.label :categories %>
-              <%= f.select :categories, @categories.map(){ |c|
-                                        [c.name, c.id, {:selected => @app.categories.include?(c)}]
-                                      }, {}, {:multiple => true} %>
-            </div>
-        <% end %>
+        <div class="form-field">
+          <%= f.label :accessibility_url, 'Accessibility Policy URL', data: { help: 'This should be the URL to an accessibility policy for the app. Apps are more likely to be accepted if they have an accessibility policy because of legal requirements for universal access.' } %>
+          <%= f.text_field :accessibility_url %>
+        </div>
+        <div class="form-field">
+          <%= f.label :vpat_url, 'VPAT URL', data: { help: 'When one exists, this should be the URL to a filled out copy of the Voluntary Product Accessibility Template provided by the U.S. Department of State\'s Program for Accessible Computer/Communication Technology.' } %>
+          <%= f.text_field :vpat_url %>
+        </div>
+        <div class="form-field">
+          <%= f.label :wcag_url, 'WCAG URL', data: { help: 'When one exists, this should be the URL to a web page that describes how the app adheres to the W3C\'s Web Content Accessibilty Guidelines. The guideline information below should also be completed even if this URL exists.' } %>
+          <%= f.text_field :wcag_url %>
+        </div>
+    </fieldset>
+    <fieldset>
+      <legend>WCAG 2.0 Guideline Adherence</legend>
+      <p>In this section, the  <a href="http://www.w3.org/WAI/WCAG20/quickref/" target="_blank">WCAG 2.0 Guideline Success Criteria</a>
+        that the app meets can be configured. Each of the twelve requirements has one or more success criteria that can optionally be selected for
+        the app. Each requirement also allows a <code>conforming alternate version</code> to be declared in which case the app satisfies a given
+        guideline by supplying both a non-conforming version and a way to access a <a href="https://www.w3.org/TR/UNDERSTANDING-WCAG20/conformance.html#uc-conforming-alt-versions-head">conforming alternate version</a>.</p>
+      <fieldset>
+        <div class="form-field">
+          <%= label_tag :wcag_text_alternatives, '1.1 Text Alternatives'  %>
+          <%= select_tag :wcag_text_alternatives,
+                         options_for_select([[@app.wcag_success_critereon_string_for('1.1.1'), '1.1.1'], '1.1-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('1.1')}), multiple: true %>
+        </div>
+        <div class="form-field">
+          <%= label_tag :wcag_time_based_media, '1.2 Time-Based Media' %>
+          <%= select_tag :wcag_time_based_media,
+                         options_for_select([[@app.wcag_success_critereon_string_for('1.2.1'),'1.2.1'],
+                                             [@app.wcag_success_critereon_string_for('1.2.2'),'1.2.2'],
+                                             [@app.wcag_success_critereon_string_for('1.2.3'),'1.2.3'],
+                                             [@app.wcag_success_critereon_string_for('1.2.4'),'1.2.4'],
+                                             [@app.wcag_success_critereon_string_for('1.2.5'),'1.2.5'],
+                                             [@app.wcag_success_critereon_string_for('1.2.6'),'1.2.6'],
+                                             [@app.wcag_success_critereon_string_for('1.2.7'),'1.2.7'],
+                                             [@app.wcag_success_critereon_string_for('1.2.8'),'1.2.8'],
+                                             [@app.wcag_success_critereon_string_for('1.2.9'),'1.2.9'],
+                                             '1.2-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('1.2')}), multiple: true %>
+        </div>
+        <div class="form-field">
+          <%= label_tag :wcag_adaptable, '1.3 Adaptable' %>
+          <%= select_tag :wcag_adaptable,
+                         options_for_select([[@app.wcag_success_critereon_string_for('1.3.1'),'1.3.1'],
+                                             [@app.wcag_success_critereon_string_for('1.3.2'),'1.3.2'],
+                                             [@app.wcag_success_critereon_string_for('1.3.3'),'1.3.3'],
+                                             '1.3-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('1.3')}), multiple: true %>
+        </div>
+        <div class="form-field">
+          <%= label_tag :wcag_distinguishable, '1.4 Distinguishable' %>
+          <%= select_tag :wcag_distinguishable,
+                         options_for_select([[@app.wcag_success_critereon_string_for('1.4.1'),'1.4.1'],
+                                             [@app.wcag_success_critereon_string_for('1.4.2'),'1.4.2'],
+                                             [@app.wcag_success_critereon_string_for('1.4.3'),'1.4.3'],
+                                             [@app.wcag_success_critereon_string_for('1.4.4'),'1.4.4'],
+                                             [@app.wcag_success_critereon_string_for('1.4.5'),'1.4.5'],
+                                             [@app.wcag_success_critereon_string_for('1.4.6'),'1.4.6'],
+                                             [@app.wcag_success_critereon_string_for('1.4.7'),'1.4.7'],
+                                             [@app.wcag_success_critereon_string_for('1.4.8'),'1.4.8'],
+                                             [@app.wcag_success_critereon_string_for('1.4.9'),'1.4.9'],
+                                             '1.4-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('1.4')}), multiple: true %>
+        </div>
+        <div class="form-field">
+          <%= label_tag :wcag_keyboard_accessible, '2.1 Keyboard Accessible' %>
+          <%= select_tag :wcag_keyboard_accessible,
+                         options_for_select([[@app.wcag_success_critereon_string_for('2.1.1'),'2.1.1'],
+                                             [@app.wcag_success_critereon_string_for('2.1.2'),'2.1.2'],
+                                             [@app.wcag_success_critereon_string_for('2.1.3'),'2.1.3'],
+                                             '2.1-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('2.1')}), multiple: true %>
+        </div>
+        <div class="form-field">
+          <%= label_tag :wcag_enough_time, '2.2 Enough Time' %>
+          <%= select_tag :wcag_enough_time,
+                         options_for_select([[@app.wcag_success_critereon_string_for('2.2.1'),'2.2.1'],
+                                             [@app.wcag_success_critereon_string_for('2.2.2'),'2.2.2'],
+                                             [@app.wcag_success_critereon_string_for('2.2.3'),'2.2.3'],
+                                             [@app.wcag_success_critereon_string_for('2.2.4'),'2.2.4'],
+                                             [@app.wcag_success_critereon_string_for('2.2.5'),'2.2.5'],
+                                             '2.2-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('2.2')}), multiple: true %>
+        </div>
+        <div class="form-field">
+          <%= label_tag :wcag_seizures, '2.3 Seizures' %>
+          <%= select_tag :wcag_seizures,
+                         options_for_select([[@app.wcag_success_critereon_string_for('2.3.1'),'2.3.1'],
+                                             [@app.wcag_success_critereon_string_for('2.3.2'),'2.3.2'],
+                                             '2.3-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('2.3')}), multiple: true %>
+        </div>
+        <div class="form-field">
+          <%= label_tag :wcag_navigable, '2.4 Navigable' %>
+          <%= select_tag :wcag_navigable,
+                         options_for_select([[@app.wcag_success_critereon_string_for('2.4.1'),'2.4.1'],
+                                             [@app.wcag_success_critereon_string_for('2.4.2'),'2.4.2'],
+                                             [@app.wcag_success_critereon_string_for('2.4.3'),'2.4.3'],
+                                             [@app.wcag_success_critereon_string_for('2.4.4'),'2.4.4'],
+                                             [@app.wcag_success_critereon_string_for('2.4.5'),'2.4.5'],
+                                             [@app.wcag_success_critereon_string_for('2.4.6'),'2.4.6'],
+                                             [@app.wcag_success_critereon_string_for('2.4.7'),'2.4.7'],
+                                             [@app.wcag_success_critereon_string_for('2.4.8'),'2.4.8'],
+                                             [@app.wcag_success_critereon_string_for('2.4.9'),'2.4.9'],
+                                             [@app.wcag_success_critereon_string_for('2.4.10'),'2.4.10'],
+                                             '2.4-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('2.4')}), multiple: true %>
+        </div>
+        <div class="form-field">
+          <%= label_tag :wcag_readable, '3.1 Readable' %>
+          <%= select_tag :wcag_readable,
+                         options_for_select([[@app.wcag_success_critereon_string_for('3.1.1'),'3.1.1'],
+                                             [@app.wcag_success_critereon_string_for('3.1.2'),'3.1.2'],
+                                             [@app.wcag_success_critereon_string_for('3.1.3'),'3.1.3'],
+                                             [@app.wcag_success_critereon_string_for('3.1.4'),'3.1.4'],
+                                             [@app.wcag_success_critereon_string_for('3.1.5'),'3.1.5'],
+                                             [@app.wcag_success_critereon_string_for('3.1.6'),'3.1.6'],
+                                             '3.1-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('3.1')}), multiple: true %>
+        </div>
+        <div class="form-field">
+          <%= label_tag :wcag_predictable, '3.2 Predictable' %>
+          <%= select_tag :wcag_predictable,
+                         options_for_select([[@app.wcag_success_critereon_string_for('3.2.1'),'3.2.1'],
+                                             [@app.wcag_success_critereon_string_for('3.2.2'),'3.2.2'],
+                                             [@app.wcag_success_critereon_string_for('3.2.3'),'3.2.3'],
+                                             [@app.wcag_success_critereon_string_for('3.2.4'),'3.2.4'],
+                                             [@app.wcag_success_critereon_string_for('3.2.5'),'3.2.5'],
+                                             '3.2-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('3.2')}), multiple: true %>
+        </div>
+        <div class="form-field">
+          <%= label_tag :wcag_input_assistance, '3.3 Input Assistance' %>
+          <%= select_tag :wcag_input_assistance,
+                         options_for_select([[@app.wcag_success_critereon_string_for('3.3.1'),'3.3.1'],
+                                             [@app.wcag_success_critereon_string_for('3.3.2'),'3.3.2'],
+                                             [@app.wcag_success_critereon_string_for('3.3.3'),'3.3.3'],
+                                             [@app.wcag_success_critereon_string_for('3.3.4'),'3.3.4'],
+                                             [@app.wcag_success_critereon_string_for('3.3.5'),'3.3.5'],
+                                             [@app.wcag_success_critereon_string_for('3.3.6'),'3.3.6'],
+                                             '3.3-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('3.3')}), multiple: true %>
+        </div>
+        <div class="form-field">
+          <%= label_tag :wcag_compatible, '4.1 Compatible' %>
+          <%= select_tag :wcag_compatible,
+                         options_for_select([[@app.wcag_success_critereon_string_for('4.1.1'),'4.1.1'],
+                                             [@app.wcag_success_critereon_string_for('4.1.2'),'4.1.2'],
+                                             '4.1-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('4.1')}), multiple: true %>
+        </div>
+      </fieldset>
     </fieldset>
 
-  </fieldset>
 
-    <fieldset role="tab" id="Sharing">
+    <div class="form-field">
+      <%= label_tag :privacy_enable, 'Privacy Matrix', data: { help: 'This privacy matrix is based on the Privacy Nutrition Label concept. Instead of the complex legalese of traditional privacy policies, it is intended to condense a privacy policy into a simple, understandable table.' } %>
+      <%= check_box :privacy, 'enable' %>
+    </div>
 
-      <legend>Sharing</legend>
+    <legend>Advanced Privacy Settings </legend>
 
-      <div class="form-field">
-        <%= f.label :sharing_preference, 'Sharing Preference' %>
-        <%= f.select :sharing_preference,
-                     options_for_select([
-                                                'Only in This App Store',
-                                                'Share with Affiliated App Stores',
-                                                'Propagate throughout the App Store Network'
-                                        ])  %>
+    <fieldset id="privacy-fields">
+      <div class="fields-table">
+        <table>
+          <%
+             app_privacy_policy = @app.app_privacy_policy ? @app.app_privacy_policy : AppPrivacyPolicy.new
+
+          %>
+          <thead>
+          <tr>
+            <th class="row-heading">Type</th>
+            <% AppPrivacyPolicy.types.each do |type, description| %>
+              <th data-help="<%= description.gsub /"/, '&quot;' %>"><%= type.capitalize %></th>
+            <% end %>
+          </tr>
+          </thead>
+          <tbody>
+          <%= fields_for :app_privacy_policy do |privacy| %>
+            <% AppPrivacyPolicy.classifications.each do |context, context_description| %>
+              <tr>
+                <td class="row-heading" <% if context_description -%>data-help="<%= context_description.gsub /"/, '&quot;' %>"<% end -%>><%= context.capitalize %></td>
+                <% AppPrivacyPolicy.types.each do |type, type_description| symbol = "#{context}_#{type}".to_sym %>
+                  <td>
+                    <%= privacy.label symbol, "Privacy of #{context} for #{type}", class: 'hide-accessible' %>
+                    <%= privacy.select symbol,
+                                       options_for_select([
+                                                              ['No', 'false'],
+                                                              ['Opt-out', '"optOut"'],
+                                                              ['Opt-in', '"optIn"'],
+                                                              ['Yes', 'true']
+                                                          ], app_privacy_policy.send(symbol)) %>
+                  </td>
+                <% end %>
+            <% end %>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
       </div>
-
     </fieldset>
-
-    <fieldset role="tab" id="browser">
 
     <legend>Advanced Web</legend>
 
     <p>This metadata can be used to determine if a user's browser is capable of supporting the app. A feature may use the settings &quot;Required&quot; if the application cannot be used without the feature, as well as &quot;Optional&quot; in the event that the app works best with it but will degrade gracefully if the browser does not support it.</p>
-
     <%= fields_for :app_browser_features do |features| %>
-
       <%
          app_features = {}
          if @app.app_browser_features
@@ -233,530 +582,10 @@
 
   </fieldset>
 
-  <fieldset role="tab" id="native">
+  <h1 class="text-center">
+      <%= f.submit 'Submit App' %>
+  </h1>
 
-    <legend>Native Installs</legend>
-
-    <fieldset>
-
-      <legend>iOS Native App</legend>
-
-      <p>If an application has an associated iOS native app, these attributes can be used to advise the dashboard on how to install the app natively.</p>
-
-      <div class="form-field">
-        <%= f.label :ios_app_id, 'ID' %>
-        <%= f.text_field :ios_app_id %>
-      </div>
-
-      <div class="form-field">
-        <%= f.label :ios_app_scheme, 'Scheme' %>
-        <%= f.text_field :ios_app_scheme %>
-      </div>
-
-      <div class="form-field">
-        <%= f.label :ios_app_path, 'Path' %>
-        <%= f.text_field :ios_app_path %>
-      </div>
-
-      <div class="form-field">
-        <%= f.label :ios_app_affiliate_data, 'Affiliate Data' %>
-        <%= f.text_area :ios_app_affiliate_data %>
-      </div>
-
-    </fieldset>
-
-    <fieldset>
-
-      <legend>Android Native App</legend>
-
-      <p>If an application has an associated Android native app, these attributes can be used to advise the dashboard on how to install the app natively.</p>
-
-      <div class="form-field">
-        <%= f.label :android_app_package, 'Package' %>
-        <%= f.text_field :android_app_package %>
-      </div>
-
-      <div class="form-field">
-        <%= f.label :android_app_scheme, 'Scheme' %>
-        <%= f.text_field :android_app_scheme %>
-      </div>
-      </div>
-
-      <div class="form-field">
-        <%= f.label :android_app_action, 'Action' %>
-        <%= f.text_field :android_app_action %>
-      </div>
-      </div>
-
-      <div class="form-field">
-        <%= f.label :android_app_category, 'Category' %>
-        <%= f.text_field :android_app_category %>
-      </div>
-      </div>
-
-      <div class="form-field">
-        <%= f.label :android_app_component, 'Component' %>
-        <%= f.text_field :android_app_component %>
-      </div>
-
-    </fieldset>
-
-  </fieldset>
-
-  <fieldset role="tab" id="interoperability">
-
-    <legend>Interoperability</legend>
-
-    <fieldset>
-
-      <legend>LTI</legend>
-
-      <p>IMS Global's <a href="http://www.imsglobal.org/toolsinteroperability2.cfm" target="_blank">Learning Tools Interoperability (LTI)</a> standard allows for interoperability between applications and consumers such as learning management systems. These properties allow the app store to push an app back to a learning management system with all the information necessary to set up the app as an LTI tool.</p>
-
-      <div class="form-field">
-        <%= f.label :lti, 'Supports LTI' %>
-        <%= f.check_box :lti %>
-      </div>
-
-      <fieldset class="form-field" id="app_lti_configs">
-        <ul style="list-style:none;padding: 0 10px;"></ul>
-        <button type="button" class="secondary">Add LTI Configuration</button>
-      </fieldset>
-
-    </fieldset>
-
-
-
-  </fieldset>
-
-  <fieldset role="tab" id="privacy">
-
-    <legend>Privacy Policy (required)</legend>
-
-    <div class="form-field" >
-      <%= label_tag 'Host on App Catalog' %>
-      <%= radio_button_tag :privacy_toggle, 'text' %>
-      <%= label_tag 'External URL' %>
-      <%= radio_button_tag :privacy_toggle, 'url' %>
-    </div>
-
-
-      <div class="form-field" id="privacy_field_url">
-        <%= f.label :privacy_url, 'Paste URL for privacy policy:' %>
-        <%= f.text_field :privacy_url %>
-      </div>
-
-      <div class="form-field" id="privacy_field_text">
-        <%= f.label :privacy_text, 'Paste text of privacy policy directly into this field:' %>
-        <%= f.text_area :privacy_text %>
-        (A privacy policy page will be created for your app at apps.ucla.edu/apps/[AppId]/privacy)
-      </div>
-
-      <br/>
-      <br/>
-      <br/>
-
-    <div class="form-field">
-      <%= label_tag :privacy_enable, 'Privacy Matrix', data: { help: 'This privacy matrix is based on the Privacy Nutrition Label concept. Instead of the complex legalese of traditional privacy policies, it is intended to condense a privacy policy into a simple, understandable table.' } %>
-      <%= check_box :privacy, 'enable' %>
-    </div>
-
-
-    <fieldset id="privacy-fields">
-      <div class="fields-table">
-        <table>
-          <%
-             app_privacy_policy = @app.app_privacy_policy ? @app.app_privacy_policy : AppPrivacyPolicy.new
-
-          %>
-          <thead>
-          <tr>
-            <th class="row-heading">Type</th>
-            <% AppPrivacyPolicy.types.each do |type, description| %>
-              <th data-help="<%= description.gsub /"/, '&quot;' %>"><%= type.capitalize %></th>
-            <% end %>
-          </tr>
-          </thead>
-          <tbody>
-          <%= fields_for :app_privacy_policy do |privacy| %>
-            <% AppPrivacyPolicy.classifications.each do |context, context_description| %>
-              <tr>
-                <td class="row-heading" <% if context_description -%>data-help="<%= context_description.gsub /"/, '&quot;' %>"<% end -%>><%= context.capitalize %></td>
-                <% AppPrivacyPolicy.types.each do |type, type_description| symbol = "#{context}_#{type}".to_sym %>
-                  <td>
-                    <%= privacy.label symbol, "Privacy of #{context} for #{type}", class: 'hide-accessible' %>
-                    <%= privacy.select symbol,
-                                       options_for_select([
-                                                              ['No', 'false'],
-                                                              ['Opt-out', '"optOut"'],
-                                                              ['Opt-in', '"optIn"'],
-                                                              ['Yes', 'true']
-                                                          ], app_privacy_policy.send(symbol)) %>
-                  </td>
-                <% end %>
-            <% end %>
-            </tr>
-          <% end %>
-          </tbody>
-        </table>
-      </div>
-    </fieldset>
-
-  </fieldset>
-
-  <fieldset role="tab" id="accessibility">
-
-    <legend>Accessibility</legend>
-
-    <fieldset>
-        <div class="form-field">
-          <%= f.label :accessibility_url, 'Accessibility Policy URL', data: { help: 'This should be the URL to an accessibility policy for the app. Apps are more likely to be accepted if they have an accessibility policy because of legal requirements for universal access.' } %>
-          <%= f.text_field :accessibility_url %>
-        </div>
-
-        <div class="form-field">
-          <%= f.label :vpat_url, 'VPAT URL', data: { help: 'When one exists, this should be the URL to a filled out copy of the Voluntary Product Accessibility Template provided by the U.S. Department of State\'s Program for Accessible Computer/Communication Technology.' } %>
-          <%= f.text_field :vpat_url %>
-        </div>
-
-        <div class="form-field">
-          <%= f.label :wcag_url, 'WCAG URL', data: { help: 'When one exists, this should be the URL to a web page that describes how the app adheres to the W3C\'s Web Content Accessibilty Guidelines. The guideline information below should also be completed even if this URL exists.' } %>
-          <%= f.text_field :wcag_url %>
-        </div>
-
-    </fieldset>
-
-    <fieldset>
-      <legend>WCAG 2.0 Guideline Adherence</legend>
-
-      <p>In this section, the  <a href="http://www.w3.org/WAI/WCAG20/quickref/" target="_blank">WCAG 2.0 Guideline Success Criteria</a>
-        that the app meets can be configured. Each of the twelve requirements has one or more success criteria that can optionally be selected for
-        the app. Each requirement also allows a <code>conforming alternate version</code> to be declared in which case the app satisfies a given
-        guideline by supplying both a non-conforming version and a way to access a <a href="https://www.w3.org/TR/UNDERSTANDING-WCAG20/conformance.html#uc-conforming-alt-versions-head">conforming alternate version</a>.</p>
-
-      <fieldset>
-
-        <div class="form-field">
-          <%= label_tag :wcag_text_alternatives, '1.1 Text Alternatives'  %>
-          <%= select_tag :wcag_text_alternatives,
-                         options_for_select([[@app.wcag_success_critereon_string_for('1.1.1'), '1.1.1'], '1.1-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('1.1')}), multiple: true %>
-        </div>
-
-        <div class="form-field">
-          <%= label_tag :wcag_time_based_media, '1.2 Time-Based Media' %>
-          <%= select_tag :wcag_time_based_media,
-                         options_for_select([[@app.wcag_success_critereon_string_for('1.2.1'),'1.2.1'],
-                                             [@app.wcag_success_critereon_string_for('1.2.2'),'1.2.2'],
-                                             [@app.wcag_success_critereon_string_for('1.2.3'),'1.2.3'],
-                                             [@app.wcag_success_critereon_string_for('1.2.4'),'1.2.4'],
-                                             [@app.wcag_success_critereon_string_for('1.2.5'),'1.2.5'],
-                                             [@app.wcag_success_critereon_string_for('1.2.6'),'1.2.6'],
-                                             [@app.wcag_success_critereon_string_for('1.2.7'),'1.2.7'],
-                                             [@app.wcag_success_critereon_string_for('1.2.8'),'1.2.8'],
-                                             [@app.wcag_success_critereon_string_for('1.2.9'),'1.2.9'],
-                                             '1.2-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('1.2')}), multiple: true %>
-        </div>
-
-        <div class="form-field">
-          <%= label_tag :wcag_adaptable, '1.3 Adaptable' %>
-          <%= select_tag :wcag_adaptable,
-                         options_for_select([[@app.wcag_success_critereon_string_for('1.3.1'),'1.3.1'],
-                                             [@app.wcag_success_critereon_string_for('1.3.2'),'1.3.2'],
-                                             [@app.wcag_success_critereon_string_for('1.3.3'),'1.3.3'],
-                                             '1.3-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('1.3')}), multiple: true %>
-        </div>
-
-        <div class="form-field">
-          <%= label_tag :wcag_distinguishable, '1.4 Distinguishable' %>
-          <%= select_tag :wcag_distinguishable,
-                         options_for_select([[@app.wcag_success_critereon_string_for('1.4.1'),'1.4.1'],
-                                             [@app.wcag_success_critereon_string_for('1.4.2'),'1.4.2'],
-                                             [@app.wcag_success_critereon_string_for('1.4.3'),'1.4.3'],
-                                             [@app.wcag_success_critereon_string_for('1.4.4'),'1.4.4'],
-                                             [@app.wcag_success_critereon_string_for('1.4.5'),'1.4.5'],
-                                             [@app.wcag_success_critereon_string_for('1.4.6'),'1.4.6'],
-                                             [@app.wcag_success_critereon_string_for('1.4.7'),'1.4.7'],
-                                             [@app.wcag_success_critereon_string_for('1.4.8'),'1.4.8'],
-                                             [@app.wcag_success_critereon_string_for('1.4.9'),'1.4.9'],
-                                             '1.4-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('1.4')}), multiple: true %>
-        </div>
-
-
-        <div class="form-field">
-          <%= label_tag :wcag_keyboard_accessible, '2.1 Keyboard Accessible' %>
-          <%= select_tag :wcag_keyboard_accessible,
-                         options_for_select([[@app.wcag_success_critereon_string_for('2.1.1'),'2.1.1'],
-                                             [@app.wcag_success_critereon_string_for('2.1.2'),'2.1.2'],
-                                             [@app.wcag_success_critereon_string_for('2.1.3'),'2.1.3'],
-                                             '2.1-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('2.1')}), multiple: true %>
-        </div>
-
-        <div class="form-field">
-          <%= label_tag :wcag_enough_time, '2.2 Enough Time' %>
-          <%= select_tag :wcag_enough_time,
-                         options_for_select([[@app.wcag_success_critereon_string_for('2.2.1'),'2.2.1'],
-                                             [@app.wcag_success_critereon_string_for('2.2.2'),'2.2.2'],
-                                             [@app.wcag_success_critereon_string_for('2.2.3'),'2.2.3'],
-                                             [@app.wcag_success_critereon_string_for('2.2.4'),'2.2.4'],
-                                             [@app.wcag_success_critereon_string_for('2.2.5'),'2.2.5'],
-                                             '2.2-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('2.2')}), multiple: true %>
-        </div>
-
-        <div class="form-field">
-          <%= label_tag :wcag_seizures, '2.3 Seizures' %>
-          <%= select_tag :wcag_seizures,
-                         options_for_select([[@app.wcag_success_critereon_string_for('2.3.1'),'2.3.1'],
-                                             [@app.wcag_success_critereon_string_for('2.3.2'),'2.3.2'],
-                                             '2.3-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('2.3')}), multiple: true %>
-        </div>
-
-        <div class="form-field">
-          <%= label_tag :wcag_navigable, '2.4 Navigable' %>
-          <%= select_tag :wcag_navigable,
-                         options_for_select([[@app.wcag_success_critereon_string_for('2.4.1'),'2.4.1'],
-                                             [@app.wcag_success_critereon_string_for('2.4.2'),'2.4.2'],
-                                             [@app.wcag_success_critereon_string_for('2.4.3'),'2.4.3'],
-                                             [@app.wcag_success_critereon_string_for('2.4.4'),'2.4.4'],
-                                             [@app.wcag_success_critereon_string_for('2.4.5'),'2.4.5'],
-                                             [@app.wcag_success_critereon_string_for('2.4.6'),'2.4.6'],
-                                             [@app.wcag_success_critereon_string_for('2.4.7'),'2.4.7'],
-                                             [@app.wcag_success_critereon_string_for('2.4.8'),'2.4.8'],
-                                             [@app.wcag_success_critereon_string_for('2.4.9'),'2.4.9'],
-                                             [@app.wcag_success_critereon_string_for('2.4.10'),'2.4.10'],
-                                             '2.4-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('2.4')}), multiple: true %>
-        </div>
-
-        <div class="form-field">
-          <%= label_tag :wcag_readable, '3.1 Readable' %>
-          <%= select_tag :wcag_readable,
-                         options_for_select([[@app.wcag_success_critereon_string_for('3.1.1'),'3.1.1'],
-                                             [@app.wcag_success_critereon_string_for('3.1.2'),'3.1.2'],
-                                             [@app.wcag_success_critereon_string_for('3.1.3'),'3.1.3'],
-                                             [@app.wcag_success_critereon_string_for('3.1.4'),'3.1.4'],
-                                             [@app.wcag_success_critereon_string_for('3.1.5'),'3.1.5'],
-                                             [@app.wcag_success_critereon_string_for('3.1.6'),'3.1.6'],
-                                             '3.1-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('3.1')}), multiple: true %>
-        </div>
-
-        <div class="form-field">
-          <%= label_tag :wcag_predictable, '3.2 Predictable' %>
-          <%= select_tag :wcag_predictable,
-                         options_for_select([[@app.wcag_success_critereon_string_for('3.2.1'),'3.2.1'],
-                                             [@app.wcag_success_critereon_string_for('3.2.2'),'3.2.2'],
-                                             [@app.wcag_success_critereon_string_for('3.2.3'),'3.2.3'],
-                                             [@app.wcag_success_critereon_string_for('3.2.4'),'3.2.4'],
-                                             [@app.wcag_success_critereon_string_for('3.2.5'),'3.2.5'],
-                                             '3.2-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('3.2')}), multiple: true %>
-        </div>
-
-        <div class="form-field">
-          <%= label_tag :wcag_input_assistance, '3.3 Input Assistance' %>
-          <%= select_tag :wcag_input_assistance,
-                         options_for_select([[@app.wcag_success_critereon_string_for('3.3.1'),'3.3.1'],
-                                             [@app.wcag_success_critereon_string_for('3.3.2'),'3.3.2'],
-                                             [@app.wcag_success_critereon_string_for('3.3.3'),'3.3.3'],
-                                             [@app.wcag_success_critereon_string_for('3.3.4'),'3.3.4'],
-                                             [@app.wcag_success_critereon_string_for('3.3.5'),'3.3.5'],
-                                             [@app.wcag_success_critereon_string_for('3.3.6'),'3.3.6'],
-                                             '3.3-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('3.3')}), multiple: true %>
-        </div>
-
-        <div class="form-field">
-          <%= label_tag :wcag_compatible, '4.1 Compatible' %>
-          <%= select_tag :wcag_compatible,
-                         options_for_select([[@app.wcag_success_critereon_string_for('4.1.1'),'4.1.1'],
-                                             [@app.wcag_success_critereon_string_for('4.1.2'),'4.1.2'],
-                                             '4.1-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('4.1')}), multiple: true %>
-        </div>
-
-      </fieldset>
-
-    </fieldset>
-
-
-  </fieldset>
-
-  <fieldset role="tab" id="licensing">
-
-        <legend data-help="Check any of the licesing models below that the app supports.">Licensing</legend>
-
-      <fieldset>
-        <div class="form-field">
-            <%= f.label :license_is_free, 'Free', data: { help: 'Check this box if the app has a free cost model.' } %>
-            <%= f.check_box :license_is_free %>
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <div class="form-field">
-            <%= f.label :license_is_paid, 'Paid', data: { help: 'Check this box if the app has a paid cost model.' } %>
-            <%= f.check_box :license_is_paid %>
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <div class="form-field">
-            <%= f.label :license_is_recharge, 'Recharge', data: { help: 'Check this box if the app uses an operational or departmental recharge cost model.' } %>
-            <%= f.check_box :license_is_recharge %>
-        </div>
-      </fieldset>
-
-
-    <fieldset>
-        <div class="form-field">
-            <%= f.label :license_is_by_seat, 'By Seat', data: { help: 'Check this box if the app uses by-seat licensing. Details about different by-seat plans may be added to the License Text section below.' } %>
-            <%= f.check_box :license_is_by_seat %>
-        </div>
-    </fieldset>
-
-    <fieldset>
-        <div class="form-field">
-            <%= f.label :license_is_subscription, 'Subscription', data: { help: 'Check this box if the app has a subscription-based cost model. Details about different subscription plans may be added to the License Text section below.' } %>
-            <%= f.check_box :license_is_subscription %>
-        </div>
-    </fieldset>
-
-
-    <fieldset>
-        <div class="form-field">
-            <%= f.label :license_is_ad_supported, 'Ad Supported', data: { help: 'Check this box if the app has an ad-supported cost model. Ad network or other ad details may be added to the License Text section below. Information about ads that set local cookies can be declared in the Security details for this app\'s configuration.' } %>
-            <%= f.check_box :license_is_ad_supported %>
-        </div>
-    </fieldset>
-
-    <fieldset>
-        <div class="form-field">
-            <%= f.label :license_is_other, 'Other', data: { help: 'Check this box if the app has a cost model that is not one of the models above. The License Text field below may be used to describe any other licensing details.' } %>
-            <%= f.check_box :license_is_other %>
-        </div>
-    </fieldset>
-
-
-    <div class="form-field">
-      <%= f.label :license_text, raw('License Text') %>
-      <%= f.text_area :license_text, style: 'height: 30em;' %>
-    </div>
-
-  </fieldset>
-
-    <fieldset role="tab" id="security">
-
-        <legend>Security</legend>
-
-        <fieldset>
-            <div class="form-field">
-                <%= f.label :security_uses_https, 'Uses HTTPS for Network Encryption', data: { help: 'Check this box if an SSL certificate is used to secure network traffic to and from the app.' }%>
-                <%= f.check_box :security_uses_https %>
-            </div>
-        </fieldset>
-
-        <fieldset>
-            <div class="form-field">
-                <%= f.label :security_uses_additional_encryption, 'Uses Additional Methods of Encryption', data: { help: 'Check this box if additional methods of encryption are used, for example, if data is encrypted at rest.' }%>
-                <%= f.check_box :security_uses_additional_encryption %>
-            </div>
-        </fieldset>
-
-
-        <fieldset>
-            <div class="form-field">
-                <%= f.label :security_requires_cookies, 'Requires Cookies', data: { help: 'Check this box if the app requires cookies in order to function.' } %>
-                <%= f.check_box :security_requires_cookies %>
-            </div>
-        </fieldset>
-
-        <fieldset>
-            <div class="form-field">
-                <%= f.label :security_requires_third_party_cookies, 'Requires Third-Party Cookies', data: { help: 'Check this box if the app requires third-party cookies in order to function.' } %>
-                <%= f.check_box :security_requires_third_party_cookies %>
-            </div>
-        </fieldset>
-
-
-        <div class="form-field">
-            <%= f.label :security_session_lifetime, 'Session Lifetime', data: { help: 'The amount of time a user has between interactions before their login session is ended.' } %>
-            <%= f.text_field :security_session_lifetime %>
-        </div>
-
-        <div class="form-field">
-            <%= f.label :security_cloud_vendor, 'Cloud Vendor', data: { help: 'If a cloud vendor is used, the vendor\'s name.' } %>
-            <%= f.text_field :security_cloud_vendor %>
-        </div>
-
-        <div class="form-field">
-            <%= f.label :security_policy_url, 'Security Policy URL', data: { help: 'A link to information about the app\'s security policy.' }%>
-            <%= f.text_field :security_policy_url %>
-        </div>
-
-        <div class="form-field">
-            <%= f.label :security_sla_url, 'Security SLA URL', data: { help: 'A link to information about the app\'s SLA (Service Level Agreement).' }%>
-            <%= f.text_field :security_sla_url %>
-        </div>
-        <div class="form-field">
-          <%= f.label :security_text, raw('Security Text'), data: { help: 'Free form text describing additional information about how the app handles security.' } %>
-          <%= f.text_area :security_text, style: 'height: 30em;' %>
-        </div>
-
-    </fieldset>
-
-    <fieldset role="tab" id="student-data">
-
-        <legend>Student Data</legend>
-
-        <fieldset>
-          <div class="form-field">
-            <%= f.label :student_data_stores_local_data, 'The app stores local data.', data: { help: 'Check this box if the app stores any local data about the student.' }%>
-            <%= f.check_box :student_data_stores_local_data %>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <div class="form-field">
-            <%= f.label :student_data_stores_pii, 'The app stores personally identifying information (PII) about the student.', data: { help: 'Check this box if the app stores any PII regarding the student.' }%>
-            <%= f.check_box :student_data_stores_pii %>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <div class="form-field">
-            <%= f.label :student_data_requires_account, 'The app requires the student to create an account.', data: { help: 'Check this box if the app requires the student to create an account.' }%>
-            <%= f.check_box :student_data_requires_account %>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <div class="form-field">
-            <%= f.label :student_data_has_opt_out_for_data_collection, 'The app allows students to opt-out of data collection.', data: { help: 'Check this box if the student is given the option to opt-out of data collection.' }%>
-            <%= f.check_box :student_data_has_opt_out_for_data_collection %>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <div class="form-field">
-            <%= f.label :student_data_has_opt_in_for_data_collection, 'The app allows students to opt-in to data collection.', data: { help: 'Check this box if the student is given the option to opt-in to data collection.' }%>
-            <%= f.check_box :student_data_has_opt_in_for_data_collection %>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <div class="form-field">
-            <%= f.label :student_data_shows_eula, 'The app displays a EULA to students.', data: { help: 'Check this box if an End User License Agreement (EULA) is presented to the student.' }%>
-            <%= f.check_box :student_data_shows_eula %>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <div class="form-field">
-            <%= f.label :student_data_is_app_externally_hosted, 'The app is hosted outside of the institution.', data: { help: 'Check this box if the app is hosted externally.' }%>
-            <%= f.check_box :student_data_is_app_externally_hosted %>
-          </div>
-        </fieldset>
-
-    </fieldset>
-
-    <p class="text-center">
-        <%= f.submit 'Submit App' %>
-    </p>
 <% end %>
 
 <script type="text/javascript">
@@ -856,11 +685,6 @@
     });
   })();
 
-
-
-
-
-
   (function(){
     $('[role="tab"]').hide();
     $('.tabs [data-target]').click(function(e){
@@ -940,7 +764,19 @@
                                 .val(JSON.stringify(data)));
         })
     })();
+
+    // // Hide Submit button unless on 'Advanced' page
+    // (function(){
+    //   $("#tabs").tabs({
+    //       activate: function (event, ui) {
+    //
+    //           console.log(ui.newTab.index());
+    //       }
+    //   });
+    // })
+
 //////////////////////
+
     (function(){
         var createOrganizationField = function(data){
             var $li = $(document.createElement('li'))
@@ -974,7 +810,9 @@
                     .val(JSON.stringify(data)));
         })
     })();
+
   //////////////////////
+
   (function(){
       var createLtiFields = function(data){
           var $li = $(document.createElement('li'))
@@ -1035,6 +873,7 @@
       $('#app_lti_configs > button').click(function(e){
           createLtiFields();
       })
+
       $('#app-form').submit(function(e){
           var data = [];
           $('#app_lti_configs li').each(function(){
@@ -1073,4 +912,6 @@
                   .val(JSON.stringify(data)));
       })
   })();
+
+
 </script>

@@ -15,9 +15,9 @@
       <div class="title"><%= raw @site.heading %></div>
     </a>
     <ul id="main-menu">
-      <li><a href="<%= root_url %>">Browse</a></li>
-      <li><a href="#" data-toggle="#categories-menu">Categories</a></li>
-      <li><a href="<%= new_manage_app_path %>">Submit an App</a></li>
+      <!-- <li><a href="<%= root_url %>">Browse</a></li> -->
+      <!-- <li><a href="#" data-toggle="#categories-menu">Categories</a></li> -->
+      <li><a href="<%= new_manage_app_path %>"><b>Submit an App</b></a></li>
       <% if session_user and session_user.apps.length > 0 %>
       <li><a href="<%= manage_apps_path %>">Your Submissions</a></li>
       <% end %>
