@@ -137,7 +137,7 @@ GEM
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
     puma (3.10.0)
-    rack (1.6.10)
+    rack (1.6.11)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.2.7.1)
@@ -237,4 +237,4 @@ DEPENDENCIES
   web_blocks!
 
 BUNDLED WITH
-   1.16.3
+   1.17.1
