@@ -178,16 +178,6 @@
         <%= f.text_field :supported_languages %>
       </div>
       <div class="form-field">
-        <%= f.label :short_description, 'Short Description', data: { help: 'This short text is used as a sub-title for the app in the storefront.' } %>
-        <%= f.text_area :short_description,
-                        :maxlength => 255 %>
-      </div>
-      <div class="form-field">
-        <%= f.label :short_description, 'Short Description', data: { help: 'This short text is used as a sub-title for the app in the storefront.' } %>
-        <%= f.text_area :short_description,
-                        :maxlength => 255 %>
-      </div>
-      <div class="form-field">
         <%= f.label :app_competencies, 'Competencies (one word or phrase per line)', data: { help: 'Competencies or skills that may be learned by using the app.' } %>
         <%= f.text_area :app_competencies, value: @app.app_competencies.map(){ |t| t.name }.join("\n") %>
       </div>

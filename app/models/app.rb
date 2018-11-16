@@ -140,7 +140,15 @@ class App < ActiveRecord::Base
   validates :privacy_url,
             uri: true
 
+  validate :functionToCheckAppLaunchFields
+
   after_validation :log_errors, :if => Proc.new {|m| m.errors}
+
+  def functionToCheckAppLaunchFields
+    if uri.blank? && android_app_package.blank? && ios_app_scheme.blank?
+      errors[:base] << "Please provide at least one method of launching your app."
+    end
+  end
 
   def log_errors
     Rails.logger.info self.errors.full_messages.join("\n")
