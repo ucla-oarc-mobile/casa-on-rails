@@ -78,8 +78,7 @@ module Manage
 
       @app.created_by = session_user.id
 
-      super_admin = false; #REPLACE WITH DB CHECK OR session_user CHECK
-      if super_admin
+      if session_user.admin
         if @app.save(validate: false)
           render 'created'
         else
