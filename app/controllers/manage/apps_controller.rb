@@ -78,19 +78,12 @@ module Manage
 
       @app.created_by = session_user.id
 
-      if session_user.admin
-        if @app.save(validate: false)
-          render 'created'
-        else
-          render 'new'
-        end
+      if @app.save
+        render 'created'
       else
-        if @app.save(validate: true)
-          render 'created'
-        else
-          render 'new'
-        end
+        render 'new'
       end
+
 
     end
 
