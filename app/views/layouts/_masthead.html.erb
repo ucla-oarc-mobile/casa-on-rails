@@ -60,7 +60,7 @@
       </div>
     </nav>
   </nav>
-  <nav role="search" class="container">
+  <nav role="search" class="container hide-search">
     <% unless Rails.application.config.elasticsearch_client.nil? %>
       <form action="<%= apps_search_url %>" class="navbar-form navbar-right">
         <label for="casa-search-id" class="casa-search-label">Search</label>
@@ -76,33 +76,41 @@
 </header>
 
 <script type="text/javascript">
-$('.menu-toggle').click(function(e){
-  var $ele = $('#main-menu'),
-      $submenu = $('#submenu');
-  if($ele.hasClass('active')){
-    if($('[data-toggle-active="true"]').length > 0){
-      $('[data-toggle-active="true"] a').click();
+  $('.menu-toggle').click(function(e){
+    var $ele = $('#main-menu'),
+        $submenu = $('#submenu');
+    if($ele.hasClass('active')){
+      if($('[data-toggle-active="true"]').length > 0){
+        $('[data-toggle-active="true"] a').click();
+      }else{
+        $ele.removeClass('active');
+        $('[data-toggle-active]').attr('data-toggle-active', null);
+        $('#search-form').show();
+      }
     }else{
-      $ele.removeClass('active');
-      $('[data-toggle-active]').attr('data-toggle-active', null);
-      $('#search-form').show();
+      $ele.addClass('active');
     }
-  }else{
-    $ele.addClass('active');
+  })
+  $('[data-toggle]').click(function(e){
+    e.preventDefault();
+    var $container = $('#submenu'),
+        $ele = $($(this).attr('data-toggle'));
+    if($ele.is(':visible')){
+      $ele.hide();
+      $('#search-form').show();
+      $('[data-toggle-active]').attr('data-toggle-active', null);
+    }else{
+      $container.children().hide();
+      $ele.show();
+      $(this).closest('li').attr('data-toggle-active', 'true').siblings().attr('data-toggle-active', 'false');
+    }
+  })
+  // HIDE SEARCH UNLESS ON HOMEPAGE
+  current_uri = location.pathname.substr(1);
+  if (current_uri != ""){
+    $('.hide-search').hide();
+  } else {
+    $('.hide-search').show();
   }
-})
-$('[data-toggle]').click(function(e){
-  e.preventDefault();
-  var $container = $('#submenu'),
-      $ele = $($(this).attr('data-toggle'));
-  if($ele.is(':visible')){
-    $ele.hide();
-    $('#search-form').show();
-    $('[data-toggle-active]').attr('data-toggle-active', null);
-  }else{
-    $container.children().hide();
-    $ele.show();
-    $(this).closest('li').attr('data-toggle-active', 'true').siblings().attr('data-toggle-active', 'false');
-  }
-})
+
 </script>
