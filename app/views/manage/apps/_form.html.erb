@@ -24,6 +24,7 @@
   <fieldset role="tab" id="general">
 
     <legend> App details </legend>
+
     <div class="form-field">
       <%= f.label :title, raw('App name <span class="required">(required)</span>') %>
       <%= f.text_field :title  %>
@@ -47,19 +48,24 @@
     <legend>Primary Contact</legend>
 
     <div class="form-field">
-      <%= f.label :primary_contact_email, raw('Email <span class="required">(required)</span>') %>
-      <%= f.text_field :primary_contact_email %>
+      <%= f.label :support_contact_email, raw('Email <span class="required">(required)</span>') %>
+      <%= f.text_field :support_contact_email %>
     </div>
 
   </fieldset>
 
   <fieldset role="tab" id="launch">
-    <legend> How should we launch your app? (required) </legend>
+    <legend> How should we launch your app? </legend>
 
     <p>The App Catalog is used by a variety of platforms to display and launch Apps.
       In order for your App to launch properly, you need to provide a few additional details.
       If you have both an Android and iOS version of your app, please provide launch details for both
       Apps.</p>
+
+    <div class="form-field">
+      <%= f.label :title, raw('Provide an App launch method <span class="required">(required)</span>') %>
+    </div>
+    <br/>
 
     <fieldset>
       <legend> Web App </legend>
@@ -98,9 +104,14 @@
 
   <fieldset role="tab" id="privacy">
 
-      <legend>Privacy Policy (required)</legend>
+      <legend>Privacy Policy</legend>
 
       <p> For help creating a privacy policy you can use a <a href="https://privacypolicytemplate.net/" target="_blank"> privacy policy template generator </a>. </p>
+
+      <div class="form-field">
+        <%= f.label :title, raw('Choose where to host your privacy policy <span class="required">(required)</span>') %>
+      </div>
+      <br/>
 
       <div class="form-field" >
         <%= label_tag 'Host on App Catalog' %>
@@ -136,17 +147,6 @@
         <legend style="border:0;font-size:1em;font-weight:bold;">Organization(s)</legend>
         <ul style="list-style:none;padding: 0 10px;"></ul>
         <button type="button" class="secondary">Add Organization</button>
-      </fieldset>
-      <fieldset class="form-fields">
-        <legend>Support Contact</legend>
-        <div class="form-field">
-          <%= f.label :support_contact_name, 'Name' %>
-          <%= f.text_field :support_contact_name %>
-        </div>
-        <div class="form-field">
-          <%= f.label :support_contact_email, 'Email' %>
-          <%= f.text_field :support_contact_email %>
-        </div>
       </fieldset>
       <div class="form-field">
         <%= f.label :app_tags, 'Tags (one per line)', data: { help: 'Flexible metadata values that may be assigned to apps to improve searchability.' } %>
@@ -528,55 +528,6 @@
       </div>
     </fieldset>
 
-    <legend>Advanced Web</legend>
-
-    <p>This metadata can be used to determine if a user's browser is capable of supporting the app. A feature may use the settings &quot;Required&quot; if the application cannot be used without the feature, as well as &quot;Optional&quot; in the event that the app works best with it but will degrade gracefully if the browser does not support it.</p>
-    <%= fields_for :app_browser_features do |features| %>
-      <%
-         app_features = {}
-         if @app.app_browser_features
-           @app.app_browser_features.each do |r|
-             app_features[r.feature] = r.level
-           end
-         end
-         {
-             'Application Cache' => 'applicationcache',
-             'Canvas Element' => 'canvas',
-             'CSS Animations' => 'cssanimation',
-             'CSS Flexbox' => 'flexbox',
-             'CSS Multi-column Layout' => 'csscolumns',
-             'CSS Transformations' => 'csstransforms',
-             'CSS Transformations (3D)' => 'csstransforms3d',
-             'CSS @font-face' => 'fontface',
-             'CSS :before and :after' => 'generatedcontent',
-             'Drag-and-Drop' => 'draganddrop',
-             'History API' => 'history',
-             'HTML 5 Audio' => 'audio',
-             'HTML 5 Video' => 'video',
-             'Geolocation API' => 'geolocation',
-             'IndexedDB' => 'indexeddb',
-             'localStorage' => 'localstorage',
-             'onhashchange Event' => 'hashchange',
-             'postMessage Cross-origin' => 'postmessage',
-             'sessionStorage' => 'sessionstorage',
-             'Touch Events' => 'touch',
-             'WebGL' => 'webgl',
-             'Web Sockets' => 'websockets',
-             'Web Workers' => 'webworkers'
-         }.each do |title, key|
-      %>
-        <div class="form-field set-data-value-on-change">
-          <%= features.label key, title %>
-          <%= features.select key,
-                              options_for_select([
-                                                     ['Not Used', 'none'],
-                                                     ['Optional', 'optional'],
-                                                     ['Required', 'required']
-                                                 ], app_features.include?(key) ? app_features[key] : nil)  %>
-        </div>
-      <% end %>
-    <% end %>
-
   </fieldset>
 
   <h1 class="text-center">
@@ -815,7 +766,7 @@
           var $li = $(document.createElement('li'))
                   .addClass('form-field')
                   .attr('style', 'border-left:3px solid #eee;padding-left:10px;margin-bottom:10px;')
-                  .append('<label data-help="The default LTI configuration is what will be used when adding this tool back to a TC when CASA on Rails itself is launched using LTI." style="color: black;">Set As Default Config</label><input type="checkbox" class="input-lti_default"'+(data&&data.lti_default?(' checked="'+(data.lti_default ? 'checked' : '')+'"'):'')+'>' +
+                  .append('<label data-help="The default LTI configuration is what will be used when adding this tool back to a TC when App Catalog is launched using LTI." style="color: black;">Set As Default Config</label><input type="checkbox" class="input-lti_default"'+(data&&data.lti_default?(' checked="'+(data.lti_default ? 'checked' : '')+'"'):'')+'>' +
                   '<label data-help="The launch URL to use for LTI 1.x launches. Required for LTI 1.x.">Launch URL</label><input type="text" id="lti_launch_url" class="input-lti_launch_url"'+(data&&data.lti_launch_url?(' value="'+data.lti_launch_url+'"'):'')+'>' +
                   '<label data-help="Optional. A URL for retrieving detailed XML Common Cartridge configuration.">Configuration URL</label><input type="text" class="input-lti_configuration_url"'+(data&&data.lti_configuration_url?(' value="'+data.lti_configuration_url+'"'):'')+'>' +
                   '<label data-help="The registration URL for LTI 2.0 launches. Required for LTI 2.0.">Registration URL</label><input type="text" class="input-lti_registration_url"'+(data&&data.lti_registration_url?(' value="'+data.lti_registration_url+'"'):'')+'>' +
