@@ -118,10 +118,6 @@ class App < ActiveRecord::Base
     presence: true,
     length: { minimum: 6, maximum: 255}
 
-  validates :support_contact_email,
-    length: { minimum: 6, maximum: 255},
-    allow_blank: true
-
   validates :download_size, :support_contact_name, :supported_languages,
             :security_session_lifetime, :security_cloud_vendor, :security_policy_url,
             :security_sla_url,
