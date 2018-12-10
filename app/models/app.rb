@@ -107,7 +107,6 @@ class App < ActiveRecord::Base
     presence: true
 
   validates :uri,
-    # presence: true,
     uri: true
 
   validates :support_contact_email,
@@ -123,7 +122,7 @@ class App < ActiveRecord::Base
     length: { maximum: 65535 }
 
   validates :icon,
-    presence: true,
+    presence: { message: "App Icon must be uploaded." },
     length: { maximum: 65535 }
 
   validates :tool_review_url,
