@@ -168,10 +168,10 @@ class App < ActiveRecord::Base
 
   def icon_tag
     if self.icon
-      raw "<img src='#{self.icon.gsub /'/, '\\\''}' alt=''>"
+      raw "<img src='#{self.icon.gsub /'/, '\\\''}' alt='' width='200' height='200'>"
     else
       #$('<span>').html(app.title.charAt(0)).appendTo($imgContainer);
-      raw "<div class='letter-icon'><span>#{self.title[0,1]}</span></div>"
+      raw "<div class='letter-icon' width='200' height='200'><span>#{self.title[0,1]}</span></div>"
     end
   end
 

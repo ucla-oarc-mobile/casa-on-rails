@@ -3,7 +3,7 @@
   font-family: 'Roboto', "Lucida Sans Unicode", "Lucida Grande", Arial, sans-serif;
   box-shadow: 1px 1px 4px rgba(0,0,0,0.065);
   background-color: #fff;
-  width: 95%;
+  width: 80%;
   margin: 10px auto;
   border-radius: 5px;
   -moz-border-radius : 5px;
@@ -56,6 +56,35 @@
 
   figure {
     margin: 0;
+  }
+
+  .infobar_item {
+    color: $color-primary;
+    border-style: solid;
+    border-radius: 9px;
+    border-width: thin;
+    font-size: 18px;
+    margin: 10px;
+    margin-left: 0px;
+    margin-right: 30px;
+    padding: 7px;
+    padding-left: 15px;
+    padding-right: 15px;
+
+  }
+
+  .infobar_item_accessibility {
+    color: grey;
+    border-style: solid;
+    border-radius: 9px;
+    border-width: thin;
+    font-size: 18px;
+    margin: 10px;
+    margin-left: 0px;
+    margin-right: 30px;
+    padding: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
   }
 
   .content {
@@ -452,7 +481,7 @@
         vertical-align: middle;
         padding: 10px;
         font-weight: bold;
-      } 
+      }
 
       td:before {
         display: block;

@@ -1,188 +1,192 @@
 <article class="app panels">
 <main>
-  <section class="top-details">
 
-    <section class="icon-group">
-        <figure>
-          <%= @app.icon_tag %>
-        </figure>
+  <% if @app.overall_review_status == 102 %>
+    <h4 style="text-align:center; color: white; background-color:red; padding:20px; margin-bottom:40px;"> THIS APP IS NOT RECOMMENDED FOR USE </h4>
+  <% end %>
 
-      <section>
-        <% if session_user %>
-            <nav>
-              <% if session_user.admin || @app.created_by == session_user.id %>
-                <%= link_to 'Edit', edit_admin_app_url(@app), class: 'button warning' %>
-              <% end %>
-              <% if session_user.admin %>
-              <%= link_to 'Destroy', admin_app_path(@app),
-                          method: :delete,
-                          data: { confirm: "Are you sure you want to delete this app?" },
-                          class: 'button danger' %>
-              <% end %>
-            </nav>
-        <% end %>
+  <!-- APP INFO -->
+  <div style="display:grid; grid-template-columns:250px 2fr 1fr; grid-template-rows: 1fr;">
+
+    <!-- APP ICON -->
+    <div style="grid-column: 1/2; grid-row:1/2;">
+      <section class="icon-group">
+          <figure width="250" height="250">
+            <%= @app.icon_tag %>
+          </figure>
       </section>
-
-    </section>
-
-    <section class="middle-details-group">
-
-      <h1 style="margin: 0;"><%= @app.title %></h1>
-
-      <% if @app.categories.count > 0 %>
-      <div class="attribute">
-        <h4>Store Categories</h4>
-        <p><%= raw @app.categories.map(){ |c| link_to c.name, c }.join(', ') %></p>
-      </div>
-    <% end %>
-
-    <% if @app.app_tags.count > 0 %>
-      <div class="attribute">
-        <h4>Tags</h4>
-        <p><%= raw @app.app_tags.map(){ |t| t.name }.join(', ') %></p>
-      </div>
-    <% end %>
-      <section>
-      <% if @app.app_competencies.count > 0 %>
-          <div class="attribute">
-            <h4>Competencies</h4>
-            <p><%= raw @app.app_competencies.map(){ |c| c.name }.join(', ') %></p>
-          </div>
-      <% end %>
-
-      <% if @app.app_features.count > 0 %>
-          <div class="attribute">
-            <h4>Features</h4>
-            <p><%= raw @app.app_features.map(){ |f| f.feature_name }.join(', ') %></p>
-          </div>
-      <% end %>
-      </section>
-
-    </section>
-
-  <section class="ratings-launch-group ratings">
-    <% if @app.app_ratings.count > 0 %>
-        <section class="average">
-          <h5><%= @app.average_rating.round(1) %></h5>
-          <% average_rating = @app.average_rating.round(0).to_i %>
-          <span class="stars">
-            <span class="filled"><%= raw (1..average_rating).map { '&#9733;' }.join ' ' %></span>
-            <span class="unfilled"><%= raw (average_rating+1..5).map { '&#9734;' }.join ' ' %></span>
-          </span>
-          <div>
-              <span style="font-size: 12px;">
-              <%= image_tag 'users.png', size: "10x10"%>
-                <%= @app.app_ratings.count %> total
-              </span>
-          </div>
-        </section>
-    <% else %>
-        <section class="average">
-          <span class="stars">
-            <span class="unfilled"><%= raw (1..5).map { '&#9734;' }.join ' ' %></span>
-          </span>
-          <div>
-              <span style="font-size: 12px;">
-              <%= image_tag 'users.png', size: "10x10"%>
-                0 total
-              </span>
-          </div>
-        </section>
-    <% end %>
-
-    <nav>
-      <a href="<%= @button[:url] %>" class="button"><%= @button[:text] %></a>
-    </nav>
-  </section>
-
-  </section>
-
-  <div class="infobar">
-
-    <table style="width:100%">
-      <tbody>
-          <tr>
-            <th>Official</th>
-            <th>Tool Review Status</th>
-            <th>Support</th>
-            <th>Accessibility</th>
-            <th>Privacy</th>
-            <th>Security</th>
-            <th>Mobile Friendly</th>
-            <th>Supports LTI&reg;</th>
-            <th style="border-right: 0px;">Supports Caliper&trade;</th>
-          </tr>
-
-      <tr>
-        <td><% if @app.official %><%= image_tag "infobar_check.png", title:"An offical app." %><% else %><%= image_tag "infobar_dash.png", title:"A non-official app." %><% end %></td>
-        <td><%= raw(@app.image_tag_for_review_status(@app.overall_review_status)) %></td>
-        <td><% if @app.support_contact_name or @app.support_contact_email %><%= image_tag "infobar_check.png", title: "Support contact information has been included."%><% else %><%= image_tag "infobar_dash.png", title: "No support contact information has been included." %><% end %></td>
-        <td><%= raw(@app.image_tag_for_review_status(@app.accessibility_review_status)) %></td>
-        <td><%= raw(@app.image_tag_for_review_status(@app.privacy_review_status)) %></td>
-        <td><%= raw(@app.image_tag_for_review_status(@app.security_review_status)) %></td>
-        <td><% if @app.mobile_support %><%= image_tag "infobar_web.png", title: "Mobile web app available." %><% end %><% if @app.has_ios_properties_set? %><%= image_tag "infobar_apple.png", title: "iOS / Apple app available." %><% end %><% if @app.has_android_properties_set? %><%= image_tag "infobar_android.png", title:"Android app available." %><% end %>
-          <% if ! @app.android_app_package and ! @app.ios_app_id and ! @app.mobile_support %><%= image_tag "infobar_dash.png", title:"No iOS / Apple, Android, or mobile web app available." %><% end %></td>
-        <td><% if @app.lti %><%= image_tag "infobar_check.png", title:"LTI is supported." %><% else %><%= image_tag "infobar_dash.png", title:"LTI is not supported." %><% end %></td>
-        <td style="border-right: 0px;"><% if @app.caliper %><%= image_tag "infobar_check.png", title:"Caliper is supported." %><% else %><%= image_tag "infobar_dash.png", title:"Caliper is not supported."%><% end %></td>
-      </tr>
-
-      </tbody>
-    </table>
-
-  </div>
-
-  <div class="content">
-    <div class="line"></div>
-    <h1>Description</h1>
-
-    <% if @app.description %>
-
-      <%
-         description = @app.formatted_description.to_s
-         # Count the number of paragraphs.
-         # If there are fewer than two, do nothing.
-         # Else, insert the "read more" HTML.
-        number_of_paragraphs = description.scan('<p>').count
-        if(number_of_paragraphs <= 2)
-      %>
-      <%= @app.formatted_description %>
-      <%
-         else
-           positions = []
-           pos = -1
-
-           while (pos = description.index('</p>', pos + 1))
-             positions << pos
-           end
-       %>
-
-        <%
-           # The string manipulation below relies on the use of the Rails formatted_description method
-           # 1. Wrap the first two paragraphs in a div with an expandable span.
-           part1 = '<div><input type="checkbox" class="read-more-state" id="post-1" /><div class="read-more-wrap">' + description[0..positions[1]-1] + '</p><span class="read-more-target">'
-           # 2. Include any additional paragraphs from the description.
-           part2 = description[positions[1]..-5]
-           # 3. Finish up with the HTML controls.
-           part3 = '</span></div><label for="post-1" class="read-more-trigger"></label></div>'
-        %>
-
-        <%= part1.html_safe %>
-        <%= part2.html_safe %>
-        <%= part3.html_safe %>
-        <% end %>
-
-
-    <% elsif @app.short_description %>
-      <%= simple_format @app.short_description %>
-    <% end %>
-
     </div>
 
+    <!-- APP TITLE & INFO -->
+    <div style="grid-column: 2/3; grid-row: 1/2; align-self:start; justify-self:start;">
+      <!-- APP TITLE -->
+      <h1 style="margin: 0; display: inline-block"><%= @app.title %></h1>
+      <div style="display: inline-block">
+        <% if @app.official %>
+            <%= image_tag "inhouse_app.png", title:"An offical app.", style: 'height:25px; padding-left:10px;' %>
+        <% end %>
+      </div>
+      <!-- APP TAGS -->
+      <% if @app.categories.count > 0 %>
+        <div class="attribute">
+          <h4>Store Categories</h4>
+          <p><%= raw @app.categories.map(){ |c| link_to c.name, c }.join(', ') %></p>
+        </div>
+      <% end %>
+      <% if @app.app_tags.count > 0 %>
+        <div class="attribute">
+          <h4>Tags</h4>
+          <p><%= raw @app.app_tags.map(){ |t| t.name }.join(', ') %></p>
+        </div>
+      <% end %>
+      <section>
+        <% if @app.app_competencies.count > 0 %>
+            <div class="attribute">
+              <h4>Competencies</h4>
+              <p><%= raw @app.app_competencies.map(){ |c| c.name }.join(', ') %></p>
+            </div>
+        <% end %>
+        <% if @app.app_features.count > 0 %>
+            <div class="attribute">
+              <h4>Features</h4>
+              <p><%= raw @app.app_features.map(){ |f| f.feature_name }.join(', ') %></p>
+            </div>
+        <% end %>
+      </section>
+    </div>
+
+    <!-- EDIT / APP RATING -->
+    <div style="grid-column: 3/4; grid-row: 1/2; justify-self: center; align-self: start;">
+      <% if session_user.admin || @app.created_by == session_user.id %>
+        <div>
+          <%= link_to 'Edit', edit_admin_app_url(@app), class: 'button warning' %>
+        </div>
+      <% end %>
+      <% if @app.app_ratings.count > 0 %>
+          <section class="average">
+            <h5><%= @app.average_rating.round(1) %></h5>
+            <% average_rating = @app.average_rating.round(0).to_i %>
+            <span class="stars">
+              <span class="filled"><%= raw (1..average_rating).map { '&#9733;' }.join ' ' %></span>
+              <span class="unfilled"><%= raw (average_rating+1..5).map { '&#9734;' }.join ' ' %></span>
+            </span>
+            <div>
+                <span style="font-size: 12px;">
+                <%= image_tag 'users.png', size: "10x10"%>
+                  <%= @app.app_ratings.count %> total
+                </span>
+            </div>
+          </section>
+      <% else %>
+          <section class="average">
+            <span class="stars">
+              <span class="unfilled"><%= raw (1..5).map { '&#9734;' }.join ' ' %></span>
+            </span>
+            <div>
+                <span style="font-size: 12px;">
+                <%= image_tag 'users.png', size: "10x10"%>
+                  0 total
+                </span>
+            </div>
+          </section>
+      <% end %>
+    </div>
+  </div>
+
+
+  <!-- APP DESCRIPTION -->
+  <section>
+    <!-- APP DESCRIPTION -->
+    <div style="color:black;">
+        <% if @app.description %>
+          <%
+             description = @app.formatted_description.to_s
+             # Count the number of paragraphs.
+             # If there are fewer than two, do nothing.
+             # Else, insert the "read more" HTML.
+            number_of_paragraphs = description.scan('<p>').count
+            if(number_of_paragraphs <= 2)
+          %>
+          <%= @app.formatted_description %>
+          <%
+             else
+               positions = []
+               pos = -1
+
+               while (pos = description.index('</p>', pos + 1))
+                 positions << pos
+               end
+           %>
+            <%
+               # The string manipulation below relies on the use of the Rails formatted_description method
+               # 1. Wrap the first two paragraphs in a div with an expandable span.
+               part1 = '<div><input type="checkbox" class="read-more-state" id="post-1" /><div class="read-more-wrap">' + description[0..positions[1]-1] + '</p><span class="read-more-target">'
+               # 2. Include any additional paragraphs from the description.
+               part2 = description[positions[1]..-5]
+               # 3. Finish up with the HTML controls.
+               part3 = '</span></div><label for="post-1" class="read-more-trigger"></label></div>'
+            %>
+
+            <%= part1.html_safe %>
+            <%= part2.html_safe %>
+            <%= part3.html_safe %>
+            <% end %>
+
+        <% elsif @app.short_description %>
+          <%= simple_format @app.short_description %>
+        <% end %>
+      </div>
+  </section>
+
+
+  <!-- INFO BAR -->
+    <div class="content">
+      <h1> APP DETAILS </h1>
+      <br/>
+      <!-- App Launch - Web -->
+      <% if !@app.uri.blank? %>
+        <a href="<%= @app.uri %>" style="text-decoration:none;">
+          <span class = "infobar_item" >
+            Web App
+          </span>
+        </a>
+      <% end %>
+      <!-- App Launch - iOS -->
+      <% if !@app.ios_app_id.blank? %>
+        <a href="https://itunes.apple.com/us/app/apple-store/id<%= @app.ios_app_id %>" style="text-decoration:none;">
+          <span class = "infobar_item" >
+            iOS
+          </span>
+        </a>
+      <% end %>
+      <!-- App Launch - Android -->
+      <% if !@app.android_app_package.blank? %>
+        <a href="http://play.google.com/store/apps/details?id=<%= @app.android_app_package %>" style="text-decoration:none;">
+          <span class = "infobar_item" >
+            Android
+          </span>
+        </a>
+      <% end %>
+      <!-- Privacy Policy -->
+      <a href="<%= privacy_app_url(@app) %>" style="text-decoration:none;">
+        <span class = "infobar_item" >
+          Privacy Policy
+        </span>
+      </a>
+      <!-- Accessibility Report -->
+      <% if @app.accessibility_review_status == 100 %>
+          <span class="infobar_item_accessibility">
+            Accessibile
+          </span>
+      <% end %>
+    </div>
+
+<br/>
+
+<!-- USER REVIEWS -->
   <% if session_user or @app.app_ratings.count > 0 %>
 
   <div class="content ratings">
-
-    <div class="line"></div>
 
     <h1>Reviews</h1>
 
@@ -276,389 +280,8 @@
 
       <% end %>
 
-  <div class="content">
 
-    <div class="line"></div>
-
-    <h1>Privacy</h1>
-
-      <section>
-        <% if @app.app_privacy_policy %>
-          <div class="additional-info-inline-block">
-          <h4>Data Sharing</h4>
-          <table class="privacy-nutrition-label">
-            <thead>
-            <tr>
-              <th>Type</th>
-              <% AppPrivacyPolicy.types.each do |type, description| %>
-                <th><%= type.capitalize %></th>
-              <% end %>
-            </tr>
-            </thead>
-            <tbody>
-              <% AppPrivacyPolicy.classifications.each do |context, context_description| %>
-                <tr>
-                  <td class="row-heading" style="background-color: #F6F6F6;"><%= context.capitalize %></td>
-                  <% AppPrivacyPolicy.types.each do |type, type_description| symbol = "#{context}_#{type}".to_sym %>
-                  <%=
-                      value = @app.app_privacy_policy.send(symbol)
-                      if value == 'true'
-                        raw '<td class="yes">Yes</td>'
-                      elsif value == 'false'
-                        raw '<td class="no">No</td>'
-                      elsif value == '"optIn"'
-                        raw '<td class="optIn">Opt-in</td>'
-                      elsif value == '"optOut"'
-                        raw '<td class="optOut">Opt-out</td>'
-                      end
-                  %>
-                  <% end %>
-              <% end %>
-              </tr>
-            </tbody>
-          </table>
-          </div>
-        <% end %>
-
-        <div class="additional-info-inline-block">
-          <h4>Privacy Policy</h4>
-          <p><a href="<%= privacy_app_url(@app) %>">View</a></p>
-        </div>
-
-      </section>
-
-    </div>
-
-  <% if @app.has_student_data_properties_set? %>
-      <div class="content">
-        <div class="line"></div>
-
-        <h1>Student Data</h1>
-
-        <div class="additional-info-inline-block">
-          <h4>Stores Local Data</h4>
-          <p><%= @app.student_data_stores_local_data ? (@app.student_data_stores_local_data ? 'Yes' : 'No') : '-' %></p>
-        </div>
-
-        <div class="additional-info-inline-block">
-          <h4>Requires Account</h4>
-          <p><%= @app.student_data_requires_account ? (@app.student_data_requires_account ? 'Yes' : 'No') :  '-' %></p>
-        </div>
-
-        <div class="additional-info-inline-block">
-          <h4>Has Opt-Out for Data Collection</h4>
-          <p><%= @app.student_data_has_opt_out_for_data_collection ? (@app.student_data_has_opt_out_for_data_collection ? 'Yes' : 'No') : '-' %></p>
-        </div>
-
-        <div class="additional-info-inline-block">
-          <h4>Has Opt-In for Data Collection</h4>
-          <p><%= @app.student_data_has_opt_in_for_data_collection ? (@app.student_data_has_opt_in_for_data_collection ? 'Yes' : 'No') : '-' %></p>
-        </div>
-
-        <div class="additional-info-inline-block">
-          <h4>Displays EULA</h4>
-          <p><%= @app.student_data_shows_eula ? (@app.student_data_shows_eula ? 'Yes' : 'No') : '-' %></p>
-        </div>
-
-        <div class="additional-info-inline-block">
-          <h4>Hosted Externally to the Institution</h4>
-          <p><%= @app.student_data_is_app_externally_hosted ? (@app.student_data_is_app_externally_hosted ? 'Yes' : 'No') : '-' %></p>
-        </div>
-
-        <div class="additional-info-inline-block">
-          <h4>Stores Personally Identifying Information (PII)</h4>
-          <p><%= @app.student_data_stores_pii ? (@app.student_data_stores_pii ? 'Yes' : 'No') : '-' %></p>
-        </div>
-
-      </div>
-  <% end %>
-
-  <% if @app.has_security_properties_set? %>
-      <div class="content">
-        <div class="line"></div>
-
-        <h1>Security</h1>
-
-        <div class="additional-info-inline-block">
-          <h4>Uses HTTPS</h4>
-          <p><%= @app.security_uses_https ? (@app.security_uses_https ? 'Yes' : 'No') : '-' %></p>
-        </div>
-
-        <div class="additional-info-inline-block">
-          <h4>Uses Additional Methods of Encryption</h4>
-          <p><%= @app.security_uses_additional_encryption ? (@app.security_uses_additional_encryption ? 'Yes' : 'No') : '-' %></p>
-        </div>
-
-        <div class="additional-info-inline-block">
-          <h4>Requires Cookies</h4>
-          <p><%= @app.security_requires_cookies ? (@app.security_requires_cookies ? 'Yes' : 'No') : '-' %></p>
-        </div>
-
-        <div class="additional-info-inline-block">
-          <h4>Requires Third-Party Cookies</h4>
-          <p><%= @app.security_requires_third_party_cookies ? (@app.security_requires_third_party_cookies ? 'Yes' : 'No') : '-' %></p>
-        </div>
-
-        <div class="additional-info-inline-block">
-          <h4>Session Lifetime</h4>
-          <p><%= @app.security_session_lifetime ?  @app.security_session_lifetime : '-' %></p>
-        </div>
-        <div class="additional-info-inline-block">
-          <h4>Cloud Vendor</h4>
-          <p><%= @app.security_cloud_vendor ? @app.security_cloud_vendor : '-'  %>
-        </div>
-
-        <div class="additional-info-inline-block">
-          <h4>Security Policy</h4>
-          <% if @app.security_policy_url.present? %>
-            <p><a href="<%= @app.security_policy_url %>">View Policy</a></p>
-          <% else %>
-              <p>-</p>
-          <% end %>
-        </div>
-
-        <div class="additional-info-inline-block">
-          <h4>Service Level Agreement (SLA)</h4>
-          <% if @app.security_sla_url %>
-              <p><a href="<%= @app.security_sla_url %>">View Policy</a></p>
-          <% else %>
-              <p>-</p>
-          <% end %>
-        </div>
-
-        <div class="additional-info-block">
-          <h4>General Security Information</h4>
-          <% if @app.security_text %>
-            <%= simple_format(@app.security_text) %>
-          <% else %>
-              <p>-</p>
-          <% end %>
-        </div>
-
-      </div>
-  <% end %>
-
-  <% if @app.accessibility_url or @app.vpat_url or @app.wcag_url or ! @app.app_wcag_guidelines.empty? %>
-      <div class="content">
-        <div class="line"></div>
-        <h1>Accessibility</h1>
-
-        <div class="additional-info-inline-block">
-          <h4>Accessibility Policy</h4>
-          <% if @app.accessibility_url %>
-            <p><a href="<%= @app.accessibility_url %>">View</a></p>
-          <% else %>
-            <p>-</p>
-          <% end %>
-        </div>
-
-        <div class="additional-info-inline-block">
-          <h4>VPAT Policy</h4>
-          <% if @app.vpat_url %>
-            <p><a href="<%= @app.vpat_url %>">View</a></p>
-          <% else %>
-            <p>-</p>
-          <% end %>
-        </div>
-
-        <div class="additional-info-inline-block">
-          <h4>WCAG Policy</h4>
-          <% if @app.wcag_url %>
-            <p><a href="<%= @app.wcag_url %>">View</a></p>
-          <% else %>
-            <p>-</p>
-          <% end %>
-        </div>
-
-        <div class="additional-info-inline-block">
-          <h4>Supported WCAG Guidelines</h4>
-          <% if @app.app_wcag_guidelines %>
-              <ul>
-                <% @app.app_wcag_guidelines.order(:guideline).each(){ |g| %>
-                <li><a href="<%= @app.url_for_wcag(g.guideline) %> " target="_blank"><%= g.guideline %></a>
-                <%= "-#{@app.wcag_success_critereon_text_only_for(g.guideline)}" unless g.guideline.include?('alternate') %>
-                </li>
-                <% } %>
-              </ul>
-          <% else %>
-              <p>-</p>
-          <% end %>
-        </div>
-
-      </div>
-    <% end %>
-
-    <% if @app.lti %>
-
-      <div class="content">
-
-        <div class="line"></div>
-
-        <h1>LTI&reg;</h1>
-
-          <div class="additional-info-inline-block">
-            <h4>LTI Support</h4>
-            <p class="interop">LTI Versions:<%= @app.lti_versions_supported %></p>
-            <p class="interop">LIS 1.0 Outcomes: <%= @app.lis_outcomes_supported? ? 'Yes' : 'No' %></p>
-          </div>
-
-          <div class="additional-info-inline-block">
-            <h4>IMS Global Conformance</h4>
-            <% if @app.has_lti_conformance_info?
-                @app.app_lti_configs.each { |config | %>
-                    <div class="additional-info-inline-block">
-                        <p class="interop">LTI Version: <%= config.lti_version ? config.lti_version : '-' %></p>
-                        <p class="interop">Registration Number: <%= config.lti_ims_global_registration_number ? config.lti_ims_global_registration_number : '-' %></p>
-                        <p class="interop">Conformance Date: <%= config.lti_ims_global_conformance_date ? config.lti_ims_global_conformance_date : '-' %></p>
-                        <% if config.lti_ims_global_registration_link %>
-                            <p class="interop"><a href=<%= config.lti_ims_global_registration_link %> target="_blank">Full Registration Info</a></p>
-                        <% end %>
-                    </div>
-            <%  } %>
-            <% else %>
-                <p class="interop">-</p>
-            <% end %>
-          </div>
-
-        </div>
-
-    <% end %>
-
-  <% if @app.caliper %>
-
-    <div class="content">
-
-        <div class="line"></div>
-
-        <h1>Caliper&trade;</h1>
-
-        <div class="additional-info-inline-block">
-
-          <h4>Metric Profiles</h4>
-
-          <% @app.caliper_supported_metric_profiles.each { |profile_name | %>
-
-              <div class="additional-info-inline-block">
-                  <p class="interop">Metric Profile: <%= profile_name %></p>
-                  <% actions = @app.actions_for_supported_metric_profile(profile_name) %>
-                  <% if actions %>
-                    <p class="interop">
-                    Action<%= actions.split(',').count > 1 ? 's' : '' %>:
-                    <%= actions %> </p>
-              <% end %>
-              </div>
-          <% } %>
-        </div>
-
-      <div class="additional-info-inline-block">
-          <h4>IMS Global Conformance</h4>
-          <% if @app.caliper_ims_global_certifications
-               JSON.parse(@app.caliper_ims_global_certifications)['ims_global_certifications'].each { | cert | %>
-                  <div class="additional-info-inline-block">
-                    <p class="interop">Status: <%= cert['status'] ? cert['status'] : '-' %></p>
-                    <p class="interop">Metric Profile<%=  cert['metric_profiles'].count > 1 ? 's' : '' %>:
-                      <%= cert['metric_profiles'] ? cert['metric_profiles'].join(', ') : '-' %></p>
-                    <p class="interop">Registration Number: <%= cert['registration_number'] ? cert['registration_number'] : '-' %></p>
-                    <p class="interop">Conformance Date: <%= cert['conformance_date'] ? cert['conformance_date'] : '-' %></p>
-                    <% if cert['link'] %>
-                        <p class="interop"><a href=<%= cert['link'] %> target="_blank">Full Registration Info</a></p>
-                    <% end %>
-                  </div>
-              <%  } %>
-          <% else %>
-              <p class="interop">-</p>
-          <% end %>
-        </div>
-    </div>
-
-  <% end %>
-
-  <% if @app.has_licensing_properties_set? %>
-
-      <div class="content">
-
-        <div class="line"></div>
-
-        <h1>Licensing</h1>
-
-        <div class="additional-info-inline-block">
-          <h4>Free App</h4>
-          <p><%= @app.license_is_free.present? ?  (@app.license_is_free ? 'Yes' : 'No') : '-' %></p>
-        </div>
-
-        <div class="additional-info-inline-block">
-          <h4>Paid App</h4>
-          <p><%= @app.license_is_paid.present? ?  (@app.license_is_paid ? 'Yes' : 'No') : '-' %></p>
-        </div>
-
-        <div class="additional-info-inline-block">
-          <h4>By Recharge Agreement</h4>
-          <p><%= @app.license_is_recharge.present? ?  (@app.license_is_recharge ? 'Yes' : 'No') : '-' %></p>
-        </div>
-        <div class="additional-info-inline-block">
-          <h4>By Seat</h4>
-          <p><%= @app.license_is_by_seat.present? ?  (@app.license_is_by_seat ? 'Yes' : 'No') : '-' %></p>
-        </div>
-
-        <div class="additional-info-inline-block">
-          <h4>Subscription</h4>
-          <p><%= @app.license_is_subscription.present? ?  (@app.license_is_subscription ? 'Yes' : 'No') : '-' %></p>
-        </div>
-        <div class="additional-info-inline-block">
-          <h4>Ad-Supported</h4>
-          <p><%= @app.license_is_ad_supported.present? ?  (@app.license_is_ad_supported ? 'Yes' : 'No') : '-' %></p>
-        </div>
-
-        <div class="additional-info-inline-block" style="vertical-align: top;">
-          <h4>Other</h4>
-          <p><%= @app.license_is_other.present? ?  (@app.license_is_other ? 'Yes' : 'No') : '-' %></p>
-        </div>
-
-        <div class="additional-info-block">
-          <h4>Additional Licensing Information</h4>
-          <p><%= @app.license_text.present? ?  @app.license_text : '-' %></p>
-        </div>
-
-      </div>
-  <% end %>
-
-  <% if @app.ios_app_id or @app.ios_app_scheme or @app.android_app_package %>
-      <div class="content">
-        <div class="line"></div>
-        <h1>Mobile Apps</h1>
-
-        <% if @app.ios_app_id or @app.ios_app_scheme %>
-        <section>
-          <h3>iOS</h3>
-          <% if @app.ios_app_id %>
-            <p><strong>App Store:</strong> <a href="https://itunes.apple.com/us/app/apple-store/id<%= @app.ios_app_id %>">https://itunes.apple.com/us/app/apple-store/id<%= @app.ios_app_id %></a></p>
-          <% end %>
-          <% if @app.ios_app_scheme %>
-            <p><strong>Launch URL:</strong> <a href="<%= @app.ios_app_scheme %>://<%= @app.ios_app_path %>"><%= @app.ios_app_scheme %>://<%= @app.ios_app_path %></a></p>
-          <% end %>
-        </section>
-        <% end %>
-
-        <% if @app.android_app_package %>
-        <section>
-          <h3>Android</h3>
-          <p><strong>Play Store From Browser:</strong> <a href="http://play.google.com/store/apps/details?id=<%= @app.android_app_package %>">http://play.google.com/store/apps/details?id=<%= @app.android_app_package %></a></p>
-          <p><strong>Play Store From App:</strong> <a href="market://details?id=<%= @app.android_app_package %>">market://details?id=<%= @app.android_app_package %></a></p>
-          <p><strong>Launch Intent:</strong>
-              <%
-                 android_intent = "intent://scan/#Intent"
-                 android_intent << ";scheme=#{@app.android_app_scheme}" if @app.android_app_scheme
-                 android_intent << ";package=#{@app.android_app_package}" if @app.android_app_package
-                 android_intent << ";package=#{@app.android_app_action}" if @app.android_app_action
-                 android_intent << ";package=#{@app.android_app_category}" if @app.android_app_category
-                 android_intent << ";package=#{@app.android_app_component}" if @app.android_app_component %>
-            <a href="<%= android_intent %>"><%= android_intent %></a>
-          </p>
-        </section>
-        <% end %>
-
-      </div>
-  <% end %>
+ <!-- ADD TO INFOBAR !!! -->
 
   <% if (((session_user and session_user.admin) and (@app.primary_contact_name or @app.primary_contact_name)) or @app.app_authors.count > 0 or @app.app_organizations.count > 0) %>
       <div class="content">
@@ -748,22 +371,6 @@
       <p><%= @app.updated_at.strftime('%B %d, %Y %l:%M %p') %></p>
     </div>
 
-
-    <% if @app.mobile_support || @app.has_ios_properties_set? || @app.has_android_properties_set? %>
-        <div class="additional-info-inline-block">
-              <h4>Supported Mobile Platforms</h4>
-            <% if @app.mobile_support or @app.has_ios_properties_set? or @app.has_android_properties_set? %>
-              <ul>
-                <% if @app.mobile_support %><li>Mobile Web</li><% end %>
-                <% if @app.has_ios_properties_set? %><li>iOS</li><% end %>
-                <% if @app.has_android_properties_set? %><li>Android</li><% end %>
-              </ul>
-              <% else %>
-                <p>-</p>
-          <% end %>
-        </div>
-    <% end %>
-
     <% if @app.download_size %>
         <div class="additional-info-inline-block">
           <h4>Download Size</h4>
@@ -778,9 +385,301 @@
       </div>
     <% end %>
 
+    <% if @app.has_student_data_properties_set? %>
+        <div class="content">
+          <div class="line"></div>
+
+          <h2>Student Data</h2>
+
+          <div class="additional-info-inline-block">
+            <h4>Stores Local Data</h4>
+            <p><%= @app.student_data_stores_local_data ? (@app.student_data_stores_local_data ? 'Yes' : 'No') : '-' %></p>
+          </div>
+
+          <div class="additional-info-inline-block">
+            <h4>Requires Account</h4>
+            <p><%= @app.student_data_requires_account ? (@app.student_data_requires_account ? 'Yes' : 'No') :  '-' %></p>
+          </div>
+
+          <div class="additional-info-inline-block">
+            <h4>Has Opt-Out for Data Collection</h4>
+            <p><%= @app.student_data_has_opt_out_for_data_collection ? (@app.student_data_has_opt_out_for_data_collection ? 'Yes' : 'No') : '-' %></p>
+          </div>
+
+          <div class="additional-info-inline-block">
+            <h4>Has Opt-In for Data Collection</h4>
+            <p><%= @app.student_data_has_opt_in_for_data_collection ? (@app.student_data_has_opt_in_for_data_collection ? 'Yes' : 'No') : '-' %></p>
+          </div>
+
+          <div class="additional-info-inline-block">
+            <h4>Displays EULA</h4>
+            <p><%= @app.student_data_shows_eula ? (@app.student_data_shows_eula ? 'Yes' : 'No') : '-' %></p>
+          </div>
+
+          <div class="additional-info-inline-block">
+            <h4>Hosted Externally to the Institution</h4>
+            <p><%= @app.student_data_is_app_externally_hosted ? (@app.student_data_is_app_externally_hosted ? 'Yes' : 'No') : '-' %></p>
+          </div>
+
+          <div class="additional-info-inline-block">
+            <h4>Stores Personally Identifying Information (PII)</h4>
+            <p><%= @app.student_data_stores_pii ? (@app.student_data_stores_pii ? 'Yes' : 'No') : '-' %></p>
+          </div>
+
+        </div>
+    <% end %>
+
+    <% if @app.has_security_properties_set? %>
+        <div class="content">
+          <div class="line"></div>
+
+          <h2>Security</h2>
+
+          <div class="additional-info-inline-block">
+            <h4>Uses HTTPS</h4>
+            <p><%= @app.security_uses_https ? (@app.security_uses_https ? 'Yes' : 'No') : '-' %></p>
+          </div>
+
+          <div class="additional-info-inline-block">
+            <h4>Uses Additional Methods of Encryption</h4>
+            <p><%= @app.security_uses_additional_encryption ? (@app.security_uses_additional_encryption ? 'Yes' : 'No') : '-' %></p>
+          </div>
+
+          <div class="additional-info-inline-block">
+            <h4>Requires Cookies</h4>
+            <p><%= @app.security_requires_cookies ? (@app.security_requires_cookies ? 'Yes' : 'No') : '-' %></p>
+          </div>
+
+          <div class="additional-info-inline-block">
+            <h4>Requires Third-Party Cookies</h4>
+            <p><%= @app.security_requires_third_party_cookies ? (@app.security_requires_third_party_cookies ? 'Yes' : 'No') : '-' %></p>
+          </div>
+
+          <div class="additional-info-inline-block">
+            <h4>Session Lifetime</h4>
+            <p><%= @app.security_session_lifetime ?  @app.security_session_lifetime : '-' %></p>
+          </div>
+          <div class="additional-info-inline-block">
+            <h4>Cloud Vendor</h4>
+            <p><%= @app.security_cloud_vendor ? @app.security_cloud_vendor : '-'  %>
+          </div>
+
+          <div class="additional-info-inline-block">
+            <h4>Security Policy</h4>
+            <% if @app.security_policy_url.present? %>
+              <p><a href="<%= @app.security_policy_url %>">View Policy</a></p>
+            <% else %>
+                <p>-</p>
+            <% end %>
+          </div>
+
+          <div class="additional-info-inline-block">
+            <h4>Service Level Agreement (SLA)</h4>
+            <% if @app.security_sla_url %>
+                <p><a href="<%= @app.security_sla_url %>">View Policy</a></p>
+            <% else %>
+                <p>-</p>
+            <% end %>
+          </div>
+
+          <div class="additional-info-block">
+            <h4>General Security Information</h4>
+            <% if @app.security_text %>
+              <%= simple_format(@app.security_text) %>
+            <% else %>
+                <p>-</p>
+            <% end %>
+          </div>
+
+        </div>
+    <% end %>
+
+    <% if @app.accessibility_url or @app.vpat_url or @app.wcag_url or ! @app.app_wcag_guidelines.empty? %>
+        <div class="content">
+          <div class="line"></div>
+          <h2>Accessibility</h2>
+
+          <div class="additional-info-inline-block">
+            <h4>Accessibility Policy</h4>
+            <% if @app.accessibility_url %>
+              <p><a href="<%= @app.accessibility_url %>">View</a></p>
+            <% else %>
+              <p>-</p>
+            <% end %>
+          </div>
+
+          <div class="additional-info-inline-block">
+            <h4>VPAT Policy</h4>
+            <% if @app.vpat_url %>
+              <p><a href="<%= @app.vpat_url %>">View</a></p>
+            <% else %>
+              <p>-</p>
+            <% end %>
+          </div>
+
+          <div class="additional-info-inline-block">
+            <h4>WCAG Policy</h4>
+            <% if @app.wcag_url %>
+              <p><a href="<%= @app.wcag_url %>">View</a></p>
+            <% else %>
+              <p>-</p>
+            <% end %>
+          </div>
+
+          <div class="additional-info-inline-block">
+            <h4>Supported WCAG Guidelines</h4>
+            <% if @app.app_wcag_guidelines %>
+                <ul>
+                  <% @app.app_wcag_guidelines.order(:guideline).each(){ |g| %>
+                  <li><a href="<%= @app.url_for_wcag(g.guideline) %> " target="_blank"><%= g.guideline %></a>
+                  <%= "-#{@app.wcag_success_critereon_text_only_for(g.guideline)}" unless g.guideline.include?('alternate') %>
+                  </li>
+                  <% } %>
+                </ul>
+            <% else %>
+                <p>-</p>
+            <% end %>
+          </div>
+
+        </div>
+      <% end %>
+
+      <% if @app.lti %>
+
+        <div class="content">
+
+          <div class="line"></div>
+
+          <h2>LTI&reg;</h2>
+
+            <div class="additional-info-inline-block">
+              <h4>LTI Support</h4>
+              <p class="interop">LTI Versions:<%= @app.lti_versions_supported %></p>
+              <p class="interop">LIS 1.0 Outcomes: <%= @app.lis_outcomes_supported? ? 'Yes' : 'No' %></p>
+            </div>
+
+            <div class="additional-info-inline-block">
+              <h4>IMS Global Conformance</h4>
+              <% if @app.has_lti_conformance_info?
+                  @app.app_lti_configs.each { |config | %>
+                      <div class="additional-info-inline-block">
+                          <p class="interop">LTI Version: <%= config.lti_version ? config.lti_version : '-' %></p>
+                          <p class="interop">Registration Number: <%= config.lti_ims_global_registration_number ? config.lti_ims_global_registration_number : '-' %></p>
+                          <p class="interop">Conformance Date: <%= config.lti_ims_global_conformance_date ? config.lti_ims_global_conformance_date : '-' %></p>
+                          <% if config.lti_ims_global_registration_link %>
+                              <p class="interop"><a href=<%= config.lti_ims_global_registration_link %> target="_blank">Full Registration Info</a></p>
+                          <% end %>
+                      </div>
+              <%  } %>
+              <% else %>
+                  <p class="interop">-</p>
+              <% end %>
+            </div>
+
+          </div>
+
+      <% end %>
+
+    <% if @app.caliper %>
+
+      <div class="content">
+
+          <div class="line"></div>
+
+          <h2>Caliper&trade;</h2>
+
+          <div class="additional-info-inline-block">
+
+            <h4>Metric Profiles</h4>
+
+            <% @app.caliper_supported_metric_profiles.each { |profile_name | %>
+
+                <div class="additional-info-inline-block">
+                    <p class="interop">Metric Profile: <%= profile_name %></p>
+                    <% actions = @app.actions_for_supported_metric_profile(profile_name) %>
+                    <% if actions %>
+                      <p class="interop">
+                      Action<%= actions.split(',').count > 1 ? 's' : '' %>:
+                      <%= actions %> </p>
+                <% end %>
+                </div>
+            <% } %>
+          </div>
+
+        <div class="additional-info-inline-block">
+            <h4>IMS Global Conformance</h4>
+            <% if @app.caliper_ims_global_certifications
+                 JSON.parse(@app.caliper_ims_global_certifications)['ims_global_certifications'].each { | cert | %>
+                    <div class="additional-info-inline-block">
+                      <p class="interop">Status: <%= cert['status'] ? cert['status'] : '-' %></p>
+                      <p class="interop">Metric Profile<%=  cert['metric_profiles'].count > 1 ? 's' : '' %>:
+                        <%= cert['metric_profiles'] ? cert['metric_profiles'].join(', ') : '-' %></p>
+                      <p class="interop">Registration Number: <%= cert['registration_number'] ? cert['registration_number'] : '-' %></p>
+                      <p class="interop">Conformance Date: <%= cert['conformance_date'] ? cert['conformance_date'] : '-' %></p>
+                      <% if cert['link'] %>
+                          <p class="interop"><a href=<%= cert['link'] %> target="_blank">Full Registration Info</a></p>
+                      <% end %>
+                    </div>
+                <%  } %>
+            <% else %>
+                <p class="interop">-</p>
+            <% end %>
+          </div>
+      </div>
+
+    <% end %>
+
+    <% if @app.has_licensing_properties_set? %>
+
+        <div class="content">
+
+          <div class="line"></div>
+
+          <h2>Licensing</h2>
+
+          <div class="additional-info-inline-block">
+            <h4>Free App</h4>
+            <p><%= @app.license_is_free.present? ?  (@app.license_is_free ? 'Yes' : 'No') : '-' %></p>
+          </div>
+
+          <div class="additional-info-inline-block">
+            <h4>Paid App</h4>
+            <p><%= @app.license_is_paid.present? ?  (@app.license_is_paid ? 'Yes' : 'No') : '-' %></p>
+          </div>
+
+          <div class="additional-info-inline-block">
+            <h4>By Recharge Agreement</h4>
+            <p><%= @app.license_is_recharge.present? ?  (@app.license_is_recharge ? 'Yes' : 'No') : '-' %></p>
+          </div>
+          <div class="additional-info-inline-block">
+            <h4>By Seat</h4>
+            <p><%= @app.license_is_by_seat.present? ?  (@app.license_is_by_seat ? 'Yes' : 'No') : '-' %></p>
+          </div>
+
+          <div class="additional-info-inline-block">
+            <h4>Subscription</h4>
+            <p><%= @app.license_is_subscription.present? ?  (@app.license_is_subscription ? 'Yes' : 'No') : '-' %></p>
+          </div>
+          <div class="additional-info-inline-block">
+            <h4>Ad-Supported</h4>
+            <p><%= @app.license_is_ad_supported.present? ?  (@app.license_is_ad_supported ? 'Yes' : 'No') : '-' %></p>
+          </div>
+
+          <div class="additional-info-inline-block" style="vertical-align: top;">
+            <h4>Other</h4>
+            <p><%= @app.license_is_other.present? ?  (@app.license_is_other ? 'Yes' : 'No') : '-' %></p>
+          </div>
+
+          <div class="additional-info-block">
+            <h4>Additional Licensing Information</h4>
+            <p><%= @app.license_text.present? ?  @app.license_text : '-' %></p>
+          </div>
+
+        </div>
+    <% end %>
+
   </div>
 
 </main>
 
 </article>
-
