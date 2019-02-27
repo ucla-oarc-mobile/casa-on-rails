@@ -57,7 +57,7 @@
 
     <!-- EDIT / APP RATING -->
     <div style="grid-column: 3/4; grid-row: 1/2; justify-self: center; align-self: start;">
-      <% if session_user.admin || @app.created_by == session_user.id %>
+      <% if session_user && (session_user.admin || @app.created_by == session_user.id) %>
         <div>
           <%= link_to 'Edit', edit_admin_app_url(@app), class: 'button warning' %>
         </div>
