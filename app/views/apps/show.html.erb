@@ -141,7 +141,7 @@
 
   <!-- INFO BAR -->
     <div class="content">
-      <h1> APP DETAILS </h1>
+      <h1> PLATFORMS </h1>
       <br/>
       <!-- App Launch - Web -->
       <% if !@app.uri.blank? %>
@@ -173,12 +173,6 @@
           Privacy Policy
         </span>
       </a>
-      <!-- Accessibility Report -->
-      <% if @app.accessibility_review_status == 100 %>
-          <span class="infobar_item_accessibility">
-            Accessibile
-          </span>
-      <% end %>
     </div>
 
 <br/>

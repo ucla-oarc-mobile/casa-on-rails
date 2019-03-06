@@ -125,7 +125,7 @@ GEM
     multi_json (1.13.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
-    mysql2 (0.4.4)
+    mysql2 (0.4.10)
     nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
     oauth (0.4.7)
@@ -220,7 +220,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   json-schema (= 2.5.2)
-  mysql2
+  mysql2 (= 0.4.10)
   oauth
   oauth2
   puma
