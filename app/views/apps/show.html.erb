@@ -97,85 +97,85 @@
   <!-- APP DESCRIPTION -->
   <section>
     <!-- APP DESCRIPTION -->
-    <div style="color:black;">
-        <% if @app.description %>
-          <%
-             description = @app.formatted_description.to_s
-             # Count the number of paragraphs.
-             # If there are fewer than two, do nothing.
-             # Else, insert the "read more" HTML.
-            number_of_paragraphs = description.scan('<p>').count
-            if(number_of_paragraphs <= 2)
-          %>
-          <%= @app.formatted_description %>
-          <%
-             else
-               positions = []
-               pos = -1
-
-               while (pos = description.index('</p>', pos + 1))
-                 positions << pos
-               end
-           %>
-            <%
-               # The string manipulation below relies on the use of the Rails formatted_description method
-               # 1. Wrap the first two paragraphs in a div with an expandable span.
-               part1 = '<div><input type="checkbox" class="read-more-state" id="post-1" /><div class="read-more-wrap">' + description[0..positions[1]-1] + '</p><span class="read-more-target">'
-               # 2. Include any additional paragraphs from the description.
-               part2 = description[positions[1]..-5]
-               # 3. Finish up with the HTML controls.
-               part3 = '</span></div><label for="post-1" class="read-more-trigger"></label></div>'
-            %>
-
-            <%= part1.html_safe %>
-            <%= part2.html_safe %>
-            <%= part3.html_safe %>
-            <% end %>
-
-        <% elsif @app.short_description %>
-          <%= simple_format @app.short_description %>
-        <% end %>
-      </div>
+    <div style="color:black; font-size: 1.2em;">
+      <%= simple_format(@app.description) %>
+    </div>
   </section>
+  <br/>
+  <br/>
 
+  <!-- APP DETAILS -->
 
-  <!-- INFO BAR -->
-    <div class="content">
-      <h1> PLATFORMS </h1>
-      <br/>
-      <!-- App Launch - Web -->
-      <% if !@app.uri.blank? %>
-        <a href="<%= @app.uri %>" style="text-decoration:none;">
-          <span class = "infobar_item" >
-            Web App
-          </span>
-        </a>
-      <% end %>
-      <!-- App Launch - iOS -->
-      <% if !@app.ios_app_id.blank? %>
-        <a href="https://itunes.apple.com/us/app/apple-store/id<%= @app.ios_app_id %>" style="text-decoration:none;">
-          <span class = "infobar_item" >
-            iOS
-          </span>
-        </a>
-      <% end %>
-      <!-- App Launch - Android -->
-      <% if !@app.android_app_package.blank? %>
-        <a href="http://play.google.com/store/apps/details?id=<%= @app.android_app_package %>" style="text-decoration:none;">
-          <span class = "infobar_item" >
-            Android
-          </span>
-        </a>
-      <% end %>
-      <!-- Privacy Policy -->
-      <a href="<%= privacy_app_url(@app) %>" style="text-decoration:none;">
+    <h3> APP DETAILS  </h3>
+    <br/>
+    <!-- App Launch - Web -->
+    <% if !@app.uri.blank? %>
+      <a href="<%= @app.uri %>" style="text-decoration:none;">
         <span class = "infobar_item" >
-          Privacy Policy
+          Web App
         </span>
       </a>
-    </div>
+    <% end %>
+    <!-- App Launch - iOS -->
+    <% if !@app.ios_app_id.blank? %>
+      <a href="https://itunes.apple.com/us/app/apple-store/id<%= @app.ios_app_id %>" style="text-decoration:none;">
+        <span class = "infobar_item" >
+          iOS
+        </span>
+      </a>
+    <% end %>
+    <!-- App Launch - Android -->
+    <% if !@app.android_app_package.blank? %>
+      <a href="http://play.google.com/store/apps/details?id=<%= @app.android_app_package %>" style="text-decoration:none;">
+        <span class = "infobar_item" >
+          Android
+        </span>
+      </a>
+    <% end %>
+    <!-- Privacy Policy -->
+    <a href="<%= privacy_app_url(@app) %>" style="text-decoration:none;">
+      <span class = "infobar_item" >
+        Privacy Policy
+      </span>
+    </a>
 
-<br/>
+
+<br/><br/><br/>
+
+<!-- APP REVIEW BAR -->
+
+  <h3> APP REVIEW  </h3>
+  <div class="infobar">
+    <table style="width:100%">
+      <tbody>
+          <tr>
+            <th>Official</th>
+            <th>Tool Review Status</th>
+            <th>Support</th>
+            <th>Accessibility</th>
+            <th>Privacy</th>
+            <th>Security</th>
+            <th>Mobile Friendly</th>
+            <th>Supports LTI&reg;</th>
+            <th style="border-right: 0px;">Supports Caliper&trade;</th>
+          </tr>
+
+      <tr>
+        <td><% if @app.official %><%= image_tag "infobar_check.png", title:"An offical app." %><% else %><%= image_tag "infobar_dash.png", title:"A non-official app." %><% end %></td>
+        <td><%= raw(@app.image_tag_for_review_status(@app.overall_review_status)) %></td>
+        <td><% if @app.support_contact_name or @app.support_contact_email %><%= image_tag "infobar_check.png", title: "Support contact information has been included."%><% else %><%= image_tag "infobar_dash.png", title: "No support contact information has been included." %><% end %></td>
+        <td><%= raw(@app.image_tag_for_review_status(@app.accessibility_review_status)) %></td>
+        <td><%= raw(@app.image_tag_for_review_status(@app.privacy_review_status)) %></td>
+        <td><%= raw(@app.image_tag_for_review_status(@app.security_review_status)) %></td>
+        <td><% if @app.mobile_support %><%= image_tag "infobar_web.png", title: "Mobile web app available." %><% end %><% if @app.has_ios_properties_set? %><%= image_tag "infobar_apple.png", title: "iOS / Apple app available." %><% end %><% if @app.has_android_properties_set? %><%= image_tag "infobar_android.png", title:"Android app available." %><% end %>
+          <% if ! @app.android_app_package and ! @app.ios_app_id and ! @app.mobile_support %><%= image_tag "infobar_dash.png", title:"No iOS / Apple, Android, or mobile web app available." %><% end %></td>
+        <td><% if @app.lti %><%= image_tag "infobar_check.png", title:"LTI is supported." %><% else %><%= image_tag "infobar_dash.png", title:"LTI is not supported." %><% end %></td>
+        <td style="border-right: 0px;"><% if @app.caliper %><%= image_tag "infobar_check.png", title:"Caliper is supported." %><% else %><%= image_tag "infobar_dash.png", title:"Caliper is not supported."%><% end %></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
 
 <!-- USER REVIEWS -->
   <% if session_user or @app.app_ratings.count > 0 %>

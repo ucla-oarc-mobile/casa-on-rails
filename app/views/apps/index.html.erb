@@ -12,7 +12,7 @@
               <%= app.icon_tag %>
               <figcaption>
                 <h4><%= app.title %></h4>
-                <p><%= app.short_description %></p>
+                <p><%= app.description %></p>
                 <div class="stars">
                   <% unless app.average_rating.nan? %>
                     <span class="filled"><%= raw (1..app.average_rating.round(0)).map { '&#9733;' }.join ' ' %></span>
