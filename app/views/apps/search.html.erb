@@ -3,15 +3,12 @@
 <nav class="collection right-space">
   <ul class="clearfix list-unstyled">
     <% @apps.where(enabled: true).each do |app| %>
-      <li>
+      <li <% if app.official %>class="official"<% end %>>
         <a href="<%= url_for app %>">
           <figure>
             <%= app.icon_tag %>
             <figcaption>
-              <h4 style="display:inline-block"><%= app.title %></h4>
-              <% if app.official %>
-                <%= image_tag "inhouse_app.png", title:"An offical app.", style: 'height:15px; margin:0px; margin-top:2px; padding-left:10px;' %>
-              <% end %>
+              <h4><%= app.title %></h4>
               <p><%= app.description %></p>
               <div class="stars">
                 <% unless app.average_rating.nan? %>

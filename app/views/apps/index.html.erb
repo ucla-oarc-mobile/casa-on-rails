@@ -6,15 +6,12 @@
       <%= link_to raw("See More in #{collection.name} &rarr;"), collection, role: 'button', class: 'see-more' %>
     </header>
     <ul class="clearfix list-unstyled">
-      <% collection.apps.where(enabled: true).available_to_launch_method(launch_provider.get).take(9).each do |app| %><li>
+      <% collection.apps.where(enabled: true).available_to_launch_method(launch_provider.get).take(9).each do |app| %><li class="<% if app.official %>official<% end %>">
           <a href="<%= url_for app %>">
             <figure>
               <%= app.icon_tag %>
               <figcaption>
-                <h4 style="display:inline-block"><%= app.title %></h4>
-                <% if app.official %>
-                  <%= image_tag "inhouse_app.png", title:"An offical app.", style: 'height:15px; margin:0px; margin-top:2px; padding-left:10px;' %>
-                <% end %>
+                <h4><%= app.title %></h4>
                 <p><%= app.description %></p>
                 <div class="stars">
                   <% unless app.average_rating.nan? %>
