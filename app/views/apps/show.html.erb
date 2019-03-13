@@ -138,6 +138,12 @@
         Privacy Policy
       </span>
     </a>
+    <!-- Contact -->
+    <a href="mailto:<%= @app.support_contact_email %>?Subject=<%=@app.title %>" style="text-decoration:none;">
+      <span class = "infobar_item" >
+        Contact
+      </span>
+    </a>
 
 
 <br/><br/><br/>
@@ -149,28 +155,21 @@
     <table style="width:100%">
       <tbody>
           <tr>
-            <th>Official</th>
             <th>Tool Review Status</th>
             <th>Support</th>
             <th>Accessibility</th>
             <th>Privacy</th>
             <th>Security</th>
             <th>Mobile Friendly</th>
-            <th>Supports LTI&reg;</th>
-            <th style="border-right: 0px;">Supports Caliper&trade;</th>
           </tr>
-
       <tr>
-        <td><% if @app.official %><%= image_tag "infobar_check.png", title:"An offical app." %><% else %><%= image_tag "infobar_dash.png", title:"A non-official app." %><% end %></td>
         <td><%= raw(@app.image_tag_for_review_status(@app.overall_review_status)) %></td>
-        <td><% if @app.support_contact_name or @app.support_contact_email %><%= image_tag "infobar_check.png", title: "Support contact information has been included."%><% else %><%= image_tag "infobar_dash.png", title: "No support contact information has been included." %><% end %></td>
+        <td><% if @app.support_contact_email %><%= image_tag "infobar_check.png", title: "Support contact information has been included."%><% else %><%= image_tag "infobar_in_progress.png", title: "No support contact information has been included." %><% end %></td>
         <td><%= raw(@app.image_tag_for_review_status(@app.accessibility_review_status)) %></td>
         <td><%= raw(@app.image_tag_for_review_status(@app.privacy_review_status)) %></td>
         <td><%= raw(@app.image_tag_for_review_status(@app.security_review_status)) %></td>
         <td><% if @app.mobile_support %><%= image_tag "infobar_web.png", title: "Mobile web app available." %><% end %><% if @app.has_ios_properties_set? %><%= image_tag "infobar_apple.png", title: "iOS / Apple app available." %><% end %><% if @app.has_android_properties_set? %><%= image_tag "infobar_android.png", title:"Android app available." %><% end %>
-          <% if ! @app.android_app_package and ! @app.ios_app_id and ! @app.mobile_support %><%= image_tag "infobar_dash.png", title:"No iOS / Apple, Android, or mobile web app available." %><% end %></td>
-        <td><% if @app.lti %><%= image_tag "infobar_check.png", title:"LTI is supported." %><% else %><%= image_tag "infobar_dash.png", title:"LTI is not supported." %><% end %></td>
-        <td style="border-right: 0px;"><% if @app.caliper %><%= image_tag "infobar_check.png", title:"Caliper is supported." %><% else %><%= image_tag "infobar_dash.png", title:"Caliper is not supported."%><% end %></td>
+          <% if ! @app.android_app_package and ! @app.ios_app_id and ! @app.mobile_support %><%= image_tag "infobar_in_progress.png", title:"No iOS / Apple, Android, or mobile web app available." %><% end %></td>
       </tr>
       </tbody>
     </table>
@@ -182,7 +181,7 @@
 
   <div class="content ratings">
 
-    <h1>Reviews</h1>
+    <h1>User Reviews</h1>
 
     <% if @app.app_ratings.count > 0 %>
 
@@ -275,9 +274,7 @@
       <% end %>
 
 
- <!-- ADD TO INFOBAR !!! -->
-
-  <% if (((session_user and session_user.admin) and (@app.primary_contact_name or @app.primary_contact_name)) or @app.app_authors.count > 0 or @app.app_organizations.count > 0) %>
+  <!-- <% if (((session_user and session_user.admin) and (@app.primary_contact_name or @app.primary_contact_name)) or @app.app_authors.count > 0 or @app.app_organizations.count > 0) %>
       <div class="content">
 
         <div class="line"></div>
@@ -347,13 +344,11 @@
 
       </div>
 
-<% end %>
+<% end %> -->
+
+<h3> ADDITIONAL INFORMATION  </h3>
 
   <div class="content">
-
-    <div class="line"></div>
-
-    <h1>Additional Information</h1>
 
     <div class="additional-info-inline-block">
       <h4>Created</h4>

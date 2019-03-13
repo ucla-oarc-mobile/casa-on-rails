@@ -267,7 +267,7 @@ class App < ActiveRecord::Base
 
   def image_for_review_status(status)
     if status == RECOMMENDED_FOR_USE
-      return '/assets/infobar_recommended_for_use.png'
+      return '/assets/infobar_check.png'
     elsif status == USE_WITH_CAUTION
       return '/assets/infobar_use_with_caution.png'
     elsif status == NOT_RECOMMENDED
@@ -275,7 +275,7 @@ class App < ActiveRecord::Base
     elsif status == IN_PROGRESS
       return '/assets/infobar_in_progress.png'
     else
-      return '/assets/infobar_dash.png'
+      return '/assets/infobar_in_progress.png'
     end
   end
 
