@@ -56,15 +56,15 @@ module Manage
         @app.app_tags << AppTag.new(name: t)
       end
 
-      new_competencies = params[:app][:app_competencies].gsub("\r", '').split("\n")
-      new_competencies.each do |t|
-        @app.app_competencies << AppCompetency.new(name: t)
-      end
+      # new_competencies = params[:app][:app_competencies].gsub("\r", '').split("\n")
+      # new_competencies.each do |t|
+      #   @app.app_competencies << AppCompetency.new(name: t)
+      # end
 
-      new_features = params[:app][:app_features].gsub("\r", '').split("\n")
-      new_features.each do |t|
-        @app.app_features << AppFeature.new(feature_name: t)
-      end
+      # new_features = params[:app][:app_features].gsub("\r", '').split("\n")
+      # new_features.each do |t|
+      #   @app.app_features << AppFeature.new(feature_name: t)
+      # end
 
       [:wcag_text_alternatives, :wcag_time_based_media,:wcag_adaptable, :wcag_distinguishable,
        :wcag_keyboard_accessible, :wcag_enough_time, :wcag_seizures, :wcag_navigable, :wcag_readable,

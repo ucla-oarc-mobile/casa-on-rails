@@ -60,10 +60,10 @@ module Admin
         @app.app_tags << AppTag.new(name: t)
       end
 
-      new_competencies = params[:app][:app_competencies].gsub("\r", '').split("\n")
-      new_competencies.each do |t|
-        @app.app_competencies << AppCompetency.new(name: t)
-      end
+      # new_competencies = params[:app][:app_competencies].gsub("\r", '').split("\n")
+      # new_competencies.each do |t|
+      #   @app.app_competencies << AppCompetency.new(name: t)
+      # end
 
       if params[:app][:restrict_launch]
         new_methods = params[:app][:app_launch_methods].keep_if(){ |m| m != '' }
@@ -209,23 +209,23 @@ module Admin
         @app.app_tags << AppTag.new(name: t)
       end
 
-      current_competencies = @app.app_competencies.map(){ |t| t.name }
-      new_competencies = params[:app][:app_competencies].gsub("\r", '').split("\n")
-      (current_competencies - new_competencies).each do |t|
-        @app.app_competencies.where(name: t).each { |r| r.delete }
-      end
-      (new_competencies - current_competencies).each do |t|
-        @app.app_competencies << AppCompetency.new(name: t)
-      end
+      # current_competencies = @app.app_competencies.map(){ |t| t.name }
+      # new_competencies = params[:app][:app_competencies].gsub("\r", '').split("\n")
+      # (current_competencies - new_competencies).each do |t|
+      #   @app.app_competencies.where(name: t).each { |r| r.delete }
+      # end
+      # (new_competencies - current_competencies).each do |t|
+      #   @app.app_competencies << AppCompetency.new(name: t)
+      # end
 
-      current_features = @app.app_features.map(){ |t| t.feature_name }
-      new_features = params[:app][:app_features].gsub("\r", '').split("\n")
-      (current_features - new_features).each do |t|
-        @app.app_features.where(feature_name: t).each { |r| r.delete }
-      end
-      (new_features - current_features).each do |t|
-        @app.app_features << AppFeature.new(feature_name: t)
-      end
+      # current_features = @app.app_features.map(){ |t| t.feature_name }
+      # new_features = params[:app][:app_features].gsub("\r", '').split("\n")
+      # (current_features - new_features).each do |t|
+      #   @app.app_features.where(feature_name: t).each { |r| r.delete }
+      # end
+      # (new_features - current_features).each do |t|
+      #   @app.app_features << AppFeature.new(feature_name: t)
+      # end
 
       current_wcag_guidelines = @app.app_wcag_guidelines.map(){ |t| t.guideline }
 

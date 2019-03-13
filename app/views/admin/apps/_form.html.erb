@@ -143,13 +143,12 @@
       <fieldset role="tab" id="advanced">
 
         <% if session_user.admin %>
-            <legend>Sharing</legend>
+            <legend>Enable App & Connect to other App Stores</legend>
             <div class="form-field">
-              <label>Sharing Preference</label>
               <p style="margin-top:0"><%= @app.sharing_preference %></p>
             </div>
             <fieldset class="form-fields">
-              <legend>Sharing</legend>
+              <legend>Enable App</legend>
               <div class="form-checkbox">
                 <%= f.check_box :enabled %>
                 <%= f.label :enabled, data: { help: 'When not checked, this app will not be shown to users or be shared with peers. Sharing must be disabled before this can be disabled.' } %>
@@ -165,7 +164,7 @@
             </fieldset>
 
             <fieldset>
-              <legend>App Listing</legend>
+              <legend>Default App</legend>
               <div class="form-checkbox">
                 <input type="checkbox" id="enable_default_app_order" <%= (!@app.new_record? and @app.default_app_order) ? 'checked' : '' %>><label for="enable_default_app_order" data-help="Controls whether this app will show by default on the mobile dashboard."> Show by Default</label>
               </div>
@@ -175,52 +174,75 @@
               </div>
             </fieldset>
 
-            <br/><br/>
+            <fieldset>
+              <legend> Custom peer access </legend>
+              <p>This control lets you customize which connected App Stores will see this App. Connected App Stores (peers) can be managed under <%= link_to 'ADMIN > OUT PEERS', admin_out_peers_url, target: '_blank' %>.</p>
+              <div class="form-checkbox">
+                <%= f.check_box :restrict %>
+                <%= f.label :restrict, 'Restrict Access to Specific Peers' %>
+              </div>
+              <div class="form-field" style="margin-top:12px;">
+                <%= f.label :app_out_peer_permissions, 'Allowed Peers' %>
+                <%= f.select :app_out_peer_permissions,
+                             if(@out_peers)
+                               options_for_select(@out_peers.map(){ |p| [p.name, p.id] }, @app.app_out_peer_permissions.map(){ |p| p.out_peer.id })
+                             else
+                                ''
+                             end ,
+                             {},
+                             multiple: true %>
+              </div>
+            </fieldset>
 
-          <legend>Designations</legend>
-          <div class="form-checkbox">
-            <%= f.check_box :official %>
-            <%= f.label :official, 'Official App', 'data-help' => 'Official apps have a specialized icon on the store homepage. The official designation is included when this app is added to a Tool Consumer as an LTI tool.'%>
-          </div>
+            <legend>Official App</legend>
+            <div class="form-checkbox">
+              <%= f.check_box :official %>
+              <%= f.label :official, 'Official App', 'data-help' => 'Official apps have a specialized icon on the store homepage. The official designation is included when this app is added to a Tool Consumer as an LTI tool.'%>
+            </div>
 
-          <br/><br/>
-
-          <legend>Access Control</legend>
-          <p>Access controls can be used to restrict the sharing of this app to specific peers. If you choose &quot;Restrict Access to Specific Peers&quot;, you can pick one or more outbound peers that will receive this app. Outbound peers can be managed under <%= link_to 'ADMIN > OUT PEERS', admin_out_peers_url, target: '_blank' %>.</p>
-          <div class="form-checkbox">
-            <%= f.check_box :restrict %>
-            <%= f.label :restrict, 'Restrict Access to Specific Peers' %>
-          </div>
-          <div class="form-field" style="margin-top:12px;">
-            <%= f.label :app_out_peer_permissions, 'Allowed Peers' %>
-            <%= f.select :app_out_peer_permissions,
-                         if(@out_peers)
-                           options_for_select(@out_peers.map(){ |p| [p.name, p.id] }, @app.app_out_peer_permissions.map(){ |p| p.out_peer.id })
-                         else
-                            ''
-                         end ,
-                         {},
-                         multiple: true %>
-          </div>
-          <div class="form-checkbox" style="margin-top:12px;">
-            <%= f.check_box :restrict_launch %>
-            <%= f.label :restrict_launch, 'Restrict to Specific Launch Methods' %>
-          </div>
-          <div class="form-field" style="margin-top:12px;">
-            <%= f.label :app_launch_methods, 'Show To Launch Methods' %>
-            <%= f.select :app_launch_methods,
-                         options_for_select([
-                                                 [ 'LTI', 'lti' ],
-                                                 [ 'Mobile', 'mobile' ],
-                                                 [ 'Cordova', 'cordova' ],
-                                                 [ 'WebView Javascript Bridge', 'web_view_javascript_bridge' ]
-                                            ], @app.app_launch_methods.map(){ |m| m.method }),
-                         {},
-                         multiple: true %>
-          </div>
         <% end %>
 
-        <br/><br/><br/>
+        <br/>
+        <br/>
+
+        <legend data-help="Check any of the licesing models below that the app supports.">App Licensing</legend>
+        <fieldset>
+          <div class="form-checkbox">
+            <%= f.check_box :license_is_free %>
+            <%= f.label :license_is_free, 'Free', data: { help: 'Check this box if the app has a free cost model.' } %>
+          </div>
+          <div class="form-checkbox">
+            <%= f.check_box :license_is_paid %>
+            <%= f.label :license_is_paid, 'Paid', data: { help: 'Check this box if the app has a paid cost model.' } %>
+          </div>
+          <div class="form-checkbox">
+            <%= f.check_box :license_is_recharge %>
+            <%= f.label :license_is_recharge, 'Recharge', data: { help: 'Check this box if the app uses an operational or departmental recharge cost model.' } %>
+          </div>
+          <div class="form-checkbox">
+            <%= f.check_box :license_is_by_seat %>
+            <%= f.label :license_is_by_seat, 'By Seat', data: { help: 'Check this box if the app uses by-seat licensing. Details about different by-seat plans may be added to the License Text section below.' } %>
+          </div>
+          <div class="form-checkbox">
+            <%= f.check_box :license_is_subscription %>
+            <%= f.label :license_is_subscription, 'Subscription', data: { help: 'Check this box if the app has a subscription-based cost model. Details about different subscription plans may be added to the License Text section below.' } %>
+          </div>
+          <div class="form-checkbox">
+            <%= f.check_box :license_is_ad_supported %>
+            <%= f.label :license_is_ad_supported, 'Ad Supported', data: { help: 'Check this box if the app has an ad-supported cost model. Ad network or other ad details may be added to the License Text section below. Information about ads that set local cookies can be declared in the Security details for this app\'s configuration.' } %>
+          </div>
+          <div class="form-checkbox">
+            <%= f.check_box :license_is_other %>
+            <%= f.label :license_is_other, 'Other', data: { help: 'Check this box if the app has a cost model that is not one of the models above. The License Text field below may be used to describe any other licensing details.' } %>
+          </div>
+        </fieldset>
+        <div class="form-field">
+          <%= f.label :license_text, raw('License Text') %>
+          <%= f.text_area :license_text, style: 'height: 5em;' %>
+        </div>
+
+        <br/>
+        <br/>
 
         <legend>Additional Details</legend>
 
@@ -234,10 +256,6 @@
           <ul style="list-style:none;padding: 0 10px;"></ul>
           <button type="button" class="secondary">Add Organization</button>
         </fieldset>
-        <div class="form-field">
-          <%= f.label :app_tags, 'Tags (one per line)', data: { help: 'Flexible metadata values that may be assigned to apps to improve searchability.' } %>
-          <%= f.text_area :app_tags, value: @app.app_tags.map(){ |t| t.name }.join("\n") %>
-        </div>
         <fieldset>
           <% if @categories %>
               <div class="form-field">
@@ -247,48 +265,48 @@
                                         }, {}, {:multiple => true} %>
               </div>
           <% end %>
-      </fieldset>
-        <div class="form-field">
+        </fieldset>
+        <!-- <div class="form-field">
           <%= f.label :download_size, 'Download Size', data: { help: 'Free-form text that describes the size requirements for downloading and installing the app. E.g., "500KB", "10 Megabytes", "an e-book that requires downloads of large images".' } %>
           <%= f.text_field :download_size %>
-        </div>
+        </div> -->
         <div class="form-field">
           <%= f.label :supported_languages, 'Supported Languages', data: { help: 'The languages supported by the app.' } %>
           <%= f.text_field :supported_languages %>
         </div>
-        <div class="form-field">
+        <!-- <div class="form-field">
           <%= f.label :app_competencies, 'Competencies (one word or phrase per line)', data: { help: 'Competencies or skills that may be learned by using the app.' } %>
           <%= f.text_area :app_competencies, value: @app.app_competencies.map(){ |t| t.name }.join("\n") %>
-        </div>
+        </div> -->
         <div class="form-field">
+          <%= f.label :app_tags, 'Tags (one per line)', data: { help: 'Flexible metadata values that may be assigned to apps to improve searchability.' } %>
+          <%= f.text_area :app_tags, value: @app.app_tags.map(){ |t| t.name }.join("\n") %>
+        </div>
+        <!-- <div class="form-field">
           <%= f.label :app_features, 'Features (one word or phrase per line)', data: { help: 'Features that the app has, such as "discussion board" or "quizzes" or "interactive math problems".' } %>
           <%= f.text_area :app_features, value: @app.app_features.map(){ |t| t.feature_name }.join("\n") %>
-        </div>
+        </div> -->
+
+        <br/>
+        <br/>
 
         <legend>Security</legend>
-
         <fieldset>
-            <div class="form-field">
-                <%= f.label :security_uses_https, 'Uses HTTPS for Network Encryption', data: { help: 'Check this box if an SSL certificate is used to secure network traffic to and from the app.' }%>
+            <div class="form-checkbox">
                 <%= f.check_box :security_uses_https %>
+                <%= f.label :security_uses_https, 'Uses HTTPS for Network Encryption', data: { help: 'Check this box if an SSL certificate is used to secure network traffic to and from the app.' }%>
             </div>
-        </fieldset>
-        <fieldset>
-            <div class="form-field">
-                <%= f.label :security_uses_additional_encryption, 'Uses Additional Methods of Encryption', data: { help: 'Check this box if additional methods of encryption are used, for example, if data is encrypted at rest.' }%>
+            <div class="form-checkbox">
                 <%= f.check_box :security_uses_additional_encryption %>
+                <%= f.label :security_uses_additional_encryption, 'Uses Additional Methods of Encryption', data: { help: 'Check this box if additional methods of encryption are used, for example, if data is encrypted at rest.' }%>
             </div>
-        </fieldset>
-        <fieldset>
-            <div class="form-field">
-                <%= f.label :security_requires_cookies, 'Requires Cookies', data: { help: 'Check this box if the app requires cookies in order to function.' } %>
+            <div class="form-checkbox">
                 <%= f.check_box :security_requires_cookies %>
+                <%= f.label :security_requires_cookies, 'Requires Cookies', data: { help: 'Check this box if the app requires cookies in order to function.' } %>
             </div>
-        </fieldset>
-        <fieldset>
-            <div class="form-field">
-                <%= f.label :security_requires_third_party_cookies, 'Requires Third-Party Cookies', data: { help: 'Check this box if the app requires third-party cookies in order to function.' } %>
+            <div class="form-checkbox">
                 <%= f.check_box :security_requires_third_party_cookies %>
+                <%= f.label :security_requires_third_party_cookies, 'Requires Third-Party Cookies', data: { help: 'Check this box if the app requires third-party cookies in order to function.' } %>
             </div>
         </fieldset>
         <div class="form-field">
@@ -309,10 +327,10 @@
         </div>
         <div class="form-field">
           <%= f.label :security_text, raw('Security Text'), data: { help: 'Free form text describing additional information about how the app handles security.' } %>
-          <%= f.text_area :security_text, style: 'height: 30em;' %>
+          <%= f.text_area :security_text, style: 'height: 5em;' %>
         </div>
 
-        <legend>Interoperability</legend>
+        <!-- <legend>Interoperability</legend>
 
         <fieldset>
           <legend>LTI</legend>
@@ -325,102 +343,89 @@
             <ul style="list-style:none;padding: 0 10px;"></ul>
             <button type="button" class="secondary">Add LTI Configuration</button>
           </fieldset>
-        </fieldset>
+        </fieldset> -->
 
-        <legend>Student Data</legend>
+        <br/>
+        <br/>
+
+        <legend>Advanced Privacy Settings </legend>
+
         <fieldset>
-          <div class="form-field">
-            <%= f.label :student_data_stores_local_data, 'The app stores local data.', data: { help: 'Check this box if the app stores any local data about the student.' }%>
+          <legend>Student Data</legend>
+          <div class="form-checkbox">
             <%= f.check_box :student_data_stores_local_data %>
+            <%= f.label :student_data_stores_local_data, 'The app stores local data.', data: { help: 'Check this box if the app stores any local data about the student.' }%>
           </div>
-        </fieldset>
-        <fieldset>
-          <div class="form-field">
-            <%= f.label :student_data_stores_pii, 'The app stores personally identifying information (PII) about the student.', data: { help: 'Check this box if the app stores any PII regarding the student.' }%>
+          <div class="form-checkbox">
             <%= f.check_box :student_data_stores_pii %>
+            <%= f.label :student_data_stores_pii, 'The app stores personally identifying information (PII) about the student.', data: { help: 'Check this box if the app stores any PII regarding the student.' }%>
           </div>
-        </fieldset>
-        <fieldset>
-          <div class="form-field">
-            <%= f.label :student_data_requires_account, 'The app requires the student to create an account.', data: { help: 'Check this box if the app requires the student to create an account.' }%>
+          <div class="form-checkbox">
             <%= f.check_box :student_data_requires_account %>
+            <%= f.label :student_data_requires_account, 'The app requires the student to create an account.', data: { help: 'Check this box if the app requires the student to create an account.' }%>
           </div>
-        </fieldset>
-        <fieldset>
-          <div class="form-field">
-            <%= f.label :student_data_has_opt_out_for_data_collection, 'The app allows students to opt-out of data collection.', data: { help: 'Check this box if the student is given the option to opt-out of data collection.' }%>
+          <div class="form-checkbox">
             <%= f.check_box :student_data_has_opt_out_for_data_collection %>
+            <%= f.label :student_data_has_opt_out_for_data_collection, 'The app allows students to opt-out of data collection.', data: { help: 'Check this box if the student is given the option to opt-out of data collection.' }%>
           </div>
-        </fieldset>
-        <fieldset>
-          <div class="form-field">
-            <%= f.label :student_data_has_opt_in_for_data_collection, 'The app allows students to opt-in to data collection.', data: { help: 'Check this box if the student is given the option to opt-in to data collection.' }%>
+          <div class="form-checkbox">
             <%= f.check_box :student_data_has_opt_in_for_data_collection %>
+            <%= f.label :student_data_has_opt_in_for_data_collection, 'The app allows students to opt-in to data collection.', data: { help: 'Check this box if the student is given the option to opt-in to data collection.' }%>
           </div>
-        </fieldset>
-        <fieldset>
-          <div class="form-field">
-            <%= f.label :student_data_shows_eula, 'The app displays a EULA to students.', data: { help: 'Check this box if an End User License Agreement (EULA) is presented to the student.' }%>
+          <div class="form-checkbox">
             <%= f.check_box :student_data_shows_eula %>
+            <%= f.label :student_data_shows_eula, 'The app displays a EULA to students.', data: { help: 'Check this box if an End User License Agreement (EULA) is presented to the student.' }%>
           </div>
-        </fieldset>
-        <fieldset>
-          <div class="form-field">
-            <%= f.label :student_data_is_app_externally_hosted, 'The app is hosted outside of the institution.', data: { help: 'Check this box if the app is hosted externally.' }%>
+          <div class="form-checkbox">
             <%= f.check_box :student_data_is_app_externally_hosted %>
+            <%= f.label :student_data_is_app_externally_hosted, 'The app is hosted outside of the institution.', data: { help: 'Check this box if the app is hosted externally.' }%>
           </div>
         </fieldset>
 
-        <legend data-help="Check any of the licesing models below that the app supports.">Licensing</legend>
+        <div class="form-field">
+          <%= label_tag :privacy_enable, 'Privacy Matrix', data: { help: 'This privacy matrix is based on the Privacy Nutrition Label concept. Instead of the complex legalese of traditional privacy policies, it is intended to condense a privacy policy into a simple, understandable table.' } %>
+          <%= check_box :privacy, 'enable' %>
+        </div>
+        <fieldset id="privacy-fields">
+          <div class="fields-table">
+            <table>
+              <%
+                 app_privacy_policy = @app.app_privacy_policy ? @app.app_privacy_policy : AppPrivacyPolicy.new
+              %>
+              <thead>
+              <tr>
+                <th class="row-heading">Type</th>
+                <% AppPrivacyPolicy.types.each do |type, description| %>
+                  <th data-help="<%= description.gsub /"/, '&quot;' %>"><%= type.capitalize %></th>
+                <% end %>
+              </tr>
+              </thead>
+              <tbody>
+              <%= fields_for :app_privacy_policy do |privacy| %>
+                <% AppPrivacyPolicy.classifications.each do |context, context_description| %>
+                  <tr>
+                    <td class="row-heading" <% if context_description -%>data-help="<%= context_description.gsub /"/, '&quot;' %>"<% end -%>><%= context.capitalize %></td>
+                    <% AppPrivacyPolicy.types.each do |type, type_description| symbol = "#{context}_#{type}".to_sym %>
+                      <td>
+                        <%= privacy.label symbol, "Privacy of #{context} for #{type}", class: 'hide-accessible' %>
+                        <%= privacy.select symbol,
+                                           options_for_select([
+                                                                  ['No', 'false'],
+                                                                  ['Opt-out', '"optOut"'],
+                                                                  ['Opt-in', '"optIn"'],
+                                                                  ['Yes', 'true']
+                                                              ], app_privacy_policy.send(symbol)) %>
+                      </td>
+                    <% end %>
+                <% end %>
+                </tr>
+              <% end %>
+              </tbody>
+            </table>
+          </div>
+        </fieldset>
 
-        <fieldset>
-          <div class="form-field">
-              <%= f.label :license_is_free, 'Free', data: { help: 'Check this box if the app has a free cost model.' } %>
-              <%= f.check_box :license_is_free %>
-          </div>
-        </fieldset>
-        <fieldset>
-          <div class="form-field">
-              <%= f.label :license_is_paid, 'Paid', data: { help: 'Check this box if the app has a paid cost model.' } %>
-              <%= f.check_box :license_is_paid %>
-          </div>
-        </fieldset>
-        <fieldset>
-          <div class="form-field">
-              <%= f.label :license_is_recharge, 'Recharge', data: { help: 'Check this box if the app uses an operational or departmental recharge cost model.' } %>
-              <%= f.check_box :license_is_recharge %>
-          </div>
-        </fieldset>
-      <fieldset>
-          <div class="form-field">
-              <%= f.label :license_is_by_seat, 'By Seat', data: { help: 'Check this box if the app uses by-seat licensing. Details about different by-seat plans may be added to the License Text section below.' } %>
-              <%= f.check_box :license_is_by_seat %>
-          </div>
-      </fieldset>
-      <fieldset>
-          <div class="form-field">
-              <%= f.label :license_is_subscription, 'Subscription', data: { help: 'Check this box if the app has a subscription-based cost model. Details about different subscription plans may be added to the License Text section below.' } %>
-              <%= f.check_box :license_is_subscription %>
-          </div>
-      </fieldset>
-      <fieldset>
-          <div class="form-field">
-              <%= f.label :license_is_ad_supported, 'Ad Supported', data: { help: 'Check this box if the app has an ad-supported cost model. Ad network or other ad details may be added to the License Text section below. Information about ads that set local cookies can be declared in the Security details for this app\'s configuration.' } %>
-              <%= f.check_box :license_is_ad_supported %>
-          </div>
-      </fieldset>
-      <fieldset>
-          <div class="form-field">
-              <%= f.label :license_is_other, 'Other', data: { help: 'Check this box if the app has a cost model that is not one of the models above. The License Text field below may be used to describe any other licensing details.' } %>
-              <%= f.check_box :license_is_other %>
-          </div>
-      </fieldset>
-      <div class="form-field">
-        <%= f.label :license_text, raw('License Text') %>
-        <%= f.text_area :license_text, style: 'height: 30em;' %>
-      </div>
-
-      <legend>Accessibility</legend>
+      <!-- <legend>Accessibility</legend>
 
       <fieldset>
           <div class="form-field">
@@ -564,55 +569,7 @@
                                                '4.1-conforming-alternate-version'], @app.app_wcag_guidelines.map(){ |v| v.guideline if v.guideline.start_with?('4.1')}), multiple: true %>
           </div>
         </fieldset>
-      </fieldset>
-
-
-      <div class="form-field">
-        <%= label_tag :privacy_enable, 'Privacy Matrix', data: { help: 'This privacy matrix is based on the Privacy Nutrition Label concept. Instead of the complex legalese of traditional privacy policies, it is intended to condense a privacy policy into a simple, understandable table.' } %>
-        <%= check_box :privacy, 'enable' %>
-      </div>
-
-      <legend>Advanced Privacy Settings </legend>
-
-      <fieldset id="privacy-fields">
-        <div class="fields-table">
-          <table>
-            <%
-               app_privacy_policy = @app.app_privacy_policy ? @app.app_privacy_policy : AppPrivacyPolicy.new
-
-            %>
-            <thead>
-            <tr>
-              <th class="row-heading">Type</th>
-              <% AppPrivacyPolicy.types.each do |type, description| %>
-                <th data-help="<%= description.gsub /"/, '&quot;' %>"><%= type.capitalize %></th>
-              <% end %>
-            </tr>
-            </thead>
-            <tbody>
-            <%= fields_for :app_privacy_policy do |privacy| %>
-              <% AppPrivacyPolicy.classifications.each do |context, context_description| %>
-                <tr>
-                  <td class="row-heading" <% if context_description -%>data-help="<%= context_description.gsub /"/, '&quot;' %>"<% end -%>><%= context.capitalize %></td>
-                  <% AppPrivacyPolicy.types.each do |type, type_description| symbol = "#{context}_#{type}".to_sym %>
-                    <td>
-                      <%= privacy.label symbol, "Privacy of #{context} for #{type}", class: 'hide-accessible' %>
-                      <%= privacy.select symbol,
-                                         options_for_select([
-                                                                ['No', 'false'],
-                                                                ['Opt-out', '"optOut"'],
-                                                                ['Opt-in', '"optIn"'],
-                                                                ['Yes', 'true']
-                                                            ], app_privacy_policy.send(symbol)) %>
-                    </td>
-                  <% end %>
-              <% end %>
-              </tr>
-            <% end %>
-            </tbody>
-          </table>
-        </div>
-      </fieldset>
+      </fieldset> -->
 
     </fieldset>
 
