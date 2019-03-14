@@ -139,11 +139,13 @@
       </span>
     </a>
     <!-- Contact -->
-    <a href="mailto:<%= @app.support_contact_email %>?Subject=<%=@app.title %>" style="text-decoration:none;">
-      <span class = "app_details_item" >
-        Contact
-      </span>
-    </a>
+    <% if !@app.support_contact_email.blank? %>
+      <a href="mailto:<%= @app.support_contact_email %>?Subject=<%=@app.title %>" style="text-decoration:none;">
+        <span class = "app_details_item" >
+          Contact
+        </span>
+      </a>
+    <% end %>
 
 
 <br/><br/><br/>
