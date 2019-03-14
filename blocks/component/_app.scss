@@ -58,8 +58,8 @@
     margin: 0;
   }
 
-  .infobar_item {
-    color: $color-primary;
+  .app_details_item {
+    color: #505050;
     border-style: solid;
     border-radius: 9px;
     border-width: thin;
@@ -70,7 +70,19 @@
     padding: 7px;
     padding-left: 15px;
     padding-right: 15px;
+  }
 
+  .app_details_item:hover{
+    color: white;
+    background-color: #686868;
+  }
+
+  .infobar_area {
+    border: 1px;
+    border-style: solid;
+    border-color: #505050;
+    border-radius: 10px;
+    padding:10px;
   }
 
   .infobar_item_accessibility {
