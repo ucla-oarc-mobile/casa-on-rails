@@ -154,44 +154,43 @@
 
   <h3> APP REVIEW  </h3>
   <div class="infobar_area">
-    <table style="width:100%; text-align:center; ">
-      <tbody>
-          <tr>
-            <th style="padding-top:10px;">Review Status</th>
-            <th>Support</th>
-            <th>Accessibility</th>
-            <th>Privacy</th>
-            <th>Security</th>
-            <th>Mobile</th>
-            <th>License</th>
-          </tr>
-          <tr>
-            <td style="padding:20px;"><%= raw(@app.image_tag_for_review_status(@app.overall_review_status)) %></td>
-            <td><% if @app.support_contact_email %><%= image_tag "infobar_check.png", title: "Support contact information has been included."%><% else %><%= image_tag "infobar_in_progress.png", title: "No support contact information has been included." %><% end %></td>
-            <td><%= raw(@app.image_tag_for_review_status(@app.accessibility_review_status)) %></td>
-            <td><%= raw(@app.image_tag_for_review_status(@app.privacy_review_status)) %></td>
-            <td><%= raw(@app.image_tag_for_review_status(@app.security_review_status)) %></td>
-            <td><% if @app.mobile_support %><%= image_tag "infobar_web.png", title: "Mobile web app available." %><% end %><% if @app.has_ios_properties_set? %><%= image_tag "infobar_apple.png", title: "iOS / Apple app available." %><% end %><% if @app.has_android_properties_set? %><%= image_tag "infobar_android.png", title:"Android app available." %><% end %>
-              <% if ! @app.android_app_package and ! @app.ios_app_id and ! @app.mobile_support %><%= image_tag "infobar_in_progress.png", title:"No iOS / Apple, Android, or mobile web app available." %><% end %>
-            </td>
-            <td>
-              <b>
-                  <% if (@app.license_is_free && !@app.license_is_ad_supported && !(@app.license_is_paid || @app.license_is_recharge || @app.license_is_by_seat || @app.license_is_subscription)) %>
-                    FREE
-                  <% elsif (@app.license_is_free && (@app.license_is_paid || @app.license_is_recharge || @app.license_is_by_seat || @app.license_is_subscription)) %>
-                    FREEMIUM
-                  <% elsif (@app.license_is_ad_supported && !(@app.license_is_paid || @app.license_is_recharge || @app.license_is_by_seat || @app.license_is_subscription)) %>
-                    ADS
-                  <% elsif (@app.license_is_paid || @app.license_is_recharge || @app.license_is_by_seat || @app.license_is_subscription) %>
-                    PAY TO USE
-                  <% else %>
-                    <%= image_tag "infobar_in_progress.png", title:"No cost information available." %>
-                  <% end %>
-              </b>
-            </td>
-          </tr>
-      </tbody>
-    </table>
+
+      <div style="grid-area:a;" class="infobar_item"> Review Status </div>
+      <div style="grid-area:h; align-self:center; justify-self:center;"> <%= raw(@app.image_tag_for_review_status(@app.overall_review_status)) %> </div>
+
+      <div style="grid-area:b;" class="infobar_item"> Support </div>
+      <div style="grid-area:i; align-self:center; justify-self:center;"> <% if @app.support_contact_email %><%= image_tag "infobar_check.png", title: "Support contact information has been included."%><% else %><%= image_tag "infobar_in_progress.png", title: "No support contact information has been included." %><% end %> </div>
+
+      <div style="grid-area:c;" class="infobar_item"> Accessibility </div>
+      <div style="grid-area:j; align-self:center; justify-self:center;"> <%= raw(@app.image_tag_for_review_status(@app.accessibility_review_status)) %></div>
+
+      <div style="grid-area:d;" class="infobar_item"> Privacy </div>
+      <div style="grid-area:k; align-self:center; justify-self:center;"> <%= raw(@app.image_tag_for_review_status(@app.privacy_review_status)) %> </div>
+
+      <div style="grid-area:e;" class="infobar_item"> Security </div>
+      <div style="grid-area:l; align-self:center; justify-self:center;"> <%= raw(@app.image_tag_for_review_status(@app.security_review_status)) %> </div>
+
+      <div style="grid-area:f;" class="infobar_item"> Mobile </div>
+      <div style="grid-area:m; align-self:center; justify-self:center;"> <% if @app.mobile_support %><%= image_tag "infobar_web.png", title: "Mobile web app available." %><% end %><% if @app.has_ios_properties_set? %><%= image_tag "infobar_apple.png", title: "iOS / Apple app available." %><% end %><% if @app.has_android_properties_set? %><%= image_tag "infobar_android.png", title:"Android app available." %><% end %>
+        <% if ! @app.android_app_package and ! @app.ios_app_id and ! @app.mobile_support %><%= image_tag "infobar_in_progress.png", title:"No iOS / Apple, Android, or mobile web app available." %><% end %> </div>
+
+      <div style="grid-area:g;" class="infobar_item"> License </div>
+      <div style="grid-area:n; align-self:center; justify-self:center;">
+        <b>
+            <% if (@app.license_is_free && !@app.license_is_ad_supported && !(@app.license_is_paid || @app.license_is_recharge || @app.license_is_by_seat || @app.license_is_subscription)) %>
+              FREE
+            <% elsif (@app.license_is_free && (@app.license_is_paid || @app.license_is_recharge || @app.license_is_by_seat || @app.license_is_subscription)) %>
+              FREEMIUM
+            <% elsif (@app.license_is_ad_supported && !(@app.license_is_paid || @app.license_is_recharge || @app.license_is_by_seat || @app.license_is_subscription)) %>
+              ADS
+            <% elsif (@app.license_is_paid || @app.license_is_recharge || @app.license_is_by_seat || @app.license_is_subscription) %>
+              PAY TO USE
+            <% else %>
+              <%= image_tag "infobar_in_progress.png", title:"No cost information available." %>
+            <% end %>
+        </b>
+
+    </div>
   </div>
 
 

@@ -78,25 +78,38 @@
   }
 
   .infobar_area {
+    display: grid;
+    grid-template-areas:
+        "a b c d e f g"
+        "h i j k l m n";
     border: 1px;
     border-style: solid;
     border-color: #505050;
     border-radius: 10px;
-    padding:10px;
+    padding:15px;
+    @media(max-width: 1000px){
+      grid-template-areas:
+          "a"
+          "h"
+          "b"
+          "i"
+          "c"
+          "j"
+          "d"
+          "k"
+          "e"
+          "l"
+          "f"
+          "m"
+          "g"
+          "n";
+    }
   }
 
-  .infobar_item_accessibility {
-    color: grey;
-    border-style: solid;
-    border-radius: 9px;
-    border-width: thin;
-    font-size: 18px;
-    margin: 10px;
-    margin-left: 0px;
-    margin-right: 30px;
-    padding: 5px;
-    padding-left: 15px;
-    padding-right: 15px;
+  .infobar_item {
+    align-self:center;
+    justify-self:center;
+    padding: 10px;
   }
 
   .content {
