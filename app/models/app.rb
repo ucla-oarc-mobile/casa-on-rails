@@ -133,11 +133,19 @@ class App < ActiveRecord::Base
 
   validate :check_app_launch
 
+  validate :check_ios_launch
+
   after_validation :log_errors, :if => Proc.new {|m| m.errors}
 
   def check_app_launch
     if uri.blank? && android_app_package.blank? && ios_app_scheme.blank?
       errors[:base] << "Please provide at least one method of launching your app."
+    end
+  end
+
+  def check_ios_launch
+    if (!ios_app_scheme.blank? && ios_app_id.blank?) || (ios_app_scheme.blank? && !ios_app_id.blank?)
+      errors[:base] << "For iOS Apps please include both App ID and URL Scheme."
     end
   end
 
