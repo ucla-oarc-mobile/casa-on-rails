@@ -6,10 +6,10 @@
   <% end %>
 
   <!-- APP INFO -->
-  <div style="display:grid; grid-template-columns:250px 2fr 1fr; grid-template-rows: 1fr;">
+  <div class="app_info_area">
 
     <!-- APP ICON -->
-    <div style="grid-column: 1/2; grid-row:1/2;">
+    <div style="grid-area:a;">
       <section class="icon-group">
           <figure width="250" height="250">
             <%= @app.icon_tag %>
@@ -18,7 +18,7 @@
     </div>
 
     <!-- APP TITLE & INFO -->
-    <div style="grid-column: 2/3; grid-row: 1/2; align-self:start; justify-self:start;">
+    <div style="grid-area:b; align-self:start; justify-self:start;">
       <!-- APP TITLE -->
       <h1 style="margin: 0; display: inline-block"><%= @app.title %></h1>
       <div style="display: inline-block">
@@ -39,24 +39,10 @@
           <p><%= raw @app.app_tags.map(){ |t| t.name }.join(', ') %></p>
         </div>
       <% end %>
-      <section>
-        <% if @app.app_competencies.count > 0 %>
-            <div class="attribute">
-              <h4>Competencies</h4>
-              <p><%= raw @app.app_competencies.map(){ |c| c.name }.join(', ') %></p>
-            </div>
-        <% end %>
-        <% if @app.app_features.count > 0 %>
-            <div class="attribute">
-              <h4>Features</h4>
-              <p><%= raw @app.app_features.map(){ |f| f.feature_name }.join(', ') %></p>
-            </div>
-        <% end %>
-      </section>
     </div>
 
     <!-- EDIT / APP RATING -->
-    <div style="grid-column: 3/4; grid-row: 1/2; justify-self: center; align-self: start;">
+    <div style="grid-area:c; justify-self: center; align-self: start;">
       <% if session_user && (session_user.admin || @app.created_by == session_user.id) %>
         <div>
           <%= link_to 'Edit', edit_admin_app_url(@app), class: 'button warning' %>
@@ -108,45 +94,38 @@
 
     <h3> APP DETAILS  </h3>
     <br/>
-    <!-- App Launch - Web -->
-    <% if !@app.uri.blank? %>
-      <a href="<%= @app.uri %>" style="text-decoration:none;">
-        <span class = "app_details_item" >
+    <div class="app_details">
+      <!-- App Launch - Web -->
+      <% if !@app.uri.blank? %>
+        <a class = "app_details_item" href="<%= @app.uri %>" style="text-decoration:none;">
           Web App
-        </span>
-      </a>
-    <% end %>
-    <!-- App Launch - iOS -->
-    <% if !@app.ios_app_id.blank? %>
-      <a href="https://itunes.apple.com/us/app/apple-store/id<%= @app.ios_app_id %>" style="text-decoration:none;">
-        <span class = "app_details_item" >
+        </a>
+      <% end %>
+      <!-- App Launch - iOS -->
+      <% if !@app.ios_app_id.blank? %>
+        <a class = "app_details_item" href="https://itunes.apple.com/us/app/apple-store/id<%= @app.ios_app_id %>" style="text-decoration:none;">
           iOS
-        </span>
-      </a>
-    <% end %>
-    <!-- App Launch - Android -->
-    <% if !@app.android_app_package.blank? %>
-      <a href="http://play.google.com/store/apps/details?id=<%= @app.android_app_package %>" style="text-decoration:none;">
-        <span class = "app_details_item" >
-          Android
-        </span>
-      </a>
-    <% end %>
-    <!-- Privacy Policy -->
-    <a href="<%= privacy_app_url(@app) %>" style="text-decoration:none;">
-      <span class = "app_details_item" >
-        Privacy Policy
-      </span>
-    </a>
-    <!-- Contact -->
-    <% if !@app.support_contact_email.blank? %>
-      <a href="mailto:<%= @app.support_contact_email %>?Subject=<%=@app.title %>" style="text-decoration:none;">
-        <span class = "app_details_item" >
+        </a>
+      <% end %>
+      <!-- App Launch - Android -->
+      <% if !@app.android_app_package.blank? %>
+        <a class = "app_details_item" href="http://play.google.com/store/apps/details?id=<%= @app.android_app_package %>" style="text-decoration:none;">
+            Android
+        </a>
+      <% end %>
+      <!-- Privacy Policy -->
+      <% if !@app.support_contact_email.blank? %>
+        <a class = "app_details_item" href="<%= privacy_app_url(@app) %>" style="text-decoration:none;">
+          Privacy Policy
+        </a>
+      <% end %>
+      <!-- Contact -->
+      <% if !@app.support_contact_email.blank? %>
+        <a class = "app_details_item" href="mailto:<%= @app.support_contact_email %>?Subject=<%=@app.title %>" style="text-decoration:none;">
           Contact
-        </span>
-      </a>
-    <% end %>
-
+        </a>
+      <% end %>
+      </div
 
 <br/><br/><br/>
 

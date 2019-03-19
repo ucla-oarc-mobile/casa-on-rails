@@ -58,7 +58,24 @@
     margin: 0;
   }
 
+  .app_info_area {
+    display: grid;
+    grid-template-columns:250px 2fr 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas:
+          "a b c";
+    @media(max-width: 1000px){
+      grid-template-columns:1fr;
+      grid-template-rows: auto;
+      grid-template-areas:
+          "b"
+          "a"
+          "c";
+    }
+  }
+
   .app_details_item {
+    display: inline-block;
     color: #505050;
     border-style: solid;
     border-radius: 9px;
