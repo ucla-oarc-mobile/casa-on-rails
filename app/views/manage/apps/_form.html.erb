@@ -78,12 +78,12 @@
 
       <legend>iOS App</legend>
       <div class="form-field">
-        <%= f.label :ios_app_id, 'App ID', data: {help:'For iOS apps, the App ID can be found in iTunes Connect or in the URL for the App Store page (example: https://itunes.apple.com/us/app/apple-store/id1356392252)'} %>
+        <%= f.label :ios_app_id, 'App ID', data: {help:'For iOS apps, the App ID can be found in iTunes Connect or in the URL for the App Store page (example: for App Store page URL https://itunes.apple.com/us/app/apple-store/id1356392252, the App ID is "id1356392252")'} %>
         <%= f.text_field :ios_app_id %>
       </div>
 
       <div class="form-field">
-        <%= f.label :ios_app_scheme, 'Custom URL Scheme', data: {help:'The custom URL scheme is set by the developer (example: edu.ucla.mobile)'} %>
+        <%= f.label :ios_app_scheme, 'Custom URL Scheme', data: {help:'The custom URL scheme is set by the developer in XCode (example: uclamobile). NOTE: You do not need to include the :// at the end of the URL scheme.'} %>
         <%= f.text_field :ios_app_scheme %>
       </div>
 
