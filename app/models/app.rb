@@ -183,6 +183,10 @@ class App < ActiveRecord::Base
     end
   end
 
+  def icon_url
+    Rails.application.routes.url_helpers.icon_app_url(self)
+  end
+
   def formatted_description
     unless description.index('<').nil?
       sanitize description, tags: %w(h1 h2 h3 h4 h5 h6 p ul ol li strong em b i u), attributes: []

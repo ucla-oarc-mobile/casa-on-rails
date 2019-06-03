@@ -55,4 +55,23 @@ class AppsController < ApplicationController
     end
   end
 
+  def icon
+    @app = App.find params[:id]
+
+    if @app.icon
+      if @app.icon.start_with?("data:image/png;base64,")
+        return send_data(
+          Base64.decode64(@app.icon.sub("data:image/png;base64,", "")),
+          :type => 'image/jpeg',
+          :disposition => 'inline'
+        )
+
+      else
+        return render status: 400, plain: 'Invalid icon'
+      end
+    else
+      return render status: 404, plain: 'Not found'
+    end
+  end
+
 end
