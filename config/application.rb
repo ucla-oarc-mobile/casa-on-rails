@@ -23,6 +23,7 @@ module CasaOnRails
     # Set default hostname for URL generators, for use outside controllers
     if !ENV["HOSTNAME"].blank?
       Rails.application.routes.default_url_options[:host] = ENV["HOSTNAME"]
+      Rails.application.routes.default_url_options[:protocol] = "https"
     else
       Rails.application.routes.default_url_options[:host] = "localhost"
     end
