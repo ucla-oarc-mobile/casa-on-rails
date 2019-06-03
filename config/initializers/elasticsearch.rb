@@ -18,6 +18,9 @@ Rails.application.config.elasticsearch_client = Elasticsearch::Client.new(config
 Rails.application.config.elasticsearch_index = config[:index]
 
 begin
+  # Reload routes first because the App model needs URL helpers
+  Rails.application.reload_routes!
+
   Rails.application.config.elasticsearch_client.ping
   App.drop_index!
   App.where(enabled: true).each { |app| app.add_to_index! }
