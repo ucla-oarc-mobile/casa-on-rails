@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     member do
       resources :ratings, module: 'apps', as: 'app_ratings', param: :rating_id
       get '/privacy', to: 'apps#privacy', as: 'privacy'
+      get '/icon', to: 'apps#icon', as: 'icon'
     end
   end
 
