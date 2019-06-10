@@ -32,11 +32,6 @@ class AppsController < ApplicationController
           text: 'Add',
           url: return_url
       }
-    else
-      @button = {
-          text: 'Launch',
-          url: @app.uri
-      }
     end
 
   end
