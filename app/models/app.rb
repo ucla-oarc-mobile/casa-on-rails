@@ -560,6 +560,7 @@ class App < ActiveRecord::Base
         }
 
         content_item['icon'] = { '@id' => self.icon } if self.icon and self.icon.length > 0
+        content_item['icon_url'] = { '@id' => self.icon_url } if self.icon and self.icon.length > 0
         content_item['custom'] = { 'official' => official }
 
         # Here the OAuth info for the tool is included. The assumption is that we are only generating a
@@ -578,6 +579,7 @@ class App < ActiveRecord::Base
       }
       content_item['text'] = self.description if self.description.length > 0
       content_item['icon'] = { '@id' => self.icon } if self.icon and self.icon.length > 0
+      content_item['icon_url'] = { '@id' => self.icon_url } if self.icon and self.icon.length > 0
       content_item['custom'] = { 'official' => official }
     end
 
