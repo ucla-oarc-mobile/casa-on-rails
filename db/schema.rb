@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180828221745) do
+ActiveRecord::Schema.define(version: 20191102015259) do
 
   create_table "app_authors", force: :cascade do |t|
     t.integer "app_id",  limit: 4
@@ -338,11 +338,11 @@ ActiveRecord::Schema.define(version: 20180828221745) do
     t.datetime "casa_timestamp"
     t.integer  "in_peer_id",         limit: 4
     t.integer  "app_id",             limit: 4
-    t.text     "content",            limit: 65535
+    t.text     "content",            limit: 16777215
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
-    t.text     "original_content",   limit: 65535
+    t.text     "original_content",   limit: 16777215
   end
 
   add_index "in_payloads", ["casa_originator_id", "casa_id", "casa_timestamp"], name: "uniq_casa_payload_id", unique: true, using: :btree
