@@ -382,6 +382,22 @@
           </div>
         </fieldset>
 
+        <legend>LTI</legend>
+
+        <p data-help="Launch URL is the launch URL for LTI 1.x launches.">
+
+          IMS Global's <a href="http://www.imsglobal.org/toolsinteroperability2.cfm" target="_blank">Learning Tools Interoperability (LTI)</a> standard allows for interoperability between applications and consumers such as learning management systems. These properties allow the app store to push an app back to a learning management system with all the information necessary to set up the app as an LTI tool.</p>
+
+        <div class="form-field">
+          <%= f.label :lti, 'Supports LTI' %>
+          <%= f.check_box :lti %>
+        </div>
+
+        <fieldset class="form-field" id="app_lti_configs">
+          <ul style="list-style:none;padding: 0 10px;"></ul>
+          <button type="button" class="secondary">Add LTI Configuration</button>
+        </fieldset>
+
         <div class="form-field">
           <%= label_tag :privacy_enable, 'Privacy Matrix', data: { help: 'This privacy matrix is based on the Privacy Nutrition Label concept. Instead of the complex legalese of traditional privacy policies, it is intended to condense a privacy policy into a simple, understandable table.' } %>
           <%= check_box :privacy, 'enable' %>
