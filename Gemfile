@@ -41,6 +41,9 @@ gem 'bcrypt', '~> 3.1.7'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+# Install specific old version of execjs since WebBlocks chokes on 2.x
+gem 'execjs', '= 1.4.1'
+
 # Use web_blocks to compile Javascript assets
 # gem 'web_blocks', :git => 'https://github.com/WebBlocks/WebBlocks.git'
 gem 'web_blocks', :git => 'https://github.com/WebBlocks/WebBlocks.git', :tag => '2.0.4.dev'
