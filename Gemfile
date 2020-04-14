@@ -50,7 +50,7 @@ gem 'rufus-scheduler'
 # Use elasticsearch as Elasticsearch client
 gem 'elasticsearch'
 
-gem 'ims-lti'
+gem 'ims-lti', '= 1.1.13'
 gem 'oauth'
 
 gem 'activerecord-session_store'
