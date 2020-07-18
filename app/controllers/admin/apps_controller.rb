@@ -6,6 +6,10 @@ module Admin
     before_action :require_session_admin!, only: [:new, :create]
     before_action :require_edit_privilege!, only: [:edit, :update]
 
+    before_action only: [:new, :create, :edit, :update] do
+      @lti_consumers = LtiConsumer.order name: :asc
+    end
+
     def index
 
       @apps = App.all
@@ -17,7 +21,6 @@ module Admin
       @app = App.new
       @categories = Category.order name: :asc
       @out_peers = OutPeer.order name: :asc
-      @lti_consumers = LtiConsumer.order name: :asc
 
     end
 
@@ -95,14 +98,12 @@ module Admin
       @app = App.find params[:id]
       @categories = Category.order name: :asc
       @out_peers = OutPeer.order name: :asc
-      @lti_consumers = LtiConsumer.order name: :asc
 
     end
 
     def update
 
       @categories = Category.order name: :asc
-      @lti_consumers = LtiConsumer.order name: :asc
 
       @app = App.find params[:id]
       @app.category_ids = params[:app][:categories]
