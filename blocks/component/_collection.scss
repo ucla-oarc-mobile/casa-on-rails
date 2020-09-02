@@ -24,6 +24,11 @@ nav.collection {
       &:hover {
         color: #888;
       }
+      @media (max-width: 599px) {
+        display: block;
+        float: none;
+        margin-top: 10px;
+      }
     }
     a {
       text-decoration: none;
