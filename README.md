@@ -179,6 +179,12 @@ bundle exec bin/rake db:seed
 
 CASA on Rails is a standard Rails server. Once you ensure that the database and Elasticsearch are running, start it as you'd usually start a Rails server.
 
+If you seeded the database, the default credentials are:
+```
+Username: admin
+Password: password
+```
+
 ### Docker Container
 
 CASA on Rails now has a docker container to facilitate getting started developing or testing the project.  Visit the [docker hub page](https://hub.docker.com/r/stevenolen/casa-on-rails/) for more details.
