@@ -147,18 +147,13 @@ For Ruby packages:
 bundle
 ```
 
-For Node packages:
-
-```
-npm install
-```
-
 #### Build Web Assets
 
 To build web assets:
 
 ```
-bundle exec blocks build
+RAILS_ENV=production bin/rake assets:clean
+RAILS_ENV=production bin/rake assets:precompile
 ```
 
 #### Configure Rails App
