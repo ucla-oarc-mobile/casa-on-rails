@@ -16,16 +16,10 @@ Rails.application.routes.draw do
   get 'session', to: 'session#create'
   post 'session', to: 'session#store'
   delete 'session', to: 'session#destroy'
-
-  namespace :session do
-    get '/oauth2/:id', to: 'oauth2#return', as: :oauth2_return, constraints: lambda { |request| request.query_parameters.include? 'code' }
-    get '/oauth2/:id', to: 'oauth2#launch', as: :oauth2_launch
-  end
+  get '/auth/:provider/callback', to: 'session#omniauth'
 
   namespace :manage do
-
     resources :apps
-
   end
 
   namespace :admin do
