@@ -132,7 +132,6 @@ This configuration makes it possible for users with the `employee@ucla.edu` eduP
 #### System Dependencies
 
 * Ruby 2.1+
-* Node.js 0.10+
 * Java 1.6+
 * MySQL 5.0+, PostgreSQL 8.4+ and SQLite 3.6.16+ *
 * ElasticSearch 1.0+
@@ -147,18 +146,13 @@ For Ruby packages:
 bundle
 ```
 
-For Node packages:
-
-```
-npm install
-```
-
 #### Build Web Assets
 
 To build web assets:
 
 ```
-bundle exec blocks build
+RAILS_ENV=production bin/rake assets:clean
+RAILS_ENV=production bin/rake assets:precompile
 ```
 
 #### Configure Rails App
