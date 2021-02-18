@@ -50,6 +50,7 @@ gem 'rufus-scheduler', '= 3.2.1'
 gem 'elasticsearch', '= 1.0.17'
 
 gem 'ims-lti', '= 1.1.13'
+gem 'oauth', '= 0.4.7'
 
 gem 'activerecord-session_store', '= 1.0.0'
 
