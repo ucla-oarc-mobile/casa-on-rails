@@ -40,8 +40,8 @@ gem 'bcrypt', '~> 3.1.7'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-# Install specific old version of execjs since WebBlocks chokes on 2.x
-gem 'execjs', '= 1.4.1'
+gem 'jquery-datatables-rails', '~> 3.4.0'
+gem 'normalize-rails', '= 3.0.3'
 
 # Use rufus-scheduler for scheduled tasks
 gem 'rufus-scheduler', '= 3.2.1'
