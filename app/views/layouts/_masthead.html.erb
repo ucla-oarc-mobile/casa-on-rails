@@ -28,7 +28,7 @@
         <% if session_user %>
         <a href="<%= session_path %>" data-confirm="Are you sure you want to log out?" data-method="delete" rel="nofollow">Logout</a>
         <% else %>
-        <a href="<%= send(*Rails.application.config.login_route) %>">Login</a>
+        <a href="<%= Rails.application.config.login_route %>">Login</a>
         <% end %>
       </li>
       <% if launch_provider.return_url %>

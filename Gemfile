@@ -40,12 +40,8 @@ gem 'bcrypt', '~> 3.1.7'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-# Install specific old version of execjs since WebBlocks chokes on 2.x
-gem 'execjs', '= 1.4.1'
-
-# Use web_blocks to compile Javascript assets
-# gem 'web_blocks', :git => 'https://github.com/WebBlocks/WebBlocks.git'
-gem 'web_blocks', :git => 'https://github.com/WebBlocks/WebBlocks.git', :tag => '2.0.4.dev'
+gem 'jquery-datatables-rails', '~> 3.4.0'
+gem 'normalize-rails', '= 3.0.3'
 
 # Use rufus-scheduler for scheduled tasks
 gem 'rufus-scheduler', '= 3.2.1'
@@ -58,7 +54,7 @@ gem 'oauth', '= 0.4.7'
 
 gem 'activerecord-session_store', '= 1.0.0'
 
-gem 'oauth2', '= 1.1.0'
+gem 'omniauth-keycloak', '~> 1.2.1'
 
 # Use thin for web server
 gem 'thin', '= 1.6.4'
