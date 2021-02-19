@@ -215,7 +215,7 @@ DEPENDENCIES
   mysql2 (= 0.4.10)
   normalize-rails (= 3.0.3)
   oauth (= 0.4.7)
-  omniauth-keycloak
+  omniauth-keycloak (~> 1.2.1)
   rails (~> 4.2.11.1)
   rapporteur (= 3.4.0)
   rufus-scheduler (= 3.2.1)

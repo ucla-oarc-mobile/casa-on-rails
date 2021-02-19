@@ -54,7 +54,7 @@ gem 'oauth', '= 0.4.7'
 
 gem 'activerecord-session_store', '= 1.0.0'
 
-gem 'omniauth-keycloak'
+gem 'omniauth-keycloak', '~> 1.2.1'
 
 # Use thin for web server
 gem 'thin', '= 1.6.4'
