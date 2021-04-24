@@ -24,3 +24,6 @@
 /config/casa.yml
 /config/auth.yml
 /config/caliper.yml
+
+# Ignore precompiled assets, our Chef scripts handle this.
+/public/assets
